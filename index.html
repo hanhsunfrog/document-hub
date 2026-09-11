@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Cổng tra cứu học liệu, sách giáo khoa chuẩn, đề kiểm tra định kỳ và bộ đề test 4-in-1 GDPT 2018 của Hệ Thống Điểm 10+ TP.HCM.">
+    <meta name="theme-color" content="#B00510">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cổng Học Liệu &amp; Đề Thi Chuẩn | Hệ Thống Điểm 10+">
+    <meta property="og:description" content="Tra cứu tài liệu học tập, chuyên đề bồi dưỡng và đề test phân loại năng lực học sinh chuẩn chương trình GDPT 2018.">
+    <meta property="og:locale" content="vi_VN">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B00510'/><text x='16' y='23' font-family='sans-serif' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>10+</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://drive.google.com">
+    <title>Cổng Học Liệu &amp; Đề Thi | Hệ Thống Điểm 10+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap&subset=vietnamese" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans:  ['"Be Vietnam Pro"', 'sans-serif'],
+                        serif: ['Newsreader', 'Georgia', 'serif']
+                    },
+                    colors: {
+                        brand: {
+                            red:        '#E30613',
+                            redDark:    '#B00510',
+                            redLight:   '#FDEBEC',
+                            redText:    '#A00410',
+                            yellowLight:'#FFF8DB',
+                            yellowText: '#8A6D00',
+                            black:      '#0F172A',
+                            textMain:   '#1E293B',
+                            textSub:    '#64748B',
+                            border:     '#E2E8F0',
+                            bg:         '#FAF9F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #FAF9F6; color: #1E293B; }
+
+        /* Panel phẳng tối giản, thoáng mắt */
+        .glass-panel { background: #FFFFFF; border: 1px solid #EAEAEA; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
+
+        /* Skeleton animation */
+        .skeleton { animation: skel 1s linear infinite alternate; }
+        @keyframes skel { 0%{background-color:#e2e8f0} 100%{background-color:#f1f5f9} }
+
+        /* Thanh cuộn mượt và mảnh */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Thanh cuộn riêng cho sidebar bên trái */
+        .scrollbar-sidebar {
+            overflow-y: auto;
+            scrollbar-gutter: stable;
+        }
+        .scrollbar-sidebar::-webkit-scrollbar { width: 5px; }
+        .scrollbar-sidebar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 9999px; }
+        .scrollbar-sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .scrollbar-sidebar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Tags môn học — Muted Pastel */
+        .tag-toan  { background:#FDEBEC; color:#A00410; border: 1px solid #FCD3D5; }
+        .tag-van   { background:#FFF8DB; color:#8A6D00; border: 1px solid #FFEAA8; }
+        .tag-anh   { background:#E1F3FE; color:#1F6C9F; border: 1px solid #C6E7FC; }
+        .tag-khtn  { background:#EDF3EC; color:#346538; border: 1px solid #D4E5D2; }
+        .tag-ly    { background:#E1F3FE; color:#1F6C9F; border: 1px solid #C6E7FC; }
+        .tag-hoa   { background:#EDF3EC; color:#346538; border: 1px solid #D4E5D2; }
+        .tag-sinh  { background:#EDF3EC; color:#346538; border: 1px solid #D4E5D2; }
+        .tag-stem  { background:#FEF3C7; color:#B45309; border: 1px solid #FDE68A; }
+        .tag-other { background:#F1F5F9; color:#475569; border: 1px solid #E2E8F0; }
+
+        /* Card hover thanh lịch */
+        .doc-card { 
+            border-bottom: 3px solid transparent; 
+            transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .2s, border-color .2s; 
+        }
+        .doc-card:hover { 
+            transform: translateY(-2px);
+            border-bottom-color: #E30613; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04); 
+        }
+        .doc-card:hover .card-title { color: #E30613; }
+        .doc-card:hover .card-img  { transform: scale(1.03); }
+        .card-img { transition: transform .4s ease-out; }
+
+        /* Typography */
+        .card-title { font-family: 'Newsreader', Georgia, serif; line-height: 1.3; letter-spacing: -0.01em; }
+        #modalTitle { font-family: 'Newsreader', Georgia, serif; line-height: 1.25; }
+
+        /* Modal animation */
+        #detailModal { transition: opacity .25s ease-out; }
+        #modalContainer { transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        /* Bottom-Sheet Mobile Drawer */
+        #bottomSheet {
+            position: fixed; inset-x: 0; bottom: 0; z-index: 60;
+            background: #FFFFFF;
+            border-radius: 20px 20px 0 0;
+            max-height: 85vh; overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform .32s cubic-bezier(0.32, 0.72, 0, 1);
+            box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+        }
+        #bottomSheet.open { transform: translateY(0); }
+        #bottomSheetBackdrop {
+            position: fixed; inset: 0; z-index: 59;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            opacity: 0; pointer-events: none;
+            transition: opacity .28s;
+        }
+        #bottomSheetBackdrop.open { opacity: 1; pointer-events: all; }
+
+        .stagger-item {
+            opacity: 0; transform: translateY(10px);
+            transition: opacity 350ms cubic-bezier(0.16,1,0.3,1), transform 350ms cubic-bezier(0.16,1,0.3,1);
+        }
+        .stagger-item.visible { opacity: 1; transform: translateY(0); }
+
+        i.ph-bold, i.ph { line-height: 1; vertical-align: middle; }
+
+        /* Quick Preset Button */
+        .quick-preset-btn {
+            white-space: nowrap;
+            transition: all 0.15s ease-in-out;
+        }
+        .quick-preset-btn.active {
+            background-color: #B00510 !important;
+            color: #ffffff !important;
+            border-color: #B00510 !important;
+            box-shadow: 0 2px 6px rgba(176, 5, 16, 0.25);
+        }
+
+        /* Tag Cloud pill */
+        .topic-pill {
+            transition: all 0.15s ease-in-out;
+            cursor: pointer;
+        }
+        .topic-pill:hover {
+            border-color: #E30613;
+            color: #E30613;
+            background-color: #FDEBEC;
+        }
+        .topic-pill.active {
+            background-color: #E30613 !important;
+            color: #ffffff !important;
+            border-color: #E30613 !important;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+<!-- ── Header ─────────────────────────────────────── -->
+<header class="text-white sticky top-0 z-40 shadow-md" style="background:#B00510;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-2 group" title="Hệ Thống Điểm 10+">
+                <div class="bg-white px-2.5 py-1 rounded-xl shadow-xs flex items-center h-10 border border-white/20 transition-transform group-hover:scale-[1.02]">
+                    <img src="logo.png" alt="Logo Điểm 10+ - Vững Kiến Thức, Chắc Tư Duy" class="h-8 w-auto object-contain">
+                </div>
+            </a>
+            <div class="h-5 w-px bg-white/30 hidden sm:block"></div>
+            <div class="hidden sm:block">
+                <h1 class="text-sm font-semibold text-red-50 leading-tight">Cổng Học Liệu &amp; Đề Thi Chuẩn</h1>
+                <p class="text-[11px] text-red-200 leading-none">Hệ thống 7 cơ sở &middot; GDPT 2018</p>
+            </div>
+        </div>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Mode indicator -->
+            <div id="roleBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-800/80 text-red-100 border border-red-400/40">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 animate-pulse"></span>
+                <span id="roleBadgeText">Học Sinh &amp; Phụ Huynh</span>
+            </div>
+
+            <!-- Refresh button -->
+            <button onclick="refreshData()" title="Làm mới dữ liệu từ Google Drive"
+                class="p-2 rounded-lg bg-red-800/80 hover:bg-red-900 text-white transition-colors border border-red-400/40 flex items-center justify-center">
+                <i id="refreshIcon" class="ph-bold ph-arrows-clockwise text-base"></i>
+            </button>
+
+            <!-- Teacher Mode Toggle -->
+            <button id="btnTeacherToggle" onclick="handleTeacherToggle()"
+                class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all bg-white/15 hover:bg-white/25 text-white border-white/30 shadow-sm">
+                <i class="ph-bold ph-lock-key text-yellow-300 text-base"></i>
+                <span id="btnTeacherText">Dành cho Thầy/Cô</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Filter Bar Sticky -->
+<div class="lg:hidden bg-white border-b border-slate-200 px-4 py-2.5 sticky top-[57px] z-30 flex items-center justify-between shadow-sm">
+    <button onclick="openBottomSheet()" class="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors border border-slate-200">
+        <i class="ph-bold ph-funnel text-brand-red text-sm"></i>
+        <span>Bộ lọc &amp; Khối lớp</span>
+        <span id="mobileFilterBadge" class="hidden ml-1 px-1.5 py-0.2 text-[10px] bg-brand-red text-white rounded-full font-bold">0</span>
+    </button>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500"><strong id="mobileCount" class="text-brand-red font-bold">0</strong> tài liệu</span>
+        <button onclick="resetFilters()" class="text-[11px] font-semibold text-slate-500 hover:text-brand-red flex items-center gap-1">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i>
+        </button>
+    </div>
+</div>
+
+<!-- ── Main Layout ──────────────────────────────────── -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-7">
+
+    <!-- ══════════════════════════════════════════════════
+         SIDEBAR BỘ LỌC — THIẾT KẾ TINH GỌN, KHÔNG RỐI MẮT
+         ══════════════════════════════════════════════════ -->
+    <aside class="w-full lg:w-72 xl:w-76 flex-shrink-0 hidden lg:block">
+        <div class="glass-panel p-5 rounded-2xl sticky top-20 max-h-[calc(100vh-5.5rem)] scrollbar-sidebar flex flex-col space-y-5">
+            
+            <!-- 1. Header Bộ lọc & Nút Đặt lại -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                    <i class="ph-bold ph-funnel text-brand-red text-base"></i>
+                    <h2 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Bộ lọc tài liệu</h2>
+                </div>
+                <button onclick="resetFilters()" class="text-xs font-semibold text-slate-400 hover:text-brand-red transition-colors flex items-center gap-1 hover:underline">
+                    <i class="ph-bold ph-arrow-counter-clockwise text-xs"></i>
+                    <span>Đặt lại</span>
+                </button>
+            </div>
+
+            <!-- 2. Ô Tìm kiếm gọn gàng -->
+            <div class="relative">
+                <input type="text" id="searchInput" placeholder="Tìm tên đề, môn học, bài..."
+                    class="w-full pl-8 pr-7 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium
+                           focus:outline-none focus:ring-2 focus:ring-brand-red/20 focus:border-brand-red text-slate-800 transition-all placeholder:text-slate-400">
+                <i class="ph-bold ph-magnifying-glass text-slate-400 text-sm absolute left-2.5 top-2.5"></i>
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600">
+                    <i class="ph-bold ph-x text-xs"></i>
+                </button>
+            </div>
+
+            <!-- 3. Chọn Khối Lớp — Lưới số 2 hàng cực gọn -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                        <i class="ph-bold ph-graduation-cap text-slate-400"></i>
+                        <span>Khối lớp</span>
+                    </span>
+                    <span class="text-[11px] font-bold text-brand-red" id="currentKhoiLabel">Tất cả</span>
+                </div>
+                <div class="grid grid-cols-5 gap-1 text-center text-xs font-bold">
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-900 text-white shadow-sm" data-val="all">Tất cả</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="6">6</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="7">7</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="8">8</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="9">9</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200" data-val="TS10">TS10</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="10">10</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="11">11</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold" data-val="12">12</button>
+                    <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold text-[11px]" data-val="DBS">Khác</button>
+                </div>
+            </div>
+
+            <!-- 4. Danh mục tài liệu — Dạng Menu Dọc thanh lịch, không hộp lồng hộp -->
+            <div>
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
+                    Danh mục tài liệu
+                </span>
+                <div class="space-y-1">
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-white shadow-sm" data-val="all">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-squares-four text-sm"></i>
+                            <span>Tất cả tài liệu</span>
+                        </span>
+                    </button>
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="sach">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-book-bookmark text-brand-red text-sm"></i>
+                            <span>Sách chính khóa Điểm 10+</span>
+                        </span>
+                    </button>
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="test">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-target text-purple-600 text-sm"></i>
+                            <span>Đề Test Đầu Vào 4-in-1</span>
+                        </span>
+                    </button>
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="kiem-tra">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-exam text-amber-600 text-sm"></i>
+                            <span>Đề kiểm tra &amp; Thi thử</span>
+                        </span>
+                    </button>
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="ts10">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-rocket text-indigo-600 text-sm"></i>
+                            <span>Luyện thi Tuyển sinh 10</span>
+                        </span>
+                    </button>
+                    <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="chuyen-de">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-lightbulb text-emerald-600 text-sm"></i>
+                            <span>Chuyên đề &amp; Đề cương</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. Môn học — Hàng nút pill tối giản -->
+            <div>
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
+                    Môn học
+                </span>
+                <div class="flex flex-wrap gap-1">
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-bold rounded-lg transition-all bg-brand-red text-white shadow-sm" data-val="all">Tất cả</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Toán">Toán</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Văn">Văn</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Anh">Anh</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="KHTN">KHTN</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Lý">Lý</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Hóa">Hóa</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="Sinh">Sinh</button>
+                    <button class="filter-btn-mon px-2.5 py-1 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="STEM">STEM</button>
+                </div>
+            </div>
+
+            <!-- 6. Chuyên đề Toán — Dạng gấp gọn gàng, mở ra khi cần -->
+            <details class="group pt-2 border-t border-slate-100">
+                <summary class="flex items-center justify-between text-xs font-bold text-slate-600 uppercase tracking-wider cursor-pointer list-none py-1 select-none hover:text-brand-red transition-colors">
+                    <span class="flex items-center gap-1.5">
+                        <i class="ph-bold ph-tag text-slate-400 text-xs"></i>
+                        <span>Chuyên đề Toán (Gợi ý)</span>
+                    </span>
+                    <i class="ph-bold ph-caret-down text-slate-400 text-xs transition-transform group-open:rotate-180"></i>
+                </summary>
+                <div class="pt-2.5 flex flex-wrap gap-1">
+                    <button onclick="setTopicFilter('')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700 active" data-tag="">Tất cả</button>
+                    <button onclick="setTopicFilter('Oxyz')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Oxyz">📐 Tọa độ Oxyz</button>
+                    <button onclick="setTopicFilter('Hình Không Gian')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Hình Không Gian">🧊 Hình không gian</button>
+                    <button onclick="setTopicFilter('Hàm Số')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Hàm Số">📈 Hàm số &amp; Đồ thị</button>
+                    <button onclick="setTopicFilter('Tích Phân')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Tích Phân">∫ Tích phân</button>
+                    <button onclick="setTopicFilter('Bất Đẳng Thức')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Bất Đẳng Thức">⚖️ Bất đẳng thức</button>
+                    <button onclick="setTopicFilter('Đường Tròn')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Đường Tròn">⭕ Đường tròn</button>
+                    <button onclick="setTopicFilter('Thực Tế')" class="topic-pill text-[11px] px-2 py-0.5 rounded-md font-medium border border-slate-200 bg-white text-slate-700" data-tag="Thực Tế">🌍 Toán thực tế</button>
+                </div>
+            </details>
+
+        </div>
+    </aside>
+
+    <!-- ══════════════════════════════════════════════════
+         MAIN CONTENT AREA
+         ══════════════════════════════════════════════════ -->
+    <div class="flex-1 min-w-0">
+
+        <!-- Dải Preset Truy Cập Nhanh 1 Chạm Trên Đầu -->
+        <div class="mb-4">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-medium">
+                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0 mr-1 flex items-center gap-1">
+                    <i class="ph-bold ph-lightning text-amber-500 text-xs"></i>
+                    <span>Nhanh:</span>
+                </span>
+                <button onclick="applyQuickPreset('all')" id="preset-all"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-bold active">
+                    Tất cả
+                </button>
+                <button onclick="applyQuickPreset('sach-toan')" id="preset-sach-toan"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                    📐 Sách Chính Khóa Điểm 10+
+                </button>
+                <button onclick="applyQuickPreset('test-4in1')" id="preset-test-4in1"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                    🎯 Đề Test Đầu Vào 4-in-1
+                </button>
+                <button onclick="applyQuickPreset('ts10')" id="preset-ts10"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                    🚀 Ôn Thi Tuyển Sinh 10
+                </button>
+                <button onclick="applyQuickPreset('de-kiem-tra')" id="preset-de-kiem-tra"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                    📝 Đề Thi &amp; Kiểm Tra
+                </button>
+                <button onclick="applyQuickPreset('chuyen-de')" id="preset-chuyen-de"
+                    class="quick-preset-btn px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                    💡 Chuyên Đề Nâng Cao
+                </button>
+            </div>
+        </div>
+
+        <!-- Thanh Breadcrumb Bộ Lọc Đang Chọn -->
+        <div id="activeFiltersBar" class="hidden items-center flex-wrap gap-1.5 mb-4 p-2.5 bg-slate-100/90 rounded-xl border border-slate-200">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1 flex items-center gap-1">
+                <i class="ph-bold ph-funnel text-xs text-brand-red"></i>
+                <span>Đang lọc:</span>
+            </span>
+            <div id="activePillsContainer" class="flex flex-wrap items-center gap-1"></div>
+            <button onclick="resetFilters()" class="text-[11px] font-bold text-brand-red hover:underline ml-auto pl-2 flex items-center gap-0.5">
+                <span>Xóa lọc</span>
+            </button>
+        </div>
+
+        <!-- Tiêu đề trang & Bộ đếm -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-5 pb-3 border-b border-brand-border gap-2">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="text-xl sm:text-2xl font-bold text-brand-textMain">Kho Học Liệu &amp; Đề Thi</h2>
+                    <span id="badgeTeacherActive" class="hidden px-2.5 py-0.5 rounded-full text-[11px] font-bold border"
+                          style="background:#FFF8DB; color:#8A6D00; border-color:#FFE699;">
+                        Đang mở khóa bản GV
+                    </span>
+                </div>
+                <p class="text-xs sm:text-sm text-brand-textSub mt-0.5">
+                    Hiển thị <span id="countDisplay" aria-live="polite" class="font-bold text-brand-red">0</span> tài liệu bám sát chương trình
+                </p>
+            </div>
+
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+                <button onclick="copyCurrentFilterUrl()"
+                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 px-3 py-1.5 rounded-lg transition-colors shadow-sm"
+                    title="Sao chép link bộ lọc hiện tại để gửi Zalo cho phụ huynh / giáo viên">
+                    <i class="ph-bold ph-link text-slate-500 text-sm"></i>
+                    <span>Chia sẻ bộ lọc</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Skeleton Loader -->
+        <div id="skeletonGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="skeleton h-40 w-full"></div>
+                <div class="p-5">
+                    <div class="flex gap-2 mb-3"><div class="skeleton h-5 w-14 rounded-full"></div><div class="skeleton h-5 w-14 rounded-full"></div></div>
+                    <div class="skeleton h-6 w-3/4 rounded mb-2"></div>
+                    <div class="skeleton h-4 w-full rounded mb-1"></div>
+                    <div class="skeleton h-4 w-5/6 rounded mb-4"></div>
+                    <div class="skeleton h-9 w-full rounded-md"></div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-xl overflow-hidden hidden md:block">
+                <div class="skeleton h-40 w-full"></div>
+                <div class="p-5">
+                    <div class="flex gap-2 mb-3"><div class="skeleton h-5 w-14 rounded-full"></div></div>
+                    <div class="skeleton h-6 w-2/3 rounded mb-2"></div>
+                    <div class="skeleton h-4 w-full rounded mb-4"></div>
+                    <div class="skeleton h-9 w-full rounded-md"></div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-xl overflow-hidden hidden xl:block">
+                <div class="skeleton h-40 w-full"></div>
+                <div class="p-5">
+                    <div class="flex gap-2 mb-3"><div class="skeleton h-5 w-14 rounded-full"></div></div>
+                    <div class="skeleton h-6 w-4/5 rounded mb-2"></div>
+                    <div class="skeleton h-4 w-full rounded mb-4"></div>
+                    <div class="skeleton h-9 w-full rounded-md"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Cards Grid -->
+        <div id="documentGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 hidden"></div>
+
+        <!-- Load More Container -->
+        <div id="loadMoreContainer" class="hidden text-center py-8">
+            <button onclick="loadMoreDocuments()" class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 hover:border-brand-red text-slate-800 font-bold text-sm rounded-xl transition-all hover:text-brand-red shadow-sm">
+                <span>Xem thêm tài liệu</span>
+                <span id="loadMoreCount" class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium"></span>
+            </button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-3">
+                <i class="ph-bold ph-file-dashed text-slate-400 text-3xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-brand-textMain">Không tìm thấy tài liệu phù hợp</h3>
+            <p class="text-xs text-brand-textSub mt-1 max-w-sm">Thử bấm "Đặt lại bộ lọc" hoặc tìm với từ khóa chung hơn (ví dụ: Toán, Lớp 9, Đề test...).</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 text-xs font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors shadow-sm">
+                Đặt lại toàn bộ bộ lọc
+            </button>
+        </div>
+    </div>
+</main>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer class="bg-white text-slate-500 text-xs text-center py-6 border-t-4 mt-auto" style="border-color:#E30613;">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center">
+        <img src="logo.png" alt="Logo Điểm 10+ - Vững Kiến Thức, Chắc Tư Duy" class="h-10 w-auto object-contain mb-2.5">
+        <p class="font-semibold text-slate-700 mb-1">
+            Trung tâm Bồi dưỡng Văn hóa <strong class="text-brand-textMain font-bold">Điểm 10+</strong> &middot; Hệ thống 7 cơ sở tại TP.HCM
+        </p>
+        <p class="text-[11px] text-slate-400">
+            Cổng tra cứu học liệu nội bộ phục vụ Học sinh &ndash; Giáo viên &ndash; Phụ huynh &middot; Hotline: <a href="tel:0933398787" class="font-bold hover:underline" style="color:#E30613;">0933 39 8787</a>
+        </p>
+    </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL CHI TIẾT & XEM TRƯỚC (ToanMath Standard)
+     ══════════════════════════════════════════════════ -->
+<div id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="fixed inset-0 z-50 hidden opacity-0">
+    <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div id="modalContainer" class="absolute inset-2 sm:inset-5 md:inset-8 xl:inset-x-24 xl:inset-y-6 bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden scale-95 transition-transform">
+        
+        <!-- Nút Đóng Modal -->
+        <button onclick="closeModal()" title="Đóng (Phím Esc)" aria-label="Đóng cửa sổ xem trước"
+            class="absolute top-3 right-3 md:top-3 md:left-3 md:right-auto z-30 w-8 h-8 flex items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900 text-white transition-colors backdrop-blur-sm shadow-md">
+            <i class="ph-bold ph-x text-sm"></i>
+        </button>
+
+        <!-- CỘT TRÁI: THÔNG TIN & NÚT TẢI -->
+        <div class="w-full md:w-80 xl:w-96 flex flex-col border-b md:border-b-0 md:border-r border-brand-border bg-white overflow-y-auto">
+            <!-- Header Bìa nhỏ -->
+            <div id="modalCoverWrap" class="w-full h-32 bg-slate-900 relative flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div id="modalCover" class="absolute inset-0 bg-cover bg-center"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <div class="absolute bottom-2.5 left-4 right-4 text-white text-[11px] flex items-center justify-between z-10">
+                    <span id="modalGradeSubject" class="font-bold">Môn Toán &middot; Khối 9</span>
+                    <span id="modalDocType" class="text-red-300 font-semibold">Tài liệu chuẩn</span>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-5 flex flex-col flex-1">
+                <!-- Tags -->
+                <div id="modalTags" class="flex flex-wrap gap-1.5 mb-2.5"></div>
+                
+                <!-- Tiêu đề lớn -->
+                <h2 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-900 mb-2 leading-snug"></h2>
+
+                <!-- Tác giả / Đơn vị biên soạn -->
+                <div class="flex items-center gap-2 mb-3 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                    <i class="ph-bold ph-user-circle text-brand-red text-base flex-shrink-0"></i>
+                    <span>Biên soạn: <strong id="modalAuthor" class="text-slate-800 font-semibold"></strong></span>
+                </div>
+
+                <!-- Mô tả nội dung -->
+                <div class="mb-4">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mô tả sư phạm</p>
+                    <p id="modalDesc" class="text-xs text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <!-- KHU VỰC NÚT TẢI & THAO TÁC (Render động theo phân quyền) -->
+                <div id="modalActionsContainer" class="pt-3 border-t border-slate-100 mb-4"></div>
+
+                <!-- TÀI LIỆU LIÊN QUAN (ToanMath Style) -->
+                <div class="mt-auto pt-3 border-t border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                        <i class="ph-bold ph-arrows-merge text-slate-400"></i>
+                        <span>Tài liệu liên quan</span>
+                    </p>
+                    <div id="modalRelatedDocs" class="space-y-1.5">
+                        <!-- Render động danh sách tài liệu tương tự cùng khối/môn -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CỘT PHẢI: KHUNG XEM TRƯỚC GOOGLE DRIVE -->
+        <div class="flex-1 bg-slate-100 relative min-h-64 md:min-h-0 flex flex-col">
+            <div class="bg-white px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs">
+                <span class="font-semibold text-slate-700 flex items-center gap-1.5">
+                    <i class="ph-bold ph-eye text-brand-red"></i>
+                    <span>Bản xem trước tài liệu</span>
+                </span>
+                <a id="modalExternalLink" href="#" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-slate-600 hover:text-brand-red font-semibold transition-colors">
+                    <span>Mở tab mới</span>
+                    <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                </a>
+            </div>
+
+            <div class="flex-1 relative flex items-center justify-center p-0">
+                <div id="previewLoader" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 gap-2 p-6 text-center bg-slate-50">
+                    <svg class="w-8 h-8 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                    <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>
+                </div>
+                <iframe id="modalIframe" src="" class="w-full h-full border-0 hidden relative z-10" onload="handleIframeLoaded()"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL NHẬP PIN GIÁO VIÊN
+     ══════════════════════════════════════════════════ -->
+<div id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closePinModal()"></div>
+    <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full relative z-10 border border-slate-200">
+        <div class="flex flex-col items-center mb-3">
+            <img src="logo.png" alt="Điểm 10+" class="h-10 w-auto object-contain mb-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider bg-red-50 text-brand-red border border-red-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <i class="ph-bold ph-chalkboard-teacher"></i>
+                Khu vực Thầy/Cô
+            </span>
+        </div>
+        <h3 id="pinModalTitle" class="text-base font-bold text-center text-brand-textMain mb-1">Xác thực Giáo viên Điểm 10+</h3>
+        <p class="text-xs text-center text-slate-500 mb-4">Nhập mã PIN do Phòng Đào Tạo cấp để xem trọn bộ Đáp án chi tiết (SP3), Barem chẩn đoán và Phiếu xếp lớp (SP4).</p>
+
+        <form onsubmit="submitPin(event)" class="space-y-3">
+            <input type="password" id="pinInput" placeholder="Nhập mã PIN (Demo: 10plus)"
+                class="w-full text-center tracking-widest text-base font-bold px-3 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red">
+            <p id="pinError" class="text-xs text-red-600 text-center hidden font-medium">Mã PIN không đúng, vui lòng thử lại.</p>
+            <button type="submit" class="w-full py-2.5 bg-brand-red text-white font-bold text-sm rounded-lg hover:bg-brand-redDark transition-colors shadow-sm">
+                Mở khóa tài liệu GV
+            </button>
+            <button type="button" onclick="closePinModal()" class="w-full py-2 text-slate-400 hover:text-slate-600 text-xs font-medium">
+                Hủy bỏ
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     BOTTOM-SHEET MOBILE DRAWER (ĐỒNG BỘ GỌN GÀNG)
+     ══════════════════════════════════════════════════ -->
+<div id="bottomSheetBackdrop" onclick="closeBottomSheet()"></div>
+<div id="bottomSheet">
+    <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+        <div class="w-10 h-1 rounded-full bg-slate-300"></div>
+    </div>
+    <div class="flex items-center justify-between px-5 py-3 border-b border-slate-100 flex-shrink-0">
+        <div class="flex items-center gap-2">
+            <i class="ph-bold ph-funnel text-brand-red text-lg"></i>
+            <h3 class="text-base font-bold text-brand-textMain">Bộ lọc tài liệu</h3>
+        </div>
+        <button onclick="closeBottomSheet()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors">
+            <i class="ph-bold ph-x text-sm"></i>
+        </button>
+    </div>
+    <div class="px-5 py-4 space-y-4">
+        <!-- Search Mobile -->
+        <div class="relative">
+            <input type="text" id="searchInputMobile" placeholder="Tìm tên đề, bài học, tác giả..."
+                class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-red/20 focus:border-brand-red transition-all">
+            <i class="ph-bold ph-magnifying-glass text-slate-400 text-base absolute left-3 top-3"></i>
+        </div>
+
+        <!-- Khối lớp Mobile -->
+        <div>
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Khối lớp</p>
+            <div class="grid grid-cols-5 gap-1.5 text-center text-xs font-bold">
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-900 text-white shadow-sm" data-val="all">Tất cả</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="6">6</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="7">7</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="8">8</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="9">9</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-amber-100 text-amber-900 border border-amber-300" data-val="TS10">TS10</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="10">10</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="11">11</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-val="12">12</button>
+                <button class="filter-btn-khoi py-1.5 rounded-lg transition-all bg-slate-100 text-slate-700 hover:bg-slate-200 text-[11px]" data-val="DBS">Khác</button>
+            </div>
+        </div>
+
+        <!-- Danh mục Mobile -->
+        <div>
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Danh mục</p>
+            <div class="space-y-1">
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-white shadow-sm" data-val="all">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-squares-four text-sm"></i>
+                        <span>Tất cả tài liệu</span>
+                    </span>
+                </button>
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="sach">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-book-bookmark text-brand-red text-sm"></i>
+                        <span>Sách chính khóa Điểm 10+</span>
+                    </span>
+                </button>
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="test">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-target text-purple-600 text-sm"></i>
+                        <span>Đề Test Đầu Vào 4-in-1</span>
+                    </span>
+                </button>
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="kiem-tra">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-exam text-amber-600 text-sm"></i>
+                        <span>Đề kiểm tra &amp; Thi thử</span>
+                    </span>
+                </button>
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="ts10">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-rocket text-indigo-600 text-sm"></i>
+                        <span>Luyện thi Tuyển sinh 10</span>
+                    </span>
+                </button>
+                <button class="filter-btn-nhom w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all" data-val="chuyen-de">
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-lightbulb text-emerald-600 text-sm"></i>
+                        <span>Chuyên đề &amp; Đề cương</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Môn học Mobile -->
+        <div>
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Môn học</p>
+            <div class="flex flex-wrap gap-1.5">
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-red text-white shadow-sm" data-val="all">Tất cả</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Toán">Toán</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Văn">Văn</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Anh">Anh</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="KHTN">KHTN</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Lý">Lý</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Hóa">Hóa</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="Sinh">Sinh</button>
+                <button class="filter-btn-mon px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-slate-100 text-slate-700" data-val="STEM">STEM</button>
+            </div>
+        </div>
+
+        <!-- Nút chốt Mobile -->
+        <div class="pt-2 pb-6">
+            <button onclick="closeBottomSheet()"
+                class="w-full py-3 bg-brand-red text-white font-bold text-sm rounded-xl hover:bg-brand-redDark transition-colors shadow-md">
+                Xem kết quả (<span id="mobileResultCount">0</span> tài liệu)
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ── Toast Thông báo ─────────────────────────────── -->
+<div id="toast" class="fixed bottom-5 right-5 z-[70] bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all transform translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 shadow-xl border border-slate-700">
+    <i class="ph-bold ph-check-circle text-emerald-400 text-base"></i>
+    <span id="toastMsg">Thành công!</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT LOGIC
+     ══════════════════════════════════════════════════ -->
+<script>
+/* =========================================================
+   CẤU HÌNH & DỮ LIỆU
+   ========================================================= */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzogD2eCZPfidJ3WZLx56lZzzPcUAUyASyiUyWiYH8QzhGFDTj7BgQFoP1A-aMBwmOmIA/exec'; // Dán URL Web App Apps Script vào đây khi chạy thật
+const PAGE_SIZE = 24;
+
+// Hàm chuẩn hóa tiếng Việt không dấu (Unicode NFD) cho tìm kiếm thông minh
+const norm = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, m => m === 'đ' ? 'd' : 'D').toLowerCase().trim();
+
+/* DỮ LIỆU DEMO MẪU GIÀU CẢM HỨNG */
+const DEMO_DATA = [
+    // ── HỆ THỐNG SÁCH CHÍNH KHÓA ĐIỂM 10+ (ĐẦY ĐỦ CÁC KHỐI 6 - 12 & TS10) ──
+    {
+        id: 'SACH_TOAN_6_HK1',
+        ten: 'Tài liệu Học tập Toán 6 — Học kỳ 1 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '6', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Phòng Đào Tạo Điểm 10+',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 6 (Học kỳ 1). Bao gồm đầy đủ lý thuyết trọng tâm Số học, Hình học trực quan và bài tập phân dạng chuẩn GDPT 2018.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_6_HK2',
+        ten: 'Tài liệu Học tập Toán 6 — Học kỳ 2 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '6', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Phòng Đào Tạo Điểm 10+',
+        mo_ta: 'Giáo trình Toán 6 HK2: Phân số, Số thập phân, Hình học phẳng và Một số yếu tố thống kê & xác suất.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_7_HK1',
+        ten: 'Tài liệu Học tập Toán 7 — Học kỳ 1 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '7', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 7 (Học kỳ 1). Số hữu tỉ, Số thực, Góc và đường thẳng song song, Tam giác bằng nhau chuẩn GDPT 2018.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_7_HK2',
+        ten: 'Tài liệu Học tập Toán 7 — Học kỳ 2 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '7', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Giáo trình Toán 7 HK2: Tỉ lệ thức và dãy tỉ số bằng nhau, Biểu thức đại số và Đa thức một biến, Tam giác và Hình khối trong thực tiễn.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_8_HK1',
+        ten: 'Tài liệu Học tập Toán 8 — Học kỳ 1 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '8', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THCS',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 8 (Học kỳ 1): Đa thức nhiều biến, Hằng đẳng thức đáng nhớ, Tứ giác và Định lí Thalès.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_8_HK2',
+        ten: 'Tài liệu Học tập Toán 8 — Học kỳ 2 (Hệ Thống Điểm 10+)',
+        mon: 'Toán', khoi: '8', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THCS',
+        mo_ta: 'Giáo trình Toán 8 HK2: Phân thức đại số, Phương trình bậc nhất một ẩn, Hàm số bậc nhất, Tam giác đồng dạng và Hình đồng dạng.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_9_HK1',
+        ten: 'Tài liệu Học tập Toán 9 — Học kỳ 1 (Phiên Bản Nâng Cấp 2026)',
+        mon: 'Toán', khoi: '9', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 9 (Học kỳ 1) bám sát chương trình GDPT mới và định dạng đề thi tuyển sinh vào lớp 10 TP.HCM.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_9_HK2',
+        ten: 'Tài liệu Học tập Toán 9 — Học kỳ 2 (Chuyên Đề Tuyển Sinh 10)',
+        mon: 'Toán', khoi: '9', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Giáo trình Toán 9 HK2: Phương trình bậc hai một ẩn, Hệ thức Viète, Đường tròn, Góc với đường tròn và Hình học không gian thực tế.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_TS10',
+        ten: 'Sách Bồi Dưỡng Chuyên Sâu Ôn Thi Vào Lớp 10 Môn Toán (Điểm 10+)',
+        mon: 'Toán', khoi: 'TS10', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Cẩm nang toàn diện ôn thi vào lớp 10 công lập môn Toán: Phân dạng bài toán thực tế, Hình học phẳng điểm 9+, Bất đẳng thức và Cực trị đại số.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_10_HK1',
+        ten: 'Tài liệu Học tập Toán 10 — Học kỳ 1 (Chương Trình Mới GDPT 2018)',
+        mon: 'Toán', khoi: '10', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 10 (Học kỳ 1) — Mệnh đề & Tập hợp, Bất phương trình bậc nhất hai ẩn, Hệ thức lượng và Véctơ.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_10_HK2',
+        ten: 'Tài liệu Học tập Toán 10 — Học kỳ 2 (Tổ Hợp & Xác Suất)',
+        mon: 'Toán', khoi: '10', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Giáo trình Toán 10 HK2: Đại số tổ hợp, Nhị thức Newton, Phương pháp tọa độ trong mặt phẳng Oxy và Một số yếu tố xác suất.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_11_HK1',
+        ten: 'Tài liệu Học tập Toán 11 — Học kỳ 1 (Đại Số & Hình Không Gian)',
+        mon: 'Toán', khoi: '11', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 11 (Học kỳ 1): Hàm số lượng giác, Dãy số, Cấp số cộng, Cấp số nhân, Đường thẳng & Mặt phẳng trong không gian.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_11_HK2',
+        ten: 'Tài liệu Học tập Toán 11 — Học kỳ 2 (Hàm Số Mũ & Đạo Hàm)',
+        mon: 'Toán', khoi: '11', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Giáo trình Toán 11 HK2: Hàm số mũ và hàm số lôgarit, Đạo hàm và ứng dụng, Quan hệ vuông góc trong không gian và Xác suất cổ điển.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_12_HK1',
+        ten: 'Tài liệu Học tập Toán 12 — Học kỳ 1 (Khảo Sát Hàm Số & Tọa Độ Oxyz)',
+        mon: 'Toán', khoi: '12', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Giáo trình Toán 12 HK1: Ứng dụng đạo hàm để khảo sát hàm số, Véctơ và Hệ tọa độ Oxyz trong không gian, Các số đặc trưng đo mức độ phân tán.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+    {
+        id: 'SACH_TOAN_12_HK2',
+        ten: 'Tài liệu Học tập Toán 12 — Học kỳ 2 (Nguyên Hàm & Tích Phân Ứng Dụng)',
+        mon: 'Toán', khoi: '12', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Giáo trình Toán 12 HK2: Nguyên hàm, Tích phân và Ứng dụng hình học, Phương pháp tọa độ trong không gian (mặt phẳng, đường thẳng, mặt cầu), Xác suất có điều kiện.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
+    },
+
+    // ── HỆ THỐNG ĐỀ TEST ĐẦU VÀO 4-IN-1 (KHỐI 6 → 12) ──
+    {
+        id: 'T6_T09_D01',
+        ten: 'Toán 6 — Đề Test Đầu Vào Tháng 09 — Đề 01 (Khảo Sát Chuyển Cấp)',
+        mon: 'Toán', khoi: '6', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Đề kiểm tra đánh giá chất lượng đầu vào lớp 6 chuyển cấp từ Tiểu học lên THCS. Thời gian 30 phút, 3 phần chuẩn GDPT 2018 (Nền tảng 3đ - Hiện tại 4đ - Vận dụng 3đ).',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T7_T09_D01',
+        ten: 'Toán 7 — Đề Test Đầu Vào Tháng 09 — Đề 01 (30 phút)',
+        mon: 'Toán', khoi: '7', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Đề kiểm tra đánh giá năng lực đầu vào môn Toán Khối 7 (Tháng 09 — Đề 01). Thời gian 30 phút, cấu trúc 3 phần chuẩn GDPT 2018 (Kiến thức nền 3đ - Hiện tại 4đ - Vận dụng 3đ).',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T8_THE_D01',
+        ten: 'Toán 8 — Đề Test Đầu Vào Đợt Hè — Đề 01 (Khảo Sát Nền Tảng)',
+        mon: 'Toán', khoi: '8', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THCS',
+        mo_ta: 'Đề kiểm tra đánh giá năng lực đầu vào môn Toán Khối 8 (Đợt Hè — Đề 01). 30 phút khảo sát kiến thức nền tảng Đại số 7 và Hình học trực quan.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T9_T09_D01',
+        ten: 'Toán 9 — Đề Test Đầu Vào Tháng 09 — Đề 01 (Căn Bậc Hai & Hệ PT)',
+        mon: 'Toán', khoi: '9', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Đề test chẩn đoán đầu vào môn Toán Khối 9 thời điểm Tháng 9. Khảo sát kiến thức Căn thức bậc hai, Hệ hai phương trình bậc nhất hai ẩn và Hệ thức lượng.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T10_T09_D01',
+        ten: 'Toán 10 — Đề Test Đầu Vào Tháng 09 — Đề 01 (Mệnh Đề & Tập Hợp)',
+        mon: 'Toán', khoi: '10', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Đề test chẩn đoán đầu vào Toán 10 (Chương trình mới GDPT 2018). Gồm trắc nghiệm nhiều phương án lựa chọn, trắc nghiệm Đúng/Sai và câu trả lời ngắn.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T11_T09_D01',
+        ten: 'Toán 11 — Đề Test Đầu Vào Tháng 09 — Đề 01 (Lượng Giác & Dãy Số)',
+        mon: 'Toán', khoi: '11', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Đề test khảo sát chất lượng đầu năm môn Toán Khối 11. Bám sát chương trình mới GDPT 2018, phân loại học sinh vào lớp Cơ bản và Nâng cao.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+    {
+        id: 'T12_T09_D01',
+        ten: 'Toán 12 — Đề Test Đầu Vào Tháng 09 — Đề 01 (Đạo Hàm & Ứng Dụng)',
+        mon: 'Toán', khoi: '12', nhom: 'Đề test đầu vào 4-in-1', loai: 'Đề test đầu vào', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Đề kiểm tra phân loại năng lực đầu năm lớp 12 phục vụ định hướng luyện thi Tốt nghiệp THPT và Đánh giá năng lực ĐHQG TP.HCM.',
+        anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_DE/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_DE',
+        link_da: '#', link_bcc: '#', link_phieu_gv: '#', link_full_gv: '#'
+    },
+
+    // ── ÔN THI TUYỂN SINH 10, ĐỀ THI & CHUYÊN ĐỀ ──
+    {
+        id: 'TS10_CHUYEN_DE_TOAN_THUC_TE',
+        ten: 'Chuyên đề 120 Bài Toán Thực Tế Ôn Thi Vào Lớp 10 (Có Lời Giải)',
+        mon: 'Toán', khoi: 'TS10', nhom: 'Chuyên đề & Đề cương', loai: 'Chuyên đề', quyen: 'HS',
+        nguoi_dang: 'Thầy Hành (PĐT)',
+        mo_ta: 'Tuyển tập 120 bài toán thực tế bám sát cấu trúc đề thi tuyển sinh 10 Sở GD&ĐT TP.HCM: hình học không gian thực tế, hàm số bậc nhất, phương trình bậc hai.',
+        drive_preview: '', drive_download: '#'
+    },
+    {
+        id: 'SO_TAY_VAN_TS10',
+        ten: 'Sổ tay Tác Phẩm Ngữ Văn Trọng Tâm Ôn Thi Tuyển Sinh Vào 10',
+        mon: 'Văn', khoi: 'TS10', nhom: 'Luyện thi Tuyển sinh 10', loai: 'Sổ tay', quyen: 'HS',
+        nguoi_dang: 'Cô Thu Thảo',
+        mo_ta: 'Hệ thống hóa toàn bộ văn bản trọng tâm lớp 9: luận điểm, nghệ thuật, sơ đồ tư duy và bộ dẫn chứng nghị luận xã hội đắt giá.',
+        drive_preview: '', drive_download: '#'
+    },
+    {
+        id: 'DE_THI_THU_TS10_D01',
+        ten: 'Đề Thi Thử Tuyển Sinh 10 Môn Toán (Lần 1 — Năm Học Mới)',
+        mon: 'Toán', khoi: 'TS10', nhom: 'Đề kiểm tra & Thi thử', loai: 'Đề thi', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THCS',
+        mo_ta: 'Đề thi thử vào lớp 10 công lập môn Toán cấu trúc 120 phút. Đầy đủ bảng ma trận kiến thức, barem điểm chi tiết và các lưu ý tránh mất điểm.',
+        drive_preview: '', drive_download: '#'
+    },
+    {
+        id: 'DE_GIUA_HK1_TOAN_9',
+        ten: 'Bộ Đề Kiểm Tra Giữa Học Kỳ 1 Môn Toán Lớp 9 (Có Đáp Án Chi Tiết)',
+        mon: 'Toán', khoi: '9', nhom: 'Đề kiểm tra & Thi thử', loai: 'Đề thi', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THCS',
+        mo_ta: 'Tuyển tập các đề kiểm tra giữa kì 1 môn Toán 9 từ các trường trọng điểm tại TP.HCM. Kèm barem điểm và hướng dẫn chi tiết từng câu hỏi.',
+        drive_preview: '', drive_download: '#'
+    },
+    {
+        id: 'CHUYEN_DE_OXYZ_12',
+        ten: 'Chuyên đề Phương Pháp Tọa Độ Oxyz & Hình Không Gian Toán 12',
+        mon: 'Toán', khoi: '12', nhom: 'Chuyên đề & Đề cương', loai: 'Chuyên đề', quyen: 'HS',
+        nguoi_dang: 'Tổ Toán THPT',
+        mo_ta: 'Phân loại các dạng bài Tọa độ điểm, véctơ, phương trình mặt phẳng, đường thẳng và mặt cầu. Tích hợp bài toán cực trị hình học Oxyz điểm 9+.',
+        drive_preview: '', drive_download: '#'
+    },
+    {
+        id: 'GA_STEM_ROBOT',
+        ten: '[GV] Kế Hoạch Bài Dạy: Dự Án Robot Lập Trình & Cảm Biến',
+        mon: 'STEM', khoi: 'DBS', nhom: 'Chuyên đề & Đề cương', loai: 'Giáo án', quyen: 'GV',
+        nguoi_dang: 'Tổ STEM & Công Nghệ',
+        mo_ta: 'Kế hoạch bài dạy chi tiết cho giáo viên đứng lớp dự án chế tạo và lập trình robot tránh vật cản. Đính kèm phiếu chấm rubric.',
+        drive_preview: '', drive_download: '#'
+    },
+
+    // ── HỆ THỐNG TIẾNG ANH (HKI & HKII: LESSON + KEY ĐÁP ÁN GV) ──
+    {
+        id: 'ENG_6_HK1_U1',
+        ten: 'Tiếng Anh 6 — HK1 — Unit 1: My New School (Lesson & Key)',
+        mon: 'Anh', khoi: '6', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 6 HK1 — Unit 1: My New School. Gồm bài học lý thuyết, từ vựng & bài tập (lesson). Thầy/Cô mở khóa PIN để tải Đáp án (Key).',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_6_HK1_U2',
+        ten: 'Tiếng Anh 6 — HK1 — Unit 2: My House (Lesson & Key)',
+        mon: 'Anh', khoi: '6', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 6 HK1 — Unit 2: My House. Bài học ngữ pháp Rooms and Houses, giới từ chỉ nơi chốn. Kèm file đáp án key cho GV.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_7_HK1_U1',
+        ten: 'Tiếng Anh 7 — HK1 — Unit 1: Hobbies (Lesson & Key)',
+        mon: 'Anh', khoi: '7', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 7 HK1 — Unit 1: Hobbies (Sở thích). Thì hiện tại đơn, động từ chỉ sự yêu thích. Bài học trong thư mục lesson, Đáp án trong thư mục key.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_8_HK1_U1',
+        ten: 'Tiếng Anh 8 — HK1 — Unit 1: Life in the Countryside (Lesson & Key)',
+        mon: 'Anh', khoi: '8', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 8 HK1 — Unit 1: Cuộc sống nông thôn. Trọng tâm tính từ và trạng từ so sánh. Kèm đáp án chi tiết cho Giáo viên.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_9_HK1_U1',
+        ten: 'Tiếng Anh 9 — HK1 — Unit 1: Local Community (Lesson & Key)',
+        mon: 'Anh', khoi: '9', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 9 HK1 chuẩn mới GDPT 2018 — Unit 1: Cộng đồng địa phương. Cụm động từ (Phrasal Verbs) và từ chỉ câu hỏi trước to-infinitive. Kèm Key đáp án GV.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_9_HK2_U7',
+        ten: 'Tiếng Anh 9 — HK2 — Unit 7: Natural Wonders of the World (Lesson & Key)',
+        mon: 'Anh', khoi: '9', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 9 HK2 — Unit 7: Kỳ quan thiên nhiên thế giới. Câu bị động và mạo từ. Thư mục lesson (Bài học) và thư mục key (Đáp án GV).',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_10_HK1_U1',
+        ten: 'Tiếng Anh 10 — HK1 — Unit 1: Family Life (Lesson & Key)',
+        mon: 'Anh', khoi: '10', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 10 HK1 — Unit 1: Cuộc sống gia đình (Global Success). Thì hiện tại đơn vs hiện tại tiếp diễn. Kèm đáp án key độc quyền Điểm 10+.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    },
+    {
+        id: 'ENG_12_HK1_U1',
+        ten: 'Tiếng Anh 12 — HK1 — Unit 1: Life Stories (Lesson & Key)',
+        mon: 'Anh', khoi: '12', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
+        nguoi_dang: 'Tổ Tiếng Anh (Cô Thúy)',
+        mo_ta: 'Học liệu Tiếng Anh 12 HK1 — Unit 1: Câu chuyện cuộc đời các danh nhân. Quá khứ đơn và quá khứ tiếp diễn. Phục vụ ôn thi Tốt nghiệp THPT & ĐGNL.',
+        drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_ENG/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_ENG',
+        link_da: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_KEY'
+    }
+];
+
+/* ---------- TRẠNG THÁI TOÀN CỤC --------------------------- */
+let allDocs = [];
+let currentFiltered = [];
+let displayedLimit = PAGE_SIZE;
+let isTeacherMode = sessionStorage.getItem('D10_TEACHER_MODE') === 'true';
+
+let filters = {
+    search: '',
+    nhom:   'all',
+    khoi:   'all',
+    mon:    'all',
+    topic:  ''
+};
+
+/* ---------- TIỆN ÍCH AN TOÀN CHUỖI ----------------------- */
+function esc(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function getDriveFileId(url) {
+    if (!url) return '';
+    const m = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    return m ? m[1] : '';
+}
+
+function getSubjectStyle(mon) {
+    const map = {
+        'Toán': { bg: '#FDEBEC', text: '#A00410', border: '#FCD3D5' },
+        'Văn':  { bg: '#FFF8DB', text: '#8A6D00', border: '#FFEAA8' },
+        'Anh':  { bg: '#E1F3FE', text: '#1F6C9F', border: '#C6E7FC' },
+        'KHTN': { bg: '#EDF3EC', text: '#346538', border: '#D4E5D2' },
+        'Lý':   { bg: '#E1F3FE', text: '#1F6C9F', border: '#C6E7FC' },
+        'Hóa':  { bg: '#EDF3EC', text: '#346538', border: '#D4E5D2' },
+        'Sinh': { bg: '#EDF3EC', text: '#346538', border: '#D4E5D2' },
+        'STEM': { bg: '#FEF3C7', text: '#B45309', border: '#FDE68A' }
+    };
+    return map[mon] || { bg: '#F1F5F9', text: '#475569', border: '#E2E8F0' };
+}
+
+function tagClass(mon) {
+    const map = {
+        'Toán':'tag-toan','Văn':'tag-van','Anh':'tag-anh','KHTN':'tag-khtn',
+        'Lý':'tag-ly','Hóa':'tag-hoa','Sinh':'tag-sinh','STEM':'tag-stem'
+    };
+    return map[mon] || 'tag-other';
+}
+
+/* ---------- OBSERVER THẺ HIỆU ỨNG ------------------------ */
+const staggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            staggerObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.05 });
+
+/* ---------- RENDER THẺ TÀI LIỆU -------------------------- */
+const documentGrid  = document.getElementById('documentGrid');
+const emptyState    = document.getElementById('emptyState');
+const countDisplay  = document.getElementById('countDisplay');
+const loadMoreWrap  = document.getElementById('loadMoreContainer');
+const loadMoreCount = document.getElementById('loadMoreCount');
+const skeletonGrid  = document.getElementById('skeletonGrid');
+
+function renderCards(data) {
+    documentGrid.innerHTML = '';
+
+    if (data.length === 0) {
+        documentGrid.classList.add('hidden');
+        loadMoreWrap.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+        countDisplay.textContent = '0';
+        document.getElementById('mobileCount').textContent = '0';
+        document.getElementById('mobileResultCount').textContent = '0';
+        return;
+    }
+
+    emptyState.classList.add('hidden');
+    emptyState.classList.remove('flex');
+    documentGrid.classList.remove('hidden');
+    countDisplay.textContent = data.length;
+    document.getElementById('mobileCount').textContent = data.length;
+    document.getElementById('mobileResultCount').textContent = data.length;
+
+    const itemsToRender = data.slice(0, displayedLimit);
+
+    itemsToRender.forEach((item, index) => {
+        const tc      = tagClass(item.mon);
+        const style   = getSubjectStyle(item.mon);
+        const driveId = getDriveFileId(item.drive_preview);
+        const isGV    = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
+
+        const coverImgUrl = item.anh_bia || (driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w800` : '');
+        let coverHtml = '';
+
+        if (coverImgUrl) {
+            coverHtml = `
+                <div class="h-36 overflow-hidden relative flex-shrink-0" style="background:${style.bg};">
+                    <img class="card-img w-full h-full object-cover"
+                         src="${coverImgUrl}"
+                         alt="${esc(item.ten)}"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                    <div class="hidden h-full w-full flex flex-col justify-between p-4 select-none" style="background:${style.bg}; border-bottom:1px solid ${style.border};">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
+                            <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute right-0 bottom-0 text-5xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
+                            <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
+                        </div>
+                    </div>
+                </div>`;
+        } else {
+            coverHtml = `
+                <div class="h-36 relative flex-shrink-0 flex flex-col justify-between p-4 select-none overflow-hidden" style="background:${style.bg}; border-bottom:1px solid ${style.border};">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
+                        <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
+                        <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
+                    </div>
+                </div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'doc-card stagger-item glass-panel rounded-2xl overflow-hidden flex flex-col relative bg-white';
+        card.style.transitionDelay = `${(index % 8) * 35}ms`;
+        
+        card.innerHTML = `
+            ${coverHtml}
+            <div class="p-4 sm:p-5 flex flex-col flex-1">
+                <!-- Tags badge -->
+                <div class="flex flex-wrap gap-1 mb-2">
+                    <span class="${tc} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">${esc(item.mon)}</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Khối ${esc(item.khoi)}</span>
+                    ${item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-medium truncate max-w-[170px]">${esc(item.nhom)}</span>` : ''}
+                    ${isGV ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : ''}
+                </div>
+
+                <!-- Tiêu đề thẻ -->
+                <h3 class="card-title text-sm sm:text-base font-bold text-slate-800 mb-1.5 line-clamp-2 hover:text-brand-red transition-colors cursor-pointer" onclick="openDocById('${item.id}')">
+                    ${esc(item.ten)}
+                </h3>
+
+                <!-- Mô tả tóm tắt -->
+                <p class="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">${esc(item.mo_ta)}</p>
+
+                <!-- Người biên soạn -->
+                <div class="mt-auto pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 mb-3">
+                    <span class="truncate flex items-center gap-1">
+                        <i class="ph-bold ph-user-circle text-slate-400 text-sm"></i>
+                        <span class="truncate">${esc(item.nguoi_dang || 'PĐT Điểm 10+')}</span>
+                    </span>
+                    <span class="text-[11px] font-semibold text-slate-400">GDPT 2018</span>
+                </div>
+
+                <!-- 2 Nút thao tác trực tiếp trên thẻ -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="openDocById('${item.id}')"
+                        class="flex items-center justify-center gap-1 py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors">
+                        <i class="ph-bold ph-eye text-sm text-slate-600"></i>
+                        <span>Xem nhanh</span>
+                    </button>
+                    ${isGV && !isTeacherMode ? `
+                        <button onclick="handleTeacherToggle()"
+                            class="flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
+                            <i class="ph-bold ph-lock-key text-xs text-amber-600"></i>
+                            <span>Mở khóa</span>
+                        </button>
+                    ` : `
+                        <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                            class="flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-sm">
+                            <i class="ph-bold ph-download-simple text-sm"></i>
+                            <span>Tải ngay</span>
+                        </a>
+                    `}
+                </div>
+            </div>`;
+
+        documentGrid.appendChild(card);
+        requestAnimationFrame(() => staggerObserver.observe(card));
+    });
+
+    if (data.length > displayedLimit) {
+        loadMoreWrap.classList.remove('hidden');
+        loadMoreCount.textContent = `+${data.length - displayedLimit}`;
+    } else {
+        loadMoreWrap.classList.add('hidden');
+    }
+}
+
+function openDocById(id) {
+    const item = allDocs.find(d => String(d.id) === String(id));
+    if (item) {
+        window.location.hash = `doc=${item.id}`;
+        openModal(item);
+    }
+}
+
+function loadMoreDocuments() {
+    displayedLimit += PAGE_SIZE;
+    renderCards(currentFiltered);
+}
+
+/* ---------- BỘ LỌC THÔNG MINH, MẠCH LẠC -------------------- */
+function applyFilters(pushUrl = true) {
+    const s = norm(filters.search);
+    const t = norm(filters.topic);
+
+    currentFiltered = allDocs.filter(d => {
+        // 0. Trạng thái hiển thị (Bật/Tắt từ Admin)
+        if (d.is_published === false || String(d.trang_thai) === '0' || d.trang_thai === 'Ẩn') return false;
+
+        // 1. Phân quyền giáo viên
+        const isDocGV = d.quyen === 'GV' || (d.ten && d.ten.includes('[GV]'));
+        if (!isTeacherMode && isDocGV) return false;
+
+        // 2. Tìm kiếm theo ô nhập (chuẩn hóa tiếng Việt không dấu)
+        const matchSearch = !s ||
+            norm(d.ten).includes(s) ||
+            norm(d.mo_ta).includes(s) ||
+            norm(d.nguoi_dang).includes(s) ||
+            norm(d.id).includes(s);
+
+        // 3. Lọc theo Chủ đề Toán (Topic - chuẩn hóa không dấu)
+        const matchTopic = !t ||
+            norm(d.ten).includes(t) ||
+            norm(d.mo_ta).includes(t);
+
+        // 4. Nhóm danh mục thông minh (sach, test, kiem-tra, ts10, chuyen-de)
+        let matchNhom = true;
+        if (filters.nhom && filters.nhom !== 'all') {
+            const nhomNorm = norm(d.nhom);
+            const loaiNorm = norm(d.loai);
+            const tenNorm  = norm(d.ten);
+            if (filters.nhom === 'sach') {
+                matchNhom = nhomNorm.includes('sach') || nhomNorm.includes('hoc tap') || nhomNorm.includes('chinh khoa') ||
+                            loaiNorm.includes('sach') || loaiNorm.includes('hoc tap') ||
+                            tenNorm.includes('tai lieu hoc tap') || tenNorm.includes('sach');
+            } else if (filters.nhom === 'test') {
+                matchNhom = nhomNorm.includes('test') || loaiNorm.includes('test') || tenNorm.includes('de test');
+            } else if (filters.nhom === 'kiem-tra') {
+                matchNhom = nhomNorm.includes('kiem tra') || nhomNorm.includes('thi') || 
+                            loaiNorm.includes('kiem tra') || loaiNorm.includes('thi') || 
+                            tenNorm.includes('de kiem tra') || tenNorm.includes('de thi');
+            } else if (filters.nhom === 'ts10') {
+                matchNhom = d.khoi === 'TS10' || nhomNorm.includes('ts10') || nhomNorm.includes('tuyen sinh 10') || tenNorm.includes('tuyen sinh 10') || tenNorm.includes('ts10');
+            } else if (filters.nhom === 'chuyen-de') {
+                matchNhom = nhomNorm.includes('chuyen de') || nhomNorm.includes('de cuong') || 
+                            loaiNorm.includes('chuyen de') || loaiNorm.includes('so tay') || loaiNorm.includes('giao an') ||
+                            tenNorm.includes('chuyen de') || tenNorm.includes('so tay');
+            } else {
+                matchNhom = d.nhom === filters.nhom;
+            }
+        }
+
+        // 5. Môn học
+        const matchMon = filters.mon === 'all' || d.mon === filters.mon;
+
+        // 6. Khối lớp
+        let matchKhoi = false;
+        if (filters.khoi === 'all') {
+            matchKhoi = true;
+        } else if (filters.khoi === '9') {
+            matchKhoi = (d.khoi === '9' || d.khoi === 'TS10');
+        } else {
+            matchKhoi = d.khoi === filters.khoi;
+        }
+
+        return matchSearch && matchTopic && matchNhom && matchMon && matchKhoi;
+    });
+
+    displayedLimit = PAGE_SIZE;
+    renderCards(currentFiltered);
+    updateActiveFilterUI();
+
+    if (pushUrl) updateUrlState();
+
+    // Tự động ghi nhận từ khóa tìm kiếm ra 0 kết quả (Content Gap Analytics)
+    if (s && s.length >= 2 && currentFiltered.length === 0) {
+        recordMissingSearch(s);
+    }
+}
+
+/* ---------- GHI NHẬN TỪ KHÓA TÌM HỤT (CONTENT GAP) ------- */
+let missingSearchTimer = null;
+function recordMissingSearch(query) {
+    clearTimeout(missingSearchTimer);
+    missingSearchTimer = setTimeout(() => {
+        try {
+            const raw = localStorage.getItem('D10_MISSING_SEARCHES');
+            let list = raw ? JSON.parse(raw) : [];
+            const existing = list.find(item => item.query.toLowerCase() === query.toLowerCase());
+            if (existing) {
+                existing.count = (existing.count || 1) + 1;
+                existing.last_time = new Date().toISOString();
+            } else {
+                list.unshift({ query: query, count: 1, last_time: new Date().toISOString(), status: 'Chưa biên soạn' });
+            }
+            localStorage.setItem('D10_MISSING_SEARCHES', JSON.stringify(list.slice(0, 50)));
+
+            if (API_URL) {
+                fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'log_missing_search', query: query })
+                }).catch(() => {});
+            }
+        } catch (e) {}
+    }, 1500);
+}
+
+/* ---------- BREADCRUMB BỘ LỌC ĐANG CHỌN ------------------- */
+function updateActiveFilterUI() {
+    const bar = document.getElementById('activeFiltersBar');
+    const container = document.getElementById('activePillsContainer');
+    const badgeMobile = document.getElementById('mobileFilterBadge');
+
+    container.innerHTML = '';
+    let activeCount = 0;
+
+    function addPill(label, onRemove) {
+        activeCount++;
+        const pill = document.createElement('div');
+        pill.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white border border-slate-300 text-slate-700 shadow-2xs';
+        pill.innerHTML = `<span>${esc(label)}</span><button class="text-slate-400 hover:text-brand-red font-bold ml-0.5">&times;</button>`;
+        pill.querySelector('button').addEventListener('click', (e) => {
+            e.stopPropagation();
+            onRemove();
+        });
+        container.appendChild(pill);
+    }
+
+    if (filters.search) {
+        addPill(`Tìm: "${filters.search}"`, () => {
+            clearSearch();
+        });
+    }
+
+    if (filters.topic) {
+        addPill(`Chủ đề: ${filters.topic}`, () => {
+            setTopicFilter('');
+        });
+    }
+
+    if (filters.khoi !== 'all') {
+        addPill(`Khối ${filters.khoi === 'TS10' ? 'Tuyển Sinh 10' : filters.khoi}`, () => {
+            filters.khoi = 'all';
+            syncAllPillStates();
+            applyFilters();
+        });
+    }
+
+    if (filters.nhom !== 'all') {
+        const labelMap = {
+            'sach': 'Sách chính khóa',
+            'test': 'Đề Test 4-in-1',
+            'kiem-tra': 'Đề thi & Kiểm tra',
+            'ts10': 'Luyện thi TS10',
+            'chuyen-de': 'Chuyên đề & Đề cương'
+        };
+        addPill(`Mục: ${labelMap[filters.nhom] || filters.nhom}`, () => {
+            filters.nhom = 'all';
+            syncAllPillStates();
+            applyFilters();
+        });
+    }
+
+    if (filters.mon !== 'all') {
+        addPill(`Môn: ${filters.mon}`, () => {
+            filters.mon = 'all';
+            syncAllPillStates();
+            applyFilters();
+        });
+    }
+
+    if (activeCount > 0) {
+        bar.classList.remove('hidden');
+        bar.classList.add('flex');
+        badgeMobile.textContent = activeCount;
+        badgeMobile.classList.remove('hidden');
+    } else {
+        bar.classList.add('hidden');
+        bar.classList.remove('flex');
+        badgeMobile.classList.add('hidden');
+    }
+}
+
+/* ---------- CHỦ ĐỀ TOÁN (TOPIC) --------------------------- */
+window.setTopicFilter = function(tag) {
+    filters.topic = tag;
+    document.querySelectorAll('.topic-pill').forEach(btn => {
+        const t = btn.getAttribute('data-tag');
+        if (t === tag) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    syncAllPillStates();
+    applyFilters();
+};
+
+/* ---------- DẢI PRESET TRUY CẬP NHANH TRÊN ĐẦU ------------ */
+window.applyQuickPreset = function(presetKey) {
+    filters = { search: '', nhom: 'all', khoi: 'all', mon: 'all', topic: '' };
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchInputMobile').value = '';
+    document.getElementById('clearSearchBtn').classList.add('hidden');
+
+    if (presetKey === 'all') {
+        // Mặc định: tất cả
+    } else if (presetKey === 'sach-toan') {
+        filters.nhom = 'sach';
+    } else if (presetKey === 'test-4in1') {
+        filters.nhom = 'test';
+    } else if (presetKey === 'ts10') {
+        filters.nhom = 'ts10';
+    } else if (presetKey === 'de-kiem-tra') {
+        filters.nhom = 'kiem-tra';
+    } else if (presetKey === 'chuyen-de') {
+        filters.nhom = 'chuyen-de';
+    }
+
+    syncAllPillStates();
+    applyFilters();
+};
+
+/* ---------- ĐỒNG BỘ TRẠNG THÁI NÚT ----------------------- */
+function syncPresetButtons() {
+    document.querySelectorAll('.quick-preset-btn').forEach(btn => btn.classList.remove('active'));
+
+    const isAll = (filters.nhom === 'all' || !filters.nhom) && 
+                  (filters.khoi === 'all' || !filters.khoi) && 
+                  (filters.mon === 'all' || !filters.mon) && 
+                  !filters.search && !filters.topic;
+
+    if (isAll) {
+        const btn = document.getElementById('preset-all');
+        if (btn) btn.classList.add('active');
+    } else if (filters.nhom === 'sach' && filters.khoi === 'all' && (filters.mon === 'all' || !filters.mon)) {
+        const btn = document.getElementById('preset-sach-toan');
+        if (btn) btn.classList.add('active');
+    } else if (filters.nhom === 'test' && filters.khoi === 'all') {
+        const btn = document.getElementById('preset-test-4in1');
+        if (btn) btn.classList.add('active');
+    } else if ((filters.nhom === 'ts10' || filters.khoi === 'TS10') && filters.nhom !== 'sach') {
+        const btn = document.getElementById('preset-ts10');
+        if (btn) btn.classList.add('active');
+    } else if (filters.nhom === 'kiem-tra' && filters.khoi === 'all') {
+        const btn = document.getElementById('preset-de-kiem-tra');
+        if (btn) btn.classList.add('active');
+    } else if (filters.nhom === 'chuyen-de' && filters.khoi === 'all') {
+        const btn = document.getElementById('preset-chuyen-de');
+        if (btn) btn.classList.add('active');
+    }
+}
+
+function syncPillState(selector, activeVal, activeBg, activeText) {
+    document.querySelectorAll(selector).forEach(btn => {
+        const val = btn.getAttribute('data-val');
+        if (val === activeVal) {
+            btn.classList.remove('bg-slate-100', 'text-slate-700', 'text-slate-600', 'bg-white');
+            btn.classList.add(activeBg, activeText, 'shadow-sm');
+        } else {
+            btn.classList.remove(activeBg, activeText, 'shadow-sm');
+            if (selector === '.filter-btn-nhom') {
+                btn.classList.add('text-slate-700', 'hover:bg-slate-100');
+            } else {
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            }
+        }
+    });
+}
+
+function syncAllPillStates() {
+    syncPillState('.filter-btn-nhom', filters.nhom, 'bg-slate-900', 'text-white');
+    syncPillState('.filter-btn-khoi', filters.khoi, 'bg-slate-900', 'text-white');
+    syncPillState('.filter-btn-mon',  filters.mon,  'bg-brand-red',   'text-white');
+    document.getElementById('currentKhoiLabel').textContent = filters.khoi === 'all' ? 'Tất cả' : `Lớp ${filters.khoi}`;
+    syncPresetButtons();
+}
+
+function bindPillEvents(selector, filterKey, activeBg, activeText) {
+    document.querySelectorAll(selector).forEach(btn => {
+        btn.addEventListener('click', function() {
+            const val = this.getAttribute('data-val');
+            filters[filterKey] = val;
+            syncAllPillStates();
+            applyFilters();
+        });
+    });
+}
+
+bindPillEvents('.filter-btn-nhom', 'nhom', 'bg-slate-900', 'text-white');
+bindPillEvents('.filter-btn-khoi', 'khoi', 'bg-slate-900', 'text-white');
+bindPillEvents('.filter-btn-mon',  'mon',  'bg-brand-red',   'text-white');
+
+/* Tìm kiếm (Debounce 250ms để tối ưu hiệu năng) */
+let searchDebounceTimer = null;
+function handleSearchInput(val) {
+    filters.search = val;
+    const clearBtn = document.getElementById('clearSearchBtn');
+    if (val) {
+        clearBtn.classList.remove('hidden');
+    } else {
+        clearBtn.classList.add('hidden');
+    }
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+        applyFilters();
+    }, 250);
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+    document.getElementById('searchInputMobile').value = e.target.value;
+    handleSearchInput(e.target.value);
+});
+document.getElementById('searchInputMobile').addEventListener('input', e => {
+    document.getElementById('searchInput').value = e.target.value;
+    handleSearchInput(e.target.value);
+});
+
+function clearSearch() {
+    clearTimeout(searchDebounceTimer);
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchInputMobile').value = '';
+    document.getElementById('clearSearchBtn').classList.add('hidden');
+    filters.search = '';
+    applyFilters();
+}
+
+/* Đặt lại tất cả */
+window.resetFilters = function() {
+    clearTimeout(searchDebounceTimer);
+    filters = { search: '', nhom: 'all', khoi: 'all', mon: 'all', topic: '' };
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchInputMobile').value = '';
+    document.getElementById('clearSearchBtn').classList.add('hidden');
+    document.querySelectorAll('.topic-pill').forEach(btn => {
+        if (btn.getAttribute('data-tag') === '') btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+    document.querySelectorAll('.quick-preset-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('preset-all').classList.add('active');
+    syncAllPillStates();
+    applyFilters();
+    showToast('Đã đặt lại bộ lọc');
+};
+
+/* Sao chép URL */
+function copyCurrentFilterUrl() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('Đã sao chép link bộ lọc!');
+    }).catch(() => {
+        showToast('Không thể sao chép URL');
+    });
+}
+
+/* URL State */
+function updateUrlState() {
+    const params = new URLSearchParams();
+    if (filters.search)         params.set('q', filters.search);
+    if (filters.topic)          params.set('topic', filters.topic);
+    if (filters.nhom !== 'all') params.set('nhom', filters.nhom);
+    if (filters.khoi !== 'all') params.set('khoi', filters.khoi);
+    if (filters.mon  !== 'all') params.set('mon', filters.mon);
+
+    const qs = params.toString();
+    const newUrl = qs ? `${window.location.pathname}?${qs}${window.location.hash}` : `${window.location.pathname}${window.location.hash}`;
+    window.history.replaceState({}, '', newUrl);
+}
+
+function parseUrlState() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('q'))     filters.search = params.get('q');
+    if (params.get('topic')) filters.topic  = params.get('topic');
+    if (params.get('nhom'))  filters.nhom   = params.get('nhom');
+    if (params.get('khoi'))  filters.khoi   = params.get('khoi');
+    if (params.get('mon'))   filters.mon    = params.get('mon');
+
+    if (filters.search) {
+        document.getElementById('searchInput').value = filters.search;
+        document.getElementById('searchInputMobile').value = filters.search;
+        document.getElementById('clearSearchBtn').classList.remove('hidden');
+    }
+    syncAllPillStates();
+}
+
+/* ---------- PHÂN QUYỀN GIÁO VIÊN (PIN 10PLUS) ------------- */
+function updateTeacherModeUI() {
+    const roleBadge     = document.getElementById('roleBadge');
+    const roleBadgeText = document.getElementById('roleBadgeText');
+    const badgeTeacher  = document.getElementById('badgeTeacherActive');
+    const btnText       = document.getElementById('btnTeacherText');
+
+    if (isTeacherMode) {
+        roleBadge.classList.remove('hidden');
+        roleBadgeText.textContent = 'Chế độ: Giáo viên Điểm 10+';
+        roleBadgeText.style.color = '#FFF8DB';
+        badgeTeacher.classList.remove('hidden');
+        btnText.textContent = 'Thoát chế độ GV';
+    } else {
+        roleBadgeText.textContent = 'Học Sinh & Phụ Huynh';
+        roleBadgeText.style.color = '';
+        badgeTeacher.classList.add('hidden');
+        btnText.textContent = 'Dành cho Thầy/Cô';
+    }
+}
+
+function handleTeacherToggle() {
+    if (isTeacherMode) {
+        isTeacherMode = false;
+        sessionStorage.removeItem('D10_TEACHER_MODE');
+        sessionStorage.removeItem('D10_TEACHER_PIN');
+        localStorage.removeItem('D10_DOCS_CACHE_V2_TEACHER');
+        updateTeacherModeUI();
+        if (API_URL) loadData(true);
+        else applyFilters();
+        showToast('Đã chuyển về cổng Học Sinh & Phụ Huynh');
+    } else {
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinError').classList.add('hidden');
+        document.getElementById('pinModal').classList.remove('hidden');
+        setTimeout(() => document.getElementById('pinInput').focus(), 100);
+    }
+}
+
+function closePinModal() {
+    document.getElementById('pinModal').classList.add('hidden');
+}
+
+async function submitPin(e) {
+    e.preventDefault();
+    const pin = document.getElementById('pinInput').value.trim();
+    const errorEl = document.getElementById('pinError');
+    errorEl.classList.add('hidden');
+
+    if (!pin) return;
+
+    if (API_URL) {
+        const btn = e.target.querySelector('button[type="submit"]');
+        const origText = btn.textContent;
+        btn.textContent = 'Đang xác thực…';
+        btn.disabled = true;
+
+        try {
+            const checkUrl = `${API_URL}${API_URL.includes('?') ? '&' : '?'}token=${encodeURIComponent(pin)}&refresh=1`;
+            const res = await fetch(checkUrl);
+            const json = await res.json();
+
+            if (json && json.isTeacher === true) {
+                isTeacherMode = true;
+                sessionStorage.setItem('D10_TEACHER_MODE', 'true');
+                sessionStorage.setItem('D10_TEACHER_PIN', pin);
+                allDocs = Array.isArray(json) ? json : (json.data || []);
+                localStorage.setItem(getCacheKey(), JSON.stringify({ data: allDocs, time: Date.now() }));
+                closePinModal();
+                updateTeacherModeUI();
+                applyFilters();
+                showToast('Đã mở khóa quyền Giáo viên thành công!');
+            } else {
+                errorEl.textContent = 'Mã PIN không chính xác, vui lòng thử lại.';
+                errorEl.classList.remove('hidden');
+            }
+        } catch (err) {
+            console.error('Lỗi xác thực PIN:', err);
+            errorEl.textContent = 'Lỗi kết nối máy chủ, vui lòng kiểm tra mạng.';
+            errorEl.classList.remove('hidden');
+        } finally {
+            btn.textContent = origText;
+            btn.disabled = false;
+        }
+    } else {
+        // Chế độ demo
+        if (pin === '10plus') {
+            isTeacherMode = true;
+            sessionStorage.setItem('D10_TEACHER_MODE', 'true');
+            sessionStorage.setItem('D10_TEACHER_PIN', pin);
+            closePinModal();
+            updateTeacherModeUI();
+            applyFilters();
+            showToast('Đã mở khóa quyền Giáo viên (Demo: 10plus)!');
+        } else {
+            errorEl.textContent = 'Mã PIN không đúng (Mã mặc định demo: 10plus)';
+            errorEl.classList.remove('hidden');
+        }
+    }
+}
+
+/* ---------- TẢI DỮ LIỆU & CACHE --------------------------- */
+const CACHE_TTL = 10 * 60 * 1000;
+
+function getCacheKey() {
+    return isTeacherMode ? 'D10_DOCS_CACHE_V2_TEACHER' : 'D10_DOCS_CACHE_V2_STUDENT';
+}
+
+async function loadData(forceRefresh = false) {
+    skeletonGrid.classList.remove('hidden');
+    documentGrid.classList.add('hidden');
+
+    const cacheKey = getCacheKey();
+
+    try {
+        if (!forceRefresh) {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (Date.now() - parsed.time < CACHE_TTL && parsed.data && parsed.data.length > 0) {
+                    allDocs = parsed.data;
+                    finishLoading();
+                    return;
+                }
+            }
+        }
+
+        if (API_URL) {
+            const storedPin = sessionStorage.getItem('D10_TEACHER_PIN') || '';
+            const fetchUrl = (isTeacherMode && storedPin)
+                ? `${API_URL}${API_URL.includes('?') ? '&' : '?'}token=${encodeURIComponent(storedPin)}`
+                : API_URL;
+            const res = await fetch(fetchUrl);
+            const json = await res.json();
+            allDocs = Array.isArray(json) ? json : (json.data || []);
+            localStorage.setItem(cacheKey, JSON.stringify({ data: allDocs, time: Date.now() }));
+        } else {
+            await new Promise(r => setTimeout(r, 200));
+            let storeData = [];
+            const localStore = localStorage.getItem('D10_DOCS_STORE');
+            if (localStore) {
+                try {
+                    storeData = JSON.parse(localStore);
+                } catch (e) {
+                    storeData = [];
+                }
+            }
+            if (!storeData || storeData.length < DEMO_DATA.length) {
+                const existingIds = new Set((storeData || []).map(d => String(d.id)));
+                const merged = [...(storeData || [])];
+                DEMO_DATA.forEach(item => {
+                    if (!existingIds.has(String(item.id))) {
+                        merged.push(item);
+                    }
+                });
+                allDocs = merged.length >= DEMO_DATA.length ? merged : DEMO_DATA;
+                localStorage.setItem('D10_DOCS_STORE', JSON.stringify(allDocs));
+            } else {
+                allDocs = storeData;
+            }
+        }
+    } catch (err) {
+        console.warn('Không tải được API, dùng dữ liệu mẫu:', err);
+        allDocs = DEMO_DATA;
+    }
+
+    finishLoading();
+}
+
+function finishLoading() {
+    skeletonGrid.classList.add('hidden');
+    parseUrlState();
+    updateTeacherModeUI();
+    applyFilters(false);
+    checkHashRoute();
+}
+
+function refreshData() {
+    const icon = document.getElementById('refreshIcon');
+    icon.classList.add('animate-spin');
+    localStorage.removeItem('D10_DOCS_CACHE_V2_STUDENT');
+    localStorage.removeItem('D10_DOCS_CACHE_V2_TEACHER');
+    loadData(true).then(() => {
+        setTimeout(() => {
+            icon.classList.remove('animate-spin');
+            showToast('Đã làm mới dữ liệu từ Drive!');
+        }, 500);
+    });
+}
+
+/* ---------- MODAL XEM TRƯỚC -------------------------------- */
+const modal     = document.getElementById('detailModal');
+const modalCont = document.getElementById('modalContainer');
+let iframeTimer = null;
+let iframeLoaded = false;
+
+window.handleDocLinkClick = function(e, url) {
+    if (!url || url === '#' || url.trim() === '') {
+        e.preventDefault();
+        showToast('Tài liệu mẫu đang được cập nhật liên kết Drive chính thức!');
+        return false;
+    }
+    return true;
+};
+
+window.openModal = function(item) {
+    const tc      = tagClass(item.mon);
+    const isDocGV = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
+
+    document.getElementById('modalGradeSubject').textContent = `Môn ${item.mon} · Khối ${item.khoi}`;
+    document.getElementById('modalDocType').textContent = item.loai || 'Tài liệu học tập';
+
+    document.getElementById('modalTags').innerHTML =
+        `<span class="${tc} px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">${esc(item.mon)}</span>` +
+        `<span class="bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Khối ${esc(item.khoi)}</span>` +
+        `<span class="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full text-[10px] font-medium">${esc(item.loai)}</span>` +
+        (item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold">${esc(item.nhom)}</span>` : '') +
+        (isDocGV ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : '');
+
+    document.getElementById('modalTitle').textContent  = item.ten;
+    document.getElementById('modalAuthor').textContent = item.nguoi_dang || 'Phòng Đào Tạo Điểm 10+';
+    document.getElementById('modalDesc').textContent   = item.mo_ta || 'Tài liệu học tập chính thức của hệ thống Điểm 10+.';
+
+    const extLink = document.getElementById('modalExternalLink');
+    extLink.href = item.drive_preview ? item.drive_preview.replace('/preview', '/view') : (item.drive_download || '#');
+    extLink.onclick = (e) => handleDocLinkClick(e, extLink.getAttribute('href'));
+
+    const actionsCont = document.getElementById('modalActionsContainer');
+    const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.includes('Đề Test Đầu Vào'));
+
+    if (isTest) {
+        if (!isTeacherMode) {
+            actionsCont.innerHTML = `
+                <div class="space-y-2.5">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-[11px] space-y-1">
+                        <div class="flex items-center justify-between text-slate-500">
+                            <span>Thời gian khảo sát: <strong class="text-slate-800 font-bold">30 phút</strong></span>
+                            <span>Chuẩn: <strong class="text-slate-700 font-semibold">GDPT 2018</strong></span>
+                        </div>
+                        <div class="text-slate-600 font-medium">Khảo sát 3 phần: Nền tảng (3đ) &middot; Hiện tại (4đ) &middot; Vận dụng (3đ)</div>
+                    </div>
+
+                    <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
+                        <i class="ph-bold ph-download-simple text-base"></i>
+                        <span>TẢI ĐỀ LÀM BÀI (PDF)</span>
+                    </a>
+
+                    <div class="text-[11px] text-slate-600 bg-amber-50/90 border border-amber-200/80 p-2.5 rounded-xl flex items-start gap-1.5">
+                        <i class="ph-bold ph-lock-key text-amber-600 text-sm mt-0.5 flex-shrink-0"></i>
+                        <span>Thầy/Cô cần <strong>Đáp án &amp; Barem chi tiết</strong> hoặc <strong>Phiếu chẩn đoán xếp lớp</strong>? Bấm nút <em>"Dành cho Thầy/Cô"</em> ở góc trên để mở khóa.</span>
+                    </div>
+                </div>`;
+        } else {
+            actionsCont.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1">
+                            <i class="ph-bold ph-chalkboard-teacher text-amber-700"></i>
+                            Bộ công cụ Sư phạm 4 Sản Phẩm
+                        </span>
+                        <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-300">Đã mở khóa</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+                        <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                            onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                            class="flex items-center justify-center gap-1 p-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-semibold transition-colors text-center" title="Tải Đề học sinh làm bài">
+                            <i class="ph-bold ph-file-text text-brand-red"></i>
+                            <span>SP2: Đề Học Sinh</span>
+                        </a>
+
+                        <a href="${esc(item.link_da || item.drive_download || '#')}" target="_blank" rel="noopener noreferrer"
+                            onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                            class="flex items-center justify-center gap-1 p-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 rounded-lg font-bold transition-colors text-center" title="Tải Đáp án & Barem">
+                            <i class="ph-bold ph-check-circle text-emerald-600"></i>
+                            <span>SP3: Đáp Án / Barem</span>
+                        </a>
+
+                        <a href="${esc(item.link_phieu_gv || item.drive_download || '#')}" target="_blank" rel="noopener noreferrer"
+                            onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                            class="flex items-center justify-center gap-1 p-2 bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 rounded-lg font-bold transition-colors text-center" title="Tải Phiếu xếp lớp">
+                            <i class="ph-bold ph-clipboard-text text-blue-600"></i>
+                            <span>SP4: Phiếu Xếp Lớp</span>
+                        </a>
+
+                        <a href="${esc(item.link_bcc || item.drive_download || '#')}" target="_blank" rel="noopener noreferrer"
+                            onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                            class="flex items-center justify-center gap-1 p-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-semibold transition-colors text-center" title="Tải Ma trận căn cứ">
+                            <i class="ph-bold ph-table text-slate-600"></i>
+                            <span>SP1: Căn Cứ Ma Trận</span>
+                        </a>
+                    </div>
+
+                    <a href="${esc(item.link_full_gv || item.drive_download || '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-redDark hover:bg-brand-red text-white py-2.5 px-3 rounded-xl font-bold transition-colors text-xs shadow-sm">
+                        <i class="ph-bold ph-folders text-base"></i>
+                        <span>Tải Trọn Bộ Giáo Viên (Full 4-in-1 ZIP)</span>
+                    </a>
+                </div>`;
+        }
+    } else {
+        const hasKey = Boolean(item.link_da && item.link_da !== '#' && item.link_da.trim() !== '');
+        let keyHtml = '';
+        if (hasKey) {
+            if (isTeacherMode) {
+                keyHtml = `
+                    <a href="${esc(item.link_da)}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white py-2.5 px-3 rounded-xl font-bold transition-colors text-xs shadow-sm">
+                        <i class="ph-bold ph-key text-base"></i>
+                        <span>TẢI ĐÁP ÁN CHI TIẾT (KEY GV)</span>
+                    </a>`;
+            } else {
+                keyHtml = `
+                    <div class="text-[11px] text-slate-600 bg-amber-50 border border-amber-200 p-2 rounded-xl flex items-center gap-1.5">
+                        <i class="ph-bold ph-lock-key text-amber-600 text-xs flex-shrink-0"></i>
+                        <span>Thầy/Cô cần <strong>Đáp án (Key)</strong> bài học này? Bấm <em>"Dành cho Thầy/Cô"</em> để mở khóa.</span>
+                    </div>`;
+            }
+        }
+
+        actionsCont.innerHTML = `
+            <div class="space-y-2">
+                <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                    onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                    class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
+                    <i class="ph-bold ph-download-simple text-base"></i>
+                    <span>TẢI TÀI LIỆU VỀ MÁY (PDF)</span>
+                </a>
+                ${keyHtml}
+                <a href="${esc(item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#')}" target="_blank" rel="noopener noreferrer"
+                    onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                    class="w-full flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 py-2 px-3 rounded-lg font-semibold text-xs transition-colors">
+                    <span>Mở trực tiếp trên Google Drive</span>
+                    <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                </a>
+            </div>`;
+    }
+
+    // TÀI LIỆU LIÊN QUAN (Lọc bảo mật: chỉ hiện tài liệu được phép xem)
+    const relatedContainer = document.getElementById('modalRelatedDocs');
+    relatedContainer.innerHTML = '';
+    const related = allDocs.filter(d => {
+        if (d.id === item.id) return false;
+        if (d.is_published === false || String(d.trang_thai) === '0' || d.trang_thai === 'Ẩn') return false;
+        const isRelDocGV = d.quyen === 'GV' || (d.ten && d.ten.includes('[GV]'));
+        if (!isTeacherMode && isRelDocGV) return false;
+        return (d.khoi === item.khoi || d.mon === item.mon);
+    }).slice(0, 3);
+    
+    if (related.length > 0) {
+        related.forEach(rel => {
+            const relItem = document.createElement('div');
+            relItem.className = 'p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-colors cursor-pointer flex items-center justify-between gap-2';
+            relItem.innerHTML = `
+                <div class="min-w-0">
+                    <p class="text-[11px] font-semibold text-slate-700 truncate leading-snug">${esc(rel.ten)}</p>
+                    <span class="text-[10px] text-slate-400">Khối ${esc(rel.khoi)} · ${esc(rel.loai)}</span>
+                </div>
+                <i class="ph-bold ph-caret-right text-xs text-slate-400 flex-shrink-0"></i>
+            `;
+            relItem.onclick = () => openModal(rel);
+            relatedContainer.appendChild(relItem);
+        });
+    } else {
+        relatedContainer.innerHTML = '<p class="text-[11px] text-slate-400">Chưa có tài liệu liên quan khác.</p>';
+    }
+
+    // Iframe xem trước
+    const iframe = document.getElementById('modalIframe');
+    const loader = document.getElementById('previewLoader');
+    iframe.classList.add('hidden');
+    loader.classList.remove('hidden');
+    iframeLoaded = false;
+
+    loader.innerHTML = `
+        <svg class="w-8 h-8 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+        <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>`;
+
+    clearTimeout(iframeTimer);
+    if (item.drive_preview) {
+        iframe.src = item.drive_preview;
+        iframeTimer = setTimeout(() => {
+            if (!iframeLoaded) {
+                loader.innerHTML = `
+                    <div class="p-6 text-center max-w-sm">
+                        <i class="ph-bold ph-warning text-amber-500 text-4xl mb-2 block"></i>
+                        <p class="font-bold text-sm text-slate-800 mb-1">Xem trước tải chậm hoặc bị chặn cookie</p>
+                        <p class="text-xs text-slate-500 mb-4">Trình duyệt của bạn có thể đang chặn iframe từ Google Drive.</p>
+                        <a href="${item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#'}" target="_blank"
+                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 shadow-sm">
+                            <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                            Mở trực tiếp trên tab mới
+                        </a>
+                    </div>`;
+            }
+        }, 8000);
+    } else {
+        loader.innerHTML = '<p class="text-xs text-slate-500">Chưa có liên kết xem trước trực tuyến cho tài liệu này.</p>';
+    }
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+        modal.style.opacity = '1';
+        modalCont.style.transform = 'scale(1)';
+    });
+};
+
+function handleIframeLoaded() {
+    iframeLoaded = true;
+    clearTimeout(iframeTimer);
+    document.getElementById('modalIframe').classList.remove('hidden');
+    document.getElementById('previewLoader').classList.add('hidden');
+}
+
+window.closeModal = function() {
+    modal.style.opacity = '0';
+    modalCont.style.transform = 'scale(0.95)';
+    clearTimeout(iframeTimer);
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        document.getElementById('modalIframe').src = '';
+        document.body.style.overflow = '';
+        if (window.location.hash.startsWith('#doc=')) {
+            history.replaceState(null, null, window.location.pathname + window.location.search);
+        }
+    }, 200);
+};
+
+window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        if (!document.getElementById('pinModal').classList.contains('hidden')) {
+            closePinModal();
+        } else if (!modal.classList.contains('hidden')) {
+            closeModal();
+        } else if (document.getElementById('bottomSheet').classList.contains('open')) {
+            closeBottomSheet();
+        }
+    }
+});
+
+function checkHashRoute() {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#doc=')) {
+        const id = decodeURIComponent(hash.replace('#doc=', ''));
+        const target = allDocs.find(d => String(d.id) === String(id));
+        if (target) {
+            // Kiểm tra trạng thái ẩn/hiện
+            if (target.is_published === false || String(target.trang_thai) === '0' || target.trang_thai === 'Ẩn') {
+                showToast('Tài liệu này hiện đang tạm ẩn!');
+                history.replaceState(null, null, window.location.pathname + window.location.search);
+                return;
+            }
+            // Kiểm tra quyền Giáo viên
+            const isDocGV = target.quyen === 'GV' || (target.ten && target.ten.includes('[GV]'));
+            if (!isTeacherMode && isDocGV) {
+                showToast('Tài liệu này yêu cầu mã PIN Giáo viên để truy cập!');
+                handleTeacherToggle();
+                return;
+            }
+            openModal(target);
+        }
+    }
+}
+window.addEventListener('hashchange', checkHashRoute);
+
+/* ---------- MOBILE BOTTOM-SHEET --------------------------- */
+function openBottomSheet() {
+    document.getElementById('bottomSheet').classList.add('open');
+    document.getElementById('bottomSheetBackdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBottomSheet() {
+    document.getElementById('bottomSheet').classList.remove('open');
+    document.getElementById('bottomSheetBackdrop').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/* ---------- TOAST ----------------------------------------- */
+let toastTimer;
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+    t.classList.add('opacity-100', 'translate-y-0');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+    }, 2400);
+}
+
+// Khởi chạy
+loadData();
+</script>
+</body>
+</html>
