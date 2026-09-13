@@ -841,9 +841,28 @@ function filterAdminDocs() {
     const s = norm(document.getElementById('adminSearchInput').value);
     const khoi = document.getElementById('filterAdminKhoi').value;
     const status = document.getElementById('filterAdminStatus').value;
+    const searchTokens = s ? s.split(' ').filter(Boolean) : [];
 
     filteredList = docsList.filter(d => {
-        const matchSearch = !s || norm(d.ten).includes(s) || norm(d.id).includes(s) || norm(d.nguoi_dang).includes(s);
+        let matchSearch = true;
+        if (searchTokens.length > 0) {
+            const rawSearchText = [d.ten, d.mon, d.khoi, d.nhom, d.loai, d.mo_ta, d.nguoi_dang, d.id].join(' ');
+            const dNorm = norm(rawSearchText);
+            const dWords = dNorm.split(' ').filter(Boolean);
+            const wordSet = new Set(dWords);
+            for (let i = 0; i < dWords.length; i++) {
+                const w = dWords[i];
+                if (/^0[1-9]$/.test(w)) wordSet.add(w.slice(1));
+                else if (/^[1-9]$/.test(w)) wordSet.add('0' + w);
+            }
+            matchSearch = searchTokens.every(token => {
+                if (wordSet.has(token)) return true;
+                for (const w of wordSet) {
+                    if (w.includes(token)) return true;
+                }
+                return false;
+            });
+        }
         const matchKhoi = (khoi === 'all') || (String(d.khoi) === khoi);
         const isPub = (d.is_published !== false && d.trang_thai !== '0' && d.trang_thai !== 'Ẩn');
         const matchStatus = (status === 'all') || (status === 'active' && isPub) || (status === 'hidden' && !isPub);

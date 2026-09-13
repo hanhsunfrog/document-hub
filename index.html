@@ -168,23 +168,35 @@
 
 <!-- ── Header ─────────────────────────────────────── -->
 <header class="text-white sticky top-0 z-40 shadow-md" style="background:#B00510;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 sm:gap-4">
         <!-- Logo & Title -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 flex-shrink-0">
             <a href="index.html" class="flex items-center gap-2 group" title="Hệ Thống Điểm 10+">
                 <div class="bg-white px-2.5 py-1 rounded-xl shadow-xs flex items-center h-10 border border-white/20 transition-transform group-hover:scale-[1.02]">
                     <img src="logo.png" alt="Logo Điểm 10+ - Vững Kiến Thức, Chắc Tư Duy" class="h-8 w-auto object-contain">
                 </div>
             </a>
-            <div class="h-5 w-px bg-white/30 hidden sm:block"></div>
-            <div class="hidden sm:block">
-                <h1 class="text-sm font-semibold text-red-50 leading-tight">Cổng Học Liệu &amp; Đề Thi Chuẩn</h1>
+            <div class="h-5 w-px bg-white/30 hidden xl:block"></div>
+            <div class="hidden xl:block">
+                <h1 class="text-sm font-semibold text-red-50 leading-tight">Cổng Học Liệu &amp; Đề Thi</h1>
                 <p class="text-[11px] text-red-200 leading-none">Hệ thống 7 cơ sở &middot; GDPT 2018</p>
             </div>
         </div>
 
+        <!-- Ô Tìm kiếm thường trực trên Header (Desktop & Tablet) -->
+        <div class="flex-1 max-w-md mx-2 hidden sm:block">
+            <div class="relative">
+                <input type="text" id="headerSearchInput" placeholder="Tìm kiếm nhanh đề thi, môn, bài (VD: đề test toán 7, tháng 9...)"
+                    class="w-full pl-9 pr-8 py-2 bg-black/20 hover:bg-black/25 focus:bg-white text-white focus:text-slate-900 placeholder:text-red-200 focus:placeholder:text-slate-400 rounded-xl text-xs font-medium border border-white/20 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all shadow-inner">
+                <i class="ph-bold ph-magnifying-glass text-red-200 text-sm absolute left-3 top-2.5 pointer-events-none"></i>
+                <button id="headerClearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600">
+                    <i class="ph-bold ph-x text-xs"></i>
+                </button>
+            </div>
+        </div>
+
         <!-- Right Controls -->
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <!-- Mode indicator -->
             <div id="roleBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-800/80 text-red-100 border border-red-400/40">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 animate-pulse"></span>
@@ -207,19 +219,25 @@
     </div>
 </header>
 
-<!-- Mobile Filter Bar Sticky -->
-<div class="lg:hidden bg-white border-b border-slate-200 px-4 py-2.5 sticky top-[57px] z-30 flex items-center justify-between shadow-sm">
-    <button onclick="openBottomSheet()" class="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors border border-slate-200">
-        <i class="ph-bold ph-funnel text-brand-red text-sm"></i>
-        <span>Bộ lọc &amp; Khối lớp</span>
-        <span id="mobileFilterBadge" class="hidden ml-1 px-1.5 py-0.2 text-[10px] bg-brand-red text-white rounded-full font-bold">0</span>
-    </button>
-    <div class="flex items-center gap-2">
-        <span class="text-xs text-slate-500"><strong id="mobileCount" class="text-brand-red font-bold">0</strong> tài liệu</span>
-        <button onclick="resetFilters()" class="text-[11px] font-semibold text-slate-500 hover:text-brand-red flex items-center gap-1">
-            <i class="ph-bold ph-arrow-counter-clockwise"></i>
+<!-- Mobile Filter & Search Bar Sticky -->
+<div class="lg:hidden bg-white border-b border-slate-200 px-3 py-2 sticky top-[57px] z-30 flex items-center gap-2 shadow-sm">
+    <!-- Search Bar ngay trên mobile thường trực -->
+    <div class="relative flex-1">
+        <input type="text" id="mobileHeaderSearchInput" placeholder="Tìm kiếm đề, môn, bài..."
+            class="w-full pl-8 pr-7 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-red/20 focus:border-brand-red text-slate-800 transition-all">
+        <i class="ph-bold ph-magnifying-glass text-slate-400 text-xs absolute left-2.5 top-2.5"></i>
+        <button id="mobileHeaderClearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2 top-2 text-slate-400 hover:text-slate-600">
+            <i class="ph-bold ph-x text-xs"></i>
         </button>
     </div>
+    <button onclick="openBottomSheet()" class="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg transition-colors border border-slate-200 flex-shrink-0">
+        <i class="ph-bold ph-funnel text-brand-red text-xs"></i>
+        <span>Lọc</span>
+        <span id="mobileFilterBadge" class="hidden ml-0.5 px-1.5 py-0.2 text-[10px] bg-brand-red text-white rounded-full font-bold">0</span>
+    </button>
+    <button onclick="resetFilters()" title="Đặt lại bộ lọc" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-brand-red border border-slate-200 flex-shrink-0">
+        <i class="ph-bold ph-arrow-counter-clockwise text-xs"></i>
+    </button>
 </div>
 
 <!-- ── Main Layout ──────────────────────────────────── -->
@@ -430,7 +448,19 @@
                 </p>
             </div>
 
-            <div class="flex items-center gap-2 self-start sm:self-auto">
+            <div class="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+                <!-- Dropdown Sắp Xếp Nhanh -->
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg shadow-sm">
+                    <i class="ph-bold ph-arrows-down-up text-brand-red text-sm"></i>
+                    <select id="sortSelect" onchange="handleSortChange(this.value)" class="bg-transparent border-0 text-slate-700 font-bold focus:outline-none cursor-pointer pr-1 text-xs" title="Sắp xếp danh sách tài liệu">
+                        <option value="default">Sắp xếp: Mặc định</option>
+                        <option value="name_asc">Tên tài liệu A → Z</option>
+                        <option value="name_desc">Tên tài liệu Z → A</option>
+                        <option value="khoi_asc">Khối lớp 6 → 12</option>
+                        <option value="khoi_desc">Khối lớp 12 → 6</option>
+                    </select>
+                </div>
+
                 <button onclick="copyCurrentFilterUrl()"
                     class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 px-3 py-1.5 rounded-lg transition-colors shadow-sm"
                     title="Sao chép link bộ lọc hiện tại để gửi Zalo cho phụ huynh / giáo viên">
@@ -494,6 +524,19 @@
                 Đặt lại toàn bộ bộ lọc
             </button>
         </div>
+
+        <!-- API Error State (Khi API Google Drive gặp sự cố mạng) -->
+        <div id="apiErrorState" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-3 border border-red-100">
+                <i class="ph-bold ph-wifi-slash text-brand-red text-3xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-brand-textMain">Không thể kết nối đến máy chủ Google Drive</h3>
+            <p class="text-xs text-brand-textSub mt-1 max-w-sm">Có thể do kết nối mạng không ổn định hoặc giới hạn tạm thời từ Google Apps Script.</p>
+            <button onclick="refreshData()" class="mt-4 px-4 py-2.5 bg-brand-red hover:bg-brand-redDark text-white text-xs font-bold rounded-xl transition-colors shadow-sm inline-flex items-center gap-1.5">
+                <i class="ph-bold ph-arrows-clockwise text-sm"></i>
+                <span>Thử kết nối lại</span>
+            </button>
+        </div>
     </div>
 </main>
 
@@ -513,22 +556,36 @@
 <!-- ══════════════════════════════════════════════════
      MODAL CHI TIẾT & XEM TRƯỚC (ToanMath Standard)
      ══════════════════════════════════════════════════ -->
-<div id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="fixed inset-0 z-50 hidden opacity-0">
+<div id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="fixed inset-0 z-50 hidden opacity-0 flex items-center justify-center p-3 sm:p-5 md:p-6 lg:p-8">
     <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeModal()"></div>
-    <div id="modalContainer" class="absolute inset-2 sm:inset-5 md:inset-8 xl:inset-x-24 xl:inset-y-6 bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden scale-95 transition-transform">
+    <div id="modalContainer" class="relative w-full max-w-5xl xl:max-w-6xl h-full max-h-[92vh] bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden scale-95 transition-all duration-200 z-10">
         
-        <!-- Nút Đóng Modal -->
+        <!-- Nút Đóng Modal: Đặt ở góc trên bên phải trang trọng, rõ ràng -->
         <button onclick="closeModal()" title="Đóng (Phím Esc)" aria-label="Đóng cửa sổ xem trước"
-            class="absolute top-3 right-3 md:top-3 md:left-3 md:right-auto z-30 w-8 h-8 flex items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900 text-white transition-colors backdrop-blur-sm shadow-md">
+            class="absolute top-3 right-3 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900 text-white transition-colors backdrop-blur-sm shadow-md cursor-pointer">
             <i class="ph-bold ph-x text-sm"></i>
         </button>
 
+        <!-- Mobile Tab Switcher (Chỉ hiển thị trên điện thoại) -->
+        <div class="md:hidden flex border-b border-slate-200 bg-slate-100/90 text-xs font-bold flex-shrink-0 z-20">
+            <button id="modalTabInfoBtn" onclick="switchModalMobileTab('info')" 
+                class="flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-brand-red border-b-2 border-brand-red bg-white transition-colors">
+                <i class="ph-bold ph-info text-sm"></i>
+                <span>Thông tin &amp; Tải về</span>
+            </button>
+            <button id="modalTabPreviewBtn" onclick="switchModalMobileTab('preview')" 
+                class="flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors">
+                <i class="ph-bold ph-file-pdf text-sm"></i>
+                <span>Xem trước PDF</span>
+            </button>
+        </div>
+
         <!-- CỘT TRÁI: THÔNG TIN & NÚT TẢI -->
-        <div class="w-full md:w-80 xl:w-96 flex flex-col border-b md:border-b-0 md:border-r border-brand-border bg-white overflow-y-auto">
+        <div id="modalColInfo" class="w-full md:w-80 xl:w-96 flex flex-col border-b md:border-b-0 md:border-r border-brand-border bg-white overflow-y-auto">
             <!-- Header Bìa nhỏ -->
-            <div id="modalCoverWrap" class="w-full h-32 bg-slate-900 relative flex items-center justify-center overflow-hidden flex-shrink-0">
-                <div id="modalCover" class="absolute inset-0 bg-cover bg-center"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div id="modalCoverWrap" class="w-full h-36 bg-slate-900 relative flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div id="modalCover" class="absolute inset-0 bg-cover bg-top"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
                 <div class="absolute bottom-2.5 left-4 right-4 text-white text-[11px] flex items-center justify-between z-10">
                     <span id="modalGradeSubject" class="font-bold">Môn Toán &middot; Khối 9</span>
                     <span id="modalDocType" class="text-red-300 font-semibold">Tài liệu chuẩn</span>
@@ -549,13 +606,45 @@
                 </div>
 
                 <!-- Mô tả nội dung -->
-                <div class="mb-4">
+                <div class="mb-3">
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mô tả sư phạm</p>
                     <p id="modalDesc" class="text-xs text-slate-600 leading-relaxed"></p>
                 </div>
 
+                <!-- HỘP MỤC LỤC TƯƠNG TÁC (Tự động xuất hiện khi tài liệu có danh sách bài) -->
+                <div id="modalTocContainer" class="hidden mb-4 border border-slate-200 rounded-xl overflow-hidden bg-slate-50/80 shadow-2xs">
+                    <div class="px-3 py-2 bg-slate-100 border-b border-slate-200 flex items-center justify-between text-xs font-bold text-slate-700">
+                        <span class="flex items-center gap-1.5">
+                            <i class="ph-bold ph-list-bullets text-brand-red text-sm"></i>
+                            <span>Mục lục bài học</span>
+                        </span>
+                        <span id="modalTocCount" class="text-[10px] bg-white text-slate-500 px-2 py-0.5 rounded-full border border-slate-200">0 bài</span>
+                    </div>
+                    <div id="modalTocList" class="p-1.5 space-y-1 max-h-52 overflow-y-auto scrollbar-sidebar text-xs">
+                        <!-- Render các bài học -->
+                    </div>
+                </div>
+
                 <!-- KHU VỰC NÚT TẢI & THAO TÁC (Render động theo phân quyền) -->
-                <div id="modalActionsContainer" class="pt-3 border-t border-slate-100 mb-4"></div>
+                <div id="modalActionsContainer" class="pt-3 border-t border-slate-100 mb-3"></div>
+
+                <!-- NÚT CHIA SẺ NHANH ZALO & LINK GỬI HỌC SINH -->
+                <div class="mb-4 pt-1">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="shareCurrentModalDoc('zalo')"
+                            class="flex items-center justify-center gap-1.5 py-2 px-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl font-bold text-xs transition-colors shadow-2xs"
+                            title="Chia sẻ link tài liệu này vào nhóm Zalo lớp/phụ huynh">
+                            <i class="ph-bold ph-share-network text-sm"></i>
+                            <span>Gửi qua Zalo</span>
+                        </button>
+                        <button onclick="shareCurrentModalDoc('copy')"
+                            class="flex items-center justify-center gap-1.5 py-2 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl font-bold text-xs transition-colors shadow-2xs"
+                            title="Sao chép link gửi cho học sinh">
+                            <i class="ph-bold ph-copy text-sm"></i>
+                            <span>Sao chép link</span>
+                        </button>
+                    </div>
+                </div>
 
                 <!-- TÀI LIỆU LIÊN QUAN (ToanMath Style) -->
                 <div class="mt-auto pt-3 border-t border-slate-100">
@@ -571,8 +660,8 @@
         </div>
 
         <!-- CỘT PHẢI: KHUNG XEM TRƯỚC GOOGLE DRIVE -->
-        <div class="flex-1 bg-slate-100 relative min-h-64 md:min-h-0 flex flex-col">
-            <div class="bg-white px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs">
+        <div id="modalColPreview" class="flex-1 bg-slate-100 relative min-h-64 md:min-h-0 hidden md:flex flex-col">
+            <div class="bg-white px-4 py-2.5 border-b border-slate-200 flex items-center justify-between text-xs pr-14">
                 <span class="font-semibold text-slate-700 flex items-center gap-1.5">
                     <i class="ph-bold ph-eye text-brand-red"></i>
                     <span>Bản xem trước tài liệu</span>
@@ -782,7 +871,22 @@ const DEMO_DATA = [
         ten: 'Tài liệu Học tập Toán 7 — Học kỳ 1 (Hệ Thống Điểm 10+)',
         mon: 'Toán', khoi: '7', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
         nguoi_dang: 'Thầy Hành (PĐT)',
-        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 7 (Học kỳ 1). Số hữu tỉ, Số thực, Góc và đường thẳng song song, Tam giác bằng nhau chuẩn GDPT 2018.',
+        mo_ta: `Bộ sách tài liệu học tập chính khóa môn Toán Khối 7 (Học kỳ 1) chuẩn GDPT 2018 của Điểm 10+.
+
+Chương 1: Số hữu tỉ
+- Bài 1: Tập hợp các số hữu tỉ [p.5]
+- Bài 2: Các phép tính với số hữu tỉ [p.12]
+- Bài 3: Lũy thừa của một số hữu tỉ [p.19]
+- Bài 4: Quy tắc dấu ngoặc và chuyển vế [p.26]
+- Ôn tập & Bài tập cuối Chương 1 [p.32]
+Chương 2: Số thực
+- Bài 1: Căn bậc hai số học [p.38]
+- Bài 2: Số vô tỉ. Tập hợp các số thực [p.44]
+- Bài 3: Giá trị tuyệt đối của một số thực [p.50]
+Chương 3: Góc và đường thẳng song song
+- Bài 1: Các góc ở vị trí đặc biệt [p.58]
+- Bài 2: Tia phân giác của một góc [p.65]
+- Bài 3: Hai đường thẳng song song [p.71]`,
         anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
     },
     {
@@ -814,7 +918,20 @@ const DEMO_DATA = [
         ten: 'Tài liệu Học tập Toán 9 — Học kỳ 1 (Phiên Bản Nâng Cấp 2026)',
         mon: 'Toán', khoi: '9', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
         nguoi_dang: 'Thầy Hành (PĐT)',
-        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 9 (Học kỳ 1) bám sát chương trình GDPT mới và định dạng đề thi tuyển sinh vào lớp 10 TP.HCM.',
+        mo_ta: `Bộ sách tài liệu học tập chính khóa môn Toán Khối 9 (Học kỳ 1) bám sát chương trình GDPT mới và định dạng đề thi tuyển sinh vào lớp 10 TP.HCM.
+
+Chương 1: Phương trình và hệ hai phương trình bậc nhất hai ẩn
+- Bài 1: Khái niệm phương trình bậc nhất hai ẩn [p.6]
+- Bài 2: Hệ hai phương trình bậc nhất hai ẩn [p.14]
+- Bài 3: Giải hệ phương trình bằng phương pháp thế & cộng đại số [p.22]
+- Bài 4: Giải bài toán bằng cách lập hệ phương trình [p.31]
+Chương 2: Phương trình và bất phương trình bậc nhất một ẩn
+- Bài 1: Bất đẳng thức và tính chất [p.42]
+- Bài 2: Bất phương trình bậc nhất một ẩn [p.50]
+Chương 3: Căn bậc hai và căn thức bậc hai
+- Bài 1: Căn bậc hai và căn thức bậc hai [p.60]
+- Bài 2: Khai căn và các phép biến đổi căn thức [p.68]
+- Bài 3: Rút gọn biểu thức chứa căn thức bậc hai [p.77]`,
         anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
     },
     {
@@ -838,7 +955,18 @@ const DEMO_DATA = [
         ten: 'Tài liệu Học tập Toán 10 — Học kỳ 1 (Chương Trình Mới GDPT 2018)',
         mon: 'Toán', khoi: '10', nhom: 'Sách chính khóa Điểm 10+', loai: 'Tài liệu học tập', quyen: 'HS',
         nguoi_dang: 'Tổ Toán THPT',
-        mo_ta: 'Bộ sách tài liệu học tập chính khóa môn Toán Khối 10 (Học kỳ 1) — Mệnh đề & Tập hợp, Bất phương trình bậc nhất hai ẩn, Hệ thức lượng và Véctơ.',
+        mo_ta: `Bộ sách tài liệu học tập chính khóa môn Toán Khối 10 (Học kỳ 1) — Mệnh đề & Tập hợp, Bất phương trình bậc nhất hai ẩn, Hệ thức lượng và Véctơ.
+
+Chương 1: Mệnh đề và tập hợp
+- Bài 1: Mệnh đề toán học [p.5]
+- Bài 2: Tập hợp và các phép toán trên tập hợp [p.12]
+Chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn
+- Bài 1: Bất phương trình bậc nhất hai ẩn [p.21]
+- Bài 2: Hệ bất phương trình bậc nhất hai ẩn [p.28]
+Chương 3: Hệ thức lượng trong tam giác
+- Bài 1: Giá trị lượng giác của một góc từ 0 đến 180 độ [p.36]
+- Bài 2: Định lí côsin và định lí sin [p.43]
+- Bài 3: Giải tam giác và ứng dụng thực tế [p.52]`,
         anh_bia: '', drive_preview: 'https://drive.google.com/file/d/1Xy_SAMPLE_BOOK/preview', drive_download: 'https://drive.google.com/uc?export=download&id=1Xy_SAMPLE_BOOK'
     },
     {
@@ -1138,6 +1266,7 @@ const staggerObserver = new IntersectionObserver((entries) => {
 /* ---------- RENDER THẺ TÀI LIỆU -------------------------- */
 const documentGrid  = document.getElementById('documentGrid');
 const emptyState    = document.getElementById('emptyState');
+const apiErrorState = document.getElementById('apiErrorState');
 const countDisplay  = document.getElementById('countDisplay');
 const loadMoreWrap  = document.getElementById('loadMoreContainer');
 const loadMoreCount = document.getElementById('loadMoreCount');
@@ -1145,6 +1274,10 @@ const skeletonGrid  = document.getElementById('skeletonGrid');
 
 function renderCards(data) {
     documentGrid.innerHTML = '';
+    if (apiErrorState) {
+        apiErrorState.classList.add('hidden');
+        apiErrorState.classList.remove('flex');
+    }
 
     if (data.length === 0) {
         documentGrid.classList.add('hidden');
@@ -1172,38 +1305,85 @@ function renderCards(data) {
         const driveId = getDriveFileId(item.drive_preview);
         const isGV    = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
 
-        const coverImgUrl = item.anh_bia || (driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w800` : '');
-        let coverHtml = '';
+        const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.toLowerCase().includes('đề test')) || (item.nhom && item.nhom.toLowerCase().includes('test'));
+        const hasExplicitCover = Boolean(item.anh_bia && item.anh_bia.trim() !== '');
 
-        if (coverImgUrl) {
+        let coverHtml = '';
+        if (hasExplicitCover) {
+            // 1. CÓ ẢNH BÌA THIẾT KẾ RIÊNG
             coverHtml = `
-                <div class="h-36 overflow-hidden relative flex-shrink-0" style="background:${style.bg};">
-                    <img class="card-img w-full h-full object-cover"
-                         src="${coverImgUrl}"
+                <div class="h-44 sm:h-48 overflow-hidden relative flex-shrink-0 flex items-center justify-center border-b border-slate-100 bg-slate-50">
+                    <img class="card-img w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                         src="${esc(item.anh_bia)}"
                          alt="${esc(item.ten)}"
                          loading="lazy"
                          onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                    <div class="hidden h-full w-full flex flex-col justify-between p-4 select-none" style="background:${style.bg}; border-bottom:1px solid ${style.border};">
+                    <div class="hidden h-full w-full flex flex-col justify-between p-4 select-none" style="background:${style.bg};">
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
                             <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
                         </div>
                         <div class="relative">
-                            <div class="absolute right-0 bottom-0 text-5xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
+                            <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
                             <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
                         </div>
                     </div>
                 </div>`;
-        } else {
+        } else if (isTest) {
+            // 2. THẺ CHỮ SƯ PHẠM (Typography Card) CHO NHÓM ĐỀ THI & ĐỀ TEST — TẢI SIÊU TỐC, RÕ RÀNG
+            const mDe = item.ten.match(/(?:ĐỀ|DE)\s*0?([1-9]|1[0-9])/i);
+            const deNumber = mDe ? `ĐỀ ${mDe[1].padStart(2, '0')}` : 'ĐỀ TEST';
+            const mThang = item.ten.match(/(?:Tháng|Thang|Đợt|Dot)\s*0?([1-9]|1[0-2]|Hè|He)/i);
+            const thangText = mThang ? `Tháng ${mThang[1].padStart(2, '0')}` : 'Khảo sát';
+
             coverHtml = `
-                <div class="h-36 relative flex-shrink-0 flex flex-col justify-between p-4 select-none overflow-hidden" style="background:${style.bg}; border-bottom:1px solid ${style.border};">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
-                        <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
+                <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
+                     style="background: linear-gradient(145deg, #FFFFFF 0%, ${style.bg} 100%);">
+                    <div class="flex items-center justify-between z-10">
+                        <span class="inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-lg shadow-2xs" 
+                              style="background:${style.text}; color:#FFFFFF;">
+                            <i class="ph-bold ph-file-text text-xs"></i>
+                            <span>${deNumber}</span>
+                        </span>
+                        <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider bg-white/90 backdrop-blur-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs">
+                            Khối ${esc(item.khoi)}
+                        </span>
                     </div>
-                    <div class="relative">
+
+                    <div class="z-10 my-auto">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${thangText} · GDPT 2018</p>
+                        <h4 class="text-sm font-bold text-slate-800 line-clamp-2 leading-snug" style="font-family:'Newsreader',Georgia,serif;">
+                            ${esc(item.ten)}
+                        </h4>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 z-10 text-[10px] font-semibold text-slate-600">
+                        <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">⏱️ 30 Phút</span>
+                        <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">🎯 Đánh giá</span>
+                        <span class="px-2 py-0.5 rounded bg-red-50 text-brand-red border border-red-200 font-bold ml-auto">Bộ 4-in-1</span>
+                    </div>
+
+                    <div class="absolute right-1 bottom-0 text-7xl font-black pointer-events-none select-none" 
+                         style="color:${style.text}; opacity:.06; font-family:'Newsreader',Georgia,serif; line-height:1">
+                        ${esc(item.khoi)}
+                    </div>
+                </div>`;
+        } else {
+            // 3. SÁCH / TÀI LIỆU HỌC TẬP THÔNG THƯỜNG CHƯA CÓ ẢNH BÌA
+            coverHtml = `
+                <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
+                     style="background:${style.bg}; border-color:${style.border};">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
+                        <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.85">${esc(item.mon)} · Khối ${esc(item.khoi)}</span>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-sm sm:text-base font-bold line-clamp-2 leading-snug text-slate-900 mb-1" style="font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
+                        <p class="text-[11px] text-slate-600 font-medium">${esc(item.nguoi_dang || 'Phòng Đào Tạo')}</p>
+                    </div>
+                    <div class="relative flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hệ thống Điểm 10+</span>
                         <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
-                        <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
                     </div>
                 </div>`;
         }
@@ -1240,26 +1420,31 @@ function renderCards(data) {
                     <span class="text-[11px] font-semibold text-slate-400">GDPT 2018</span>
                 </div>
 
-                <!-- 2 Nút thao tác trực tiếp trên thẻ -->
-                <div class="grid grid-cols-2 gap-2">
+                <!-- Các nút thao tác trực tiếp trên thẻ -->
+                <div class="flex items-center gap-1.5">
                     <button onclick="openDocById('${item.id}')"
-                        class="flex items-center justify-center gap-1 py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors">
+                        class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors">
                         <i class="ph-bold ph-eye text-sm text-slate-600"></i>
                         <span>Xem nhanh</span>
                     </button>
                     ${isGV && !isTeacherMode ? `
                         <button onclick="handleTeacherToggle()"
-                            class="flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
+                            class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
                             <i class="ph-bold ph-lock-key text-xs text-amber-600"></i>
                             <span>Mở khóa</span>
                         </button>
                     ` : `
                         <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-sm">
+                            class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-sm">
                             <i class="ph-bold ph-download-simple text-sm"></i>
                             <span>Tải ngay</span>
                         </a>
                     `}
+                    <button onclick="shareDocCard(event, '${item.id}')"
+                        class="p-2 bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-blue-600 border border-slate-200 rounded-lg transition-colors flex-shrink-0"
+                        title="Chia sẻ link Zalo / Copy link gửi học sinh">
+                        <i class="ph-bold ph-share-network text-sm"></i>
+                    </button>
                 </div>
             </div>`;
 
@@ -1289,9 +1474,16 @@ function loadMoreDocuments() {
 }
 
 /* ---------- BỘ LỌC THÔNG MINH, MẠCH LẠC -------------------- */
+let currentSort = 'default';
+window.handleSortChange = function(val) {
+    currentSort = val;
+    applyFilters(false);
+};
+
 function applyFilters(pushUrl = true) {
     const s = norm(filters.search);
     const t = norm(filters.topic);
+    const searchTokens = s ? s.split(' ').filter(Boolean) : [];
 
     currentFiltered = allDocs.filter(d => {
         // 0. Trạng thái hiển thị (Bật/Tắt từ Admin)
@@ -1301,12 +1493,26 @@ function applyFilters(pushUrl = true) {
         const isDocGV = d.quyen === 'GV' || (d.ten && d.ten.includes('[GV]'));
         if (!isTeacherMode && isDocGV) return false;
 
-        // 2. Tìm kiếm theo ô nhập (chuẩn hóa tiếng Việt không dấu)
-        const matchSearch = !s ||
-            norm(d.ten).includes(s) ||
-            norm(d.mo_ta).includes(s) ||
-            norm(d.nguoi_dang).includes(s) ||
-            norm(d.id).includes(s);
+        // 2. Tìm kiếm theo ô nhập (Tokenized đa từ + nhận diện số 01..09 <-> 1..9)
+        let matchSearch = true;
+        if (searchTokens.length > 0) {
+            const rawSearchText = [d.ten, d.mon, d.khoi, d.nhom, d.loai, d.mo_ta, d.nguoi_dang, d.id].join(' ');
+            const dNorm = norm(rawSearchText);
+            const dWords = dNorm.split(' ').filter(Boolean);
+            const wordSet = new Set(dWords);
+            for (let i = 0; i < dWords.length; i++) {
+                const w = dWords[i];
+                if (/^0[1-9]$/.test(w)) wordSet.add(w.slice(1));
+                else if (/^[1-9]$/.test(w)) wordSet.add('0' + w);
+            }
+            matchSearch = searchTokens.every(token => {
+                if (wordSet.has(token)) return true;
+                for (const w of wordSet) {
+                    if (w.includes(token)) return true;
+                }
+                return false;
+            });
+        }
 
         // 3. Lọc theo Chủ đề Toán (Topic - chuẩn hóa không dấu)
         const matchTopic = !t ||
@@ -1355,6 +1561,17 @@ function applyFilters(pushUrl = true) {
 
         return matchSearch && matchTopic && matchNhom && matchMon && matchKhoi;
     });
+
+    // 7. Sắp xếp danh sách tài liệu
+    if (currentSort === 'name_asc') {
+        currentFiltered.sort((a, b) => (a.ten || '').localeCompare(b.ten || '', 'vi'));
+    } else if (currentSort === 'name_desc') {
+        currentFiltered.sort((a, b) => (b.ten || '').localeCompare(a.ten || '', 'vi'));
+    } else if (currentSort === 'khoi_asc') {
+        currentFiltered.sort((a, b) => (parseInt(a.khoi, 10) || 99) - (parseInt(b.khoi, 10) || 99));
+    } else if (currentSort === 'khoi_desc') {
+        currentFiltered.sort((a, b) => (parseInt(b.khoi, 10) || 0) - (parseInt(a.khoi, 10) || 0));
+    }
 
     displayedLimit = PAGE_SIZE;
     renderCards(currentFiltered);
@@ -1488,12 +1705,162 @@ window.setTopicFilter = function(tag) {
     applyFilters();
 };
 
+/* ---------- TÍNH TOÁN & CẬP NHẬT SỐ LƯỢNG BỘ LỌC (BADGES & ZERO DIMMING) -- */
+function countForNhom(nhomVal, docs) {
+    if (nhomVal === 'all') return docs.length;
+    return docs.filter(d => {
+        const nhomNorm = norm(d.nhom);
+        const loaiNorm = norm(d.loai);
+        const tenNorm  = norm(d.ten);
+        if (nhomVal === 'sach') {
+            return nhomNorm.includes('sach') || nhomNorm.includes('hoc tap') || nhomNorm.includes('chinh khoa') ||
+                   loaiNorm.includes('sach') || loaiNorm.includes('hoc tap') ||
+                   tenNorm.includes('tai lieu hoc tap') || tenNorm.includes('sach');
+        } else if (nhomVal === 'test') {
+            return nhomNorm.includes('test') || loaiNorm.includes('test') || tenNorm.includes('de test');
+        } else if (nhomVal === 'kiem-tra') {
+            return nhomNorm.includes('kiem tra') || nhomNorm.includes('thi') || 
+                   loaiNorm.includes('kiem tra') || loaiNorm.includes('thi') || 
+                   tenNorm.includes('de kiem tra') || tenNorm.includes('de thi');
+        } else if (nhomVal === 'ts10') {
+            return d.khoi === 'TS10' || nhomNorm.includes('ts10') || nhomNorm.includes('tuyen sinh 10') || tenNorm.includes('tuyen sinh 10') || tenNorm.includes('ts10');
+        } else if (nhomVal === 'chuyen-de') {
+            return nhomNorm.includes('chuyen de') || nhomNorm.includes('de cuong') || 
+                   loaiNorm.includes('chuyen de') || loaiNorm.includes('so tay') || loaiNorm.includes('giao an') ||
+                   tenNorm.includes('chuyen de') || tenNorm.includes('so tay');
+        }
+        return d.nhom === nhomVal;
+    }).length;
+}
+
+function countForMon(monVal, docs) {
+    if (monVal === 'all') return docs.length;
+    return docs.filter(d => {
+        return d.mon === monVal || norm(d.mon) === norm(monVal);
+    }).length;
+}
+
+function countForKhoi(khoiVal, docs) {
+    if (khoiVal === 'all') return docs.length;
+    if (khoiVal === '9') return docs.filter(d => d.khoi === '9' || d.khoi === 'TS10').length;
+    if (khoiVal === 'TS10') return docs.filter(d => d.khoi === 'TS10' || norm(d.nhom).includes('ts10') || norm(d.ten).includes('ts10')).length;
+    if (khoiVal === 'DBS') return docs.filter(d => !['6','7','8','9','10','11','12','TS10'].includes(String(d.khoi))).length;
+    return docs.filter(d => String(d.khoi) === String(khoiVal)).length;
+}
+
+function updateFilterCounts() {
+    const availableDocs = allDocs.filter(d => {
+        if (d.is_published === false || String(d.trang_thai) === '0' || d.trang_thai === 'Ẩn') return false;
+        const isDocGV = d.quyen === 'GV' || (d.ten && d.ten.includes('[GV]'));
+        if (!isTeacherMode && isDocGV) return false;
+        return true;
+    });
+
+    // 1. Nhóm danh mục (.filter-btn-nhom)
+    document.querySelectorAll('.filter-btn-nhom').forEach(btn => {
+        const val = btn.getAttribute('data-val');
+        const count = countForNhom(val, availableDocs);
+        let badge = btn.querySelector('.filter-count-badge');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'filter-count-badge text-[10px] font-bold px-2 py-0.5 rounded-full transition-all';
+            btn.appendChild(badge);
+        }
+        badge.textContent = count;
+        if (count === 0 && val !== 'all') {
+            btn.classList.add('opacity-35', 'cursor-not-allowed');
+            btn.disabled = true;
+            btn.title = 'Hiện chưa có tài liệu trong mục này (Đang cập nhật)';
+            badge.className = 'filter-count-badge text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-200/50 text-slate-400';
+        } else {
+            btn.classList.remove('opacity-35', 'cursor-not-allowed');
+            btn.disabled = false;
+            btn.title = `${count} tài liệu`;
+            const isActive = btn.getAttribute('data-val') === filters.nhom;
+            badge.className = isActive 
+                ? 'filter-count-badge text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white'
+                : 'filter-count-badge text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600';
+        }
+    });
+
+    // 2. Khối lớp (.filter-btn-khoi)
+    document.querySelectorAll('.filter-btn-khoi').forEach(btn => {
+        const val = btn.getAttribute('data-val');
+        const count = countForKhoi(val, availableDocs);
+        if (count === 0 && val !== 'all') {
+            btn.classList.add('opacity-30', 'cursor-not-allowed');
+            btn.disabled = true;
+            btn.title = `Khối ${val}: Chưa có tài liệu`;
+        } else {
+            btn.classList.remove('opacity-30', 'cursor-not-allowed');
+            btn.disabled = false;
+            btn.title = val === 'all' ? `Tất cả các khối (${count})` : `Khối ${val}: ${count} tài liệu`;
+        }
+    });
+
+    // 3. Môn học (.filter-btn-mon)
+    document.querySelectorAll('.filter-btn-mon').forEach(btn => {
+        const val = btn.getAttribute('data-val');
+        const count = countForMon(val, availableDocs);
+        let badge = btn.querySelector('.filter-count-badge');
+        if (!badge && val !== 'all') {
+            badge = document.createElement('span');
+            badge.className = 'filter-count-badge ml-1 text-[10px] font-bold opacity-75';
+            btn.appendChild(badge);
+        }
+        if (badge) {
+            badge.textContent = count > 0 ? count : '0';
+        }
+        if (count === 0 && val !== 'all') {
+            btn.classList.add('opacity-35', 'cursor-not-allowed');
+            btn.disabled = true;
+            btn.title = `Môn ${val}: Đang cập nhật tài liệu`;
+        } else {
+            btn.classList.remove('opacity-35', 'cursor-not-allowed');
+            btn.disabled = false;
+            btn.title = val === 'all' ? `Tất cả môn (${count})` : `Môn ${val}: ${count} tài liệu`;
+        }
+    });
+
+    // 4. Dải Quick Presets (.quick-preset-btn)
+    const presetMap = {
+        'preset-all': availableDocs.length,
+        'preset-sach-toan': countForNhom('sach', availableDocs),
+        'preset-test-4in1': countForNhom('test', availableDocs),
+        'preset-ts10': countForNhom('ts10', availableDocs),
+        'preset-de-kiem-tra': countForNhom('kiem-tra', availableDocs),
+        'preset-chuyen-de': countForNhom('chuyen-de', availableDocs)
+    };
+    Object.entries(presetMap).forEach(([id, cnt]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            let badge = btn.querySelector('.preset-count-badge');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'preset-count-badge ml-1 text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-600';
+                btn.appendChild(badge);
+            }
+            badge.textContent = cnt;
+            if (cnt === 0 && id !== 'preset-all') {
+                btn.classList.add('opacity-40', 'cursor-not-allowed');
+                btn.disabled = true;
+                btn.title = 'Hiện chưa có tài liệu trong mục này';
+            } else {
+                btn.classList.remove('opacity-40', 'cursor-not-allowed');
+                btn.disabled = false;
+                btn.title = `${cnt} tài liệu`;
+            }
+        }
+    });
+}
+
 /* ---------- DẢI PRESET TRUY CẬP NHANH TRÊN ĐẦU ------------ */
 window.applyQuickPreset = function(presetKey) {
+    const targetBtn = document.getElementById(`preset-${presetKey}`);
+    if (targetBtn && targetBtn.disabled) return;
+
     filters = { search: '', nhom: 'all', khoi: 'all', mon: 'all', topic: '' };
-    document.getElementById('searchInput').value = '';
-    document.getElementById('searchInputMobile').value = '';
-    document.getElementById('clearSearchBtn').classList.add('hidden');
+    syncSearchInputs('');
 
     if (presetKey === 'all') {
         // Mặc định: tất cả
@@ -1546,13 +1913,22 @@ function syncPresetButtons() {
 function syncPillState(selector, activeVal, activeBg, activeText) {
     document.querySelectorAll(selector).forEach(btn => {
         const val = btn.getAttribute('data-val');
+        const badge = btn.querySelector('.filter-count-badge');
         if (val === activeVal) {
             btn.classList.remove('bg-slate-100', 'text-slate-700', 'text-slate-600', 'bg-white');
             btn.classList.add(activeBg, activeText, 'shadow-sm');
+            if (badge && selector === '.filter-btn-nhom') {
+                badge.classList.remove('bg-slate-100', 'text-slate-600');
+                badge.classList.add('bg-white/20', 'text-white');
+            }
         } else {
             btn.classList.remove(activeBg, activeText, 'shadow-sm');
             if (selector === '.filter-btn-nhom') {
                 btn.classList.add('text-slate-700', 'hover:bg-slate-100');
+                if (badge && !btn.disabled) {
+                    badge.classList.remove('bg-white/20', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
             } else {
                 btn.classList.add('bg-slate-100', 'text-slate-700');
             }
@@ -1571,6 +1947,7 @@ function syncAllPillStates() {
 function bindPillEvents(selector, filterKey, activeBg, activeText) {
     document.querySelectorAll(selector).forEach(btn => {
         btn.addEventListener('click', function() {
+            if (this.disabled) return;
             const val = this.getAttribute('data-val');
             filters[filterKey] = val;
             syncAllPillStates();
@@ -1583,36 +1960,46 @@ bindPillEvents('.filter-btn-nhom', 'nhom', 'bg-slate-900', 'text-white');
 bindPillEvents('.filter-btn-khoi', 'khoi', 'bg-slate-900', 'text-white');
 bindPillEvents('.filter-btn-mon',  'mon',  'bg-brand-red',   'text-white');
 
-/* Tìm kiếm (Debounce 250ms để tối ưu hiệu năng) */
+/* Đồng bộ & Tìm kiếm (Hỗ trợ cả 4 ô tìm kiếm Desktop Header, Mobile Header, Sidebar, Drawer) */
 let searchDebounceTimer = null;
+
+function syncSearchInputs(val) {
+    const v = val || '';
+    ['searchInput', 'searchInputMobile', 'headerSearchInput', 'mobileHeaderSearchInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value !== v) el.value = v;
+    });
+    const hasVal = Boolean(v);
+    ['clearSearchBtn', 'headerClearSearchBtn', 'mobileHeaderClearSearchBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (hasVal) el.classList.remove('hidden');
+            else el.classList.add('hidden');
+        }
+    });
+}
+
 function handleSearchInput(val) {
     filters.search = val;
-    const clearBtn = document.getElementById('clearSearchBtn');
-    if (val) {
-        clearBtn.classList.remove('hidden');
-    } else {
-        clearBtn.classList.add('hidden');
-    }
     clearTimeout(searchDebounceTimer);
     searchDebounceTimer = setTimeout(() => {
         applyFilters();
     }, 250);
 }
 
-document.getElementById('searchInput').addEventListener('input', e => {
-    document.getElementById('searchInputMobile').value = e.target.value;
-    handleSearchInput(e.target.value);
-});
-document.getElementById('searchInputMobile').addEventListener('input', e => {
-    document.getElementById('searchInput').value = e.target.value;
-    handleSearchInput(e.target.value);
+['searchInput', 'searchInputMobile', 'headerSearchInput', 'mobileHeaderSearchInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('input', e => {
+            syncSearchInputs(e.target.value);
+            handleSearchInput(e.target.value);
+        });
+    }
 });
 
 function clearSearch() {
     clearTimeout(searchDebounceTimer);
-    document.getElementById('searchInput').value = '';
-    document.getElementById('searchInputMobile').value = '';
-    document.getElementById('clearSearchBtn').classList.add('hidden');
+    syncSearchInputs('');
     filters.search = '';
     applyFilters();
 }
@@ -1621,9 +2008,7 @@ function clearSearch() {
 window.resetFilters = function() {
     clearTimeout(searchDebounceTimer);
     filters = { search: '', nhom: 'all', khoi: 'all', mon: 'all', topic: '' };
-    document.getElementById('searchInput').value = '';
-    document.getElementById('searchInputMobile').value = '';
-    document.getElementById('clearSearchBtn').classList.add('hidden');
+    syncSearchInputs('');
     document.querySelectorAll('.topic-pill').forEach(btn => {
         if (btn.getAttribute('data-tag') === '') btn.classList.add('active');
         else btn.classList.remove('active');
@@ -1668,9 +2053,7 @@ function parseUrlState() {
     if (params.get('mon'))   filters.mon    = params.get('mon');
 
     if (filters.search) {
-        document.getElementById('searchInput').value = filters.search;
-        document.getElementById('searchInputMobile').value = filters.search;
-        document.getElementById('clearSearchBtn').classList.remove('hidden');
+        syncSearchInputs(filters.search);
     }
     syncAllPillStates();
 }
@@ -1694,6 +2077,7 @@ function updateTeacherModeUI() {
         badgeTeacher.classList.add('hidden');
         btnText.textContent = 'Dành cho Thầy/Cô';
     }
+    updateFilterCounts();
 }
 
 function handleTeacherToggle() {
@@ -1786,6 +2170,10 @@ function getCacheKey() {
 async function loadData(forceRefresh = false) {
     skeletonGrid.classList.remove('hidden');
     documentGrid.classList.add('hidden');
+    if (apiErrorState) {
+        apiErrorState.classList.add('hidden');
+        apiErrorState.classList.remove('flex');
+    }
 
     const cacheKey = getCacheKey();
 
@@ -1837,8 +2225,38 @@ async function loadData(forceRefresh = false) {
             }
         }
     } catch (err) {
-        console.warn('Không tải được API, dùng dữ liệu mẫu:', err);
-        allDocs = DEMO_DATA;
+        console.warn('Lỗi kết nối API hoặc xử lý dữ liệu:', err);
+        if (API_URL) {
+            // Thử phục hồi từ cache cũ nếu có
+            const staleCache = localStorage.getItem(cacheKey);
+            if (staleCache) {
+                try {
+                    const parsed = JSON.parse(staleCache);
+                    if (parsed.data && parsed.data.length > 0) {
+                        allDocs = parsed.data;
+                        showToast('Đang hiển thị dữ liệu lưu tạm do kết nối mạng yếu');
+                        finishLoading();
+                        return;
+                    }
+                } catch(e) {}
+            }
+            // Không có cache: hiển thị thông báo lỗi kết nối mạng thay vì dữ liệu demo giả
+            allDocs = [];
+            skeletonGrid.classList.add('hidden');
+            documentGrid.classList.add('hidden');
+            loadMoreWrap.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+            if (apiErrorState) {
+                apiErrorState.classList.remove('hidden');
+                apiErrorState.classList.add('flex');
+            }
+            countDisplay.textContent = '0';
+            updateFilterCounts();
+            return;
+        } else {
+            allDocs = DEMO_DATA;
+        }
     }
 
     finishLoading();
@@ -1846,6 +2264,7 @@ async function loadData(forceRefresh = false) {
 
 function finishLoading() {
     skeletonGrid.classList.add('hidden');
+    updateFilterCounts();
     parseUrlState();
     updateTeacherModeUI();
     applyFilters(false);
@@ -1870,6 +2289,163 @@ const modal     = document.getElementById('detailModal');
 const modalCont = document.getElementById('modalContainer');
 let iframeTimer = null;
 let iframeLoaded = false;
+let currentModalItem = null;
+
+function fallbackCopyText(text) {
+    try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+    } catch(err) {
+        console.error('Fallback copy failed', err);
+    }
+}
+
+function getDocShareUrl(docId) {
+    const base = window.location.origin + window.location.pathname;
+    return `${base}#doc=${encodeURIComponent(docId)}`;
+}
+
+window.shareDocCard = function(e, docId) {
+    if (e) e.stopPropagation();
+    const doc = allDocs.find(d => String(d.id) === String(docId));
+    const url = getDocShareUrl(docId);
+    const title = doc ? doc.ten : 'Tài liệu Điểm 10+';
+
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+        navigator.share({
+            title: title,
+            text: `Tra cứu tài liệu "${title}" trên Cổng Học Liệu Điểm 10+:`,
+            url: url
+        }).catch(() => {});
+        return;
+    }
+
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('Đã sao chép link tài liệu! Có thể dán ngay vào Zalo.');
+    }).catch(() => {
+        fallbackCopyText(url);
+        showToast('Đã sao chép link tài liệu!');
+    });
+};
+
+window.shareCurrentModalDoc = function(type) {
+    if (!currentModalItem) return;
+    const url = getDocShareUrl(currentModalItem.id);
+    const title = currentModalItem.ten;
+    const grade = currentModalItem.khoi ? `Khối ${currentModalItem.khoi}` : '';
+    const subject = currentModalItem.mon || '';
+    const textToShare = `[Điểm 10+] ${title} (${subject} · ${grade})\nTra cứu và tải tài liệu tại: ${url}`;
+
+    if (type === 'zalo') {
+        navigator.clipboard.writeText(textToShare).then(() => {
+            showToast('Đã sao chép tin nhắn kèm link! Mở Zalo và dán (Ctrl+V) để gửi.');
+        }).catch(() => {
+            fallbackCopyText(textToShare);
+            showToast('Đã sao chép nội dung & link Zalo!');
+        });
+        setTimeout(() => {
+            window.open('https://chat.zalo.me/', '_blank');
+        }, 400);
+    } else {
+        navigator.clipboard.writeText(url).then(() => {
+            showToast('Đã sao chép link tài liệu vào bộ nhớ đệm!');
+        }).catch(() => {
+            fallbackCopyText(url);
+            showToast('Đã sao chép link tài liệu!');
+        });
+    }
+};
+
+window.switchModalMobileTab = function(tab) {
+    const infoCol = document.getElementById('modalColInfo');
+    const prevCol = document.getElementById('modalColPreview');
+    const tabInfoBtn = document.getElementById('modalTabInfoBtn');
+    const tabPrevBtn = document.getElementById('modalTabPreviewBtn');
+    if (!infoCol || !prevCol || !tabInfoBtn || !tabPrevBtn) return;
+
+    if (tab === 'preview') {
+        infoCol.classList.add('hidden');
+        prevCol.classList.remove('hidden');
+        prevCol.classList.add('flex');
+        
+        tabPrevBtn.className = 'flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-brand-red border-b-2 border-brand-red bg-white transition-colors';
+        tabInfoBtn.className = 'flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors bg-transparent border-b-0';
+    } else {
+        infoCol.classList.remove('hidden');
+        prevCol.classList.add('hidden');
+        prevCol.classList.remove('flex');
+        
+        tabInfoBtn.className = 'flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-brand-red border-b-2 border-brand-red bg-white transition-colors';
+        tabPrevBtn.className = 'flex-1 py-2.5 px-3 flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 transition-colors bg-transparent border-b-0';
+    }
+};
+
+function parseTableOfContents(rawText) {
+    if (!rawText || typeof rawText !== 'string') return [];
+    const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const toc = [];
+    const pageRegex = /(?:\[p(?:age)?\.?\s*(\d+)\]|\(trang\s*(\d+)\)|(?:^|\s)(?:trang|page|p\.)\s*(\d+)|[-—–]\s*trang\s*(\d+)|[-—–]\s*(\d+)$)/i;
+    const chapterRegex = /^(?:Chương|Chuong|Phần|Phan|Unit|Học kỳ|Chủ đề|Chu de)\s*([0-9IVXABCDEF]+)?(?::|\.|\s*—|\s*-)?\s*(.*)/i;
+    const lessonBulletRegex = /^[-*•\d+\.]\s*/;
+
+    for (const line of lines) {
+        const chapMatch = line.match(chapterRegex);
+        if (chapMatch && !line.startsWith('-') && !line.startsWith('*') && !line.startsWith('•')) {
+            toc.push({
+                type: 'chapter',
+                title: line,
+                page: null
+            });
+            continue;
+        }
+
+        const pMatch = line.match(pageRegex);
+        let page = null;
+        if (pMatch) {
+            page = parseInt(pMatch[1] || pMatch[2] || pMatch[3] || pMatch[4] || pMatch[5], 10);
+        }
+
+        let cleanTitle = line.replace(lessonBulletRegex, '').trim();
+        if (pMatch) {
+            cleanTitle = cleanTitle.replace(pMatch[0], '').trim();
+        }
+        cleanTitle = cleanTitle.replace(/[-—–:]+$/, '').trim();
+
+        if (cleanTitle.length > 2 && (page !== null || chapMatch || line.match(/^(?:Bài|Bai|Lesson|Chuyên đề|Chuyen de|Dạng|Dang)/i) || line.startsWith('-') || line.startsWith('•'))) {
+            toc.push({
+                type: 'lesson',
+                title: cleanTitle,
+                page: page
+            });
+        }
+    }
+    return toc;
+}
+
+window.jumpToIframePage = function(pageNum, title) {
+    if (!currentModalItem) return;
+    const iframe = document.getElementById('modalIframe');
+
+    if (window.innerWidth < 768) {
+        switchModalMobileTab('preview');
+    }
+
+    if (pageNum && currentModalItem.drive_preview) {
+        const baseUrl = currentModalItem.drive_preview.split('#')[0];
+        iframe.src = `${baseUrl}#page=${pageNum}`;
+        showToast(`Đang chuyển đến trang ${pageNum}: ${title}`);
+    } else {
+        showToast(`Đang xem: ${title}`);
+    }
+};
 
 window.handleDocLinkClick = function(e, url) {
     if (!url || url === '#' || url.trim() === '') {
@@ -1881,8 +2457,22 @@ window.handleDocLinkClick = function(e, url) {
 };
 
 window.openModal = function(item) {
+    currentModalItem = item;
+    switchModalMobileTab('info');
+
     const tc      = tagClass(item.mon);
     const isDocGV = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
+    const driveId = getDriveFileId(item.drive_preview);
+    const coverUrl = item.anh_bia || (driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w800` : '');
+    const modalCoverEl = document.getElementById('modalCover');
+    if (coverUrl) {
+        modalCoverEl.style.backgroundImage = `url('${coverUrl}')`;
+        modalCoverEl.style.backgroundColor = 'transparent';
+    } else {
+        const subStyle = getSubjectStyle(item.mon);
+        modalCoverEl.style.backgroundImage = 'none';
+        modalCoverEl.style.backgroundColor = subStyle.bg;
+    }
 
     document.getElementById('modalGradeSubject').textContent = `Môn ${item.mon} · Khối ${item.khoi}`;
     document.getElementById('modalDocType').textContent = item.loai || 'Tài liệu học tập';
@@ -1897,6 +2487,47 @@ window.openModal = function(item) {
     document.getElementById('modalTitle').textContent  = item.ten;
     document.getElementById('modalAuthor').textContent = item.nguoi_dang || 'Phòng Đào Tạo Điểm 10+';
     document.getElementById('modalDesc').textContent   = item.mo_ta || 'Tài liệu học tập chính thức của hệ thống Điểm 10+.';
+
+    // HỘP MỤC LỤC TƯƠNG TÁC
+    const rawToc = item.muc_luc || item.mo_ta || '';
+    const tocItems = parseTableOfContents(rawToc);
+    const tocContainer = document.getElementById('modalTocContainer');
+    const tocList = document.getElementById('modalTocList');
+    const tocCount = document.getElementById('modalTocCount');
+
+    if (tocContainer && tocList) {
+        if (tocItems.length >= 2) {
+            tocContainer.classList.remove('hidden');
+            const lessonCount = tocItems.filter(t => t.type === 'lesson').length;
+            if (tocCount) tocCount.textContent = `${lessonCount || tocItems.length} bài`;
+            
+            let tocHtml = '';
+            tocItems.forEach(t => {
+                if (t.type === 'chapter') {
+                    tocHtml += `
+                        <div class="pt-2.5 pb-1 px-2.5 font-bold text-slate-700 bg-slate-100/70 rounded-lg text-[11px] uppercase tracking-wider flex items-center gap-1.5 mt-1">
+                            <i class="ph-bold ph-bookmark-simple text-brand-red"></i>
+                            <span class="truncate">${esc(t.title)}</span>
+                        </div>`;
+                } else {
+                    const hasPage = t.page !== null && t.page !== undefined;
+                    tocHtml += `
+                        <button type="button" onclick="jumpToIframePage(${hasPage ? t.page : 'null'}, '${esc(t.title).replace(/'/g, "\\'")}')"
+                            class="w-full text-left p-1.5 px-2 rounded-lg hover:bg-red-50 hover:text-brand-red group flex items-center justify-between gap-2 transition-all cursor-pointer border border-transparent hover:border-red-100">
+                            <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                                <i class="ph-bold ph-file-text text-slate-400 group-hover:text-brand-red text-xs flex-shrink-0"></i>
+                                <span class="truncate text-slate-700 group-hover:text-brand-red font-medium">${esc(t.title)}</span>
+                            </div>
+                            ${hasPage ? `<span class="text-[10px] bg-slate-100 group-hover:bg-red-100 text-slate-600 group-hover:text-brand-red font-bold px-1.5 py-0.5 rounded flex-shrink-0">Trang ${t.page}</span>` : `<i class="ph-bold ph-arrow-right text-[10px] text-slate-300 group-hover:text-brand-red flex-shrink-0"></i>`}
+                        </button>`;
+                }
+            });
+            tocList.innerHTML = tocHtml;
+        } else {
+            tocContainer.classList.add('hidden');
+            tocList.innerHTML = '';
+        }
+    }
 
     const extLink = document.getElementById('modalExternalLink');
     extLink.href = item.drive_preview ? item.drive_preview.replace('/preview', '/view') : (item.drive_download || '#');
