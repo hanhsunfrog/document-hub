@@ -690,7 +690,7 @@
                 </a>
             </div>
 
-            <div class="flex-1 relative flex items-center justify-center p-0">
+            <div class="flex-1 relative flex items-center justify-center p-0 overflow-hidden">
                 <div id="previewLoader" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 gap-2 p-6 text-center bg-slate-50">
                     <svg class="w-8 h-8 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -699,6 +699,32 @@
                     <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>
                 </div>
                 <iframe id="modalIframe" src="" class="w-full h-full border-0 hidden relative z-10" allow="autoplay; encrypted-media" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                <!-- MÀN CHẮN BẢO VỆ SMART SCROLL SHIELD CHO BẢN ĐỌC THỬ (CHẶN CUỘN LÉN ĐỌC FULL) -->
+                <div id="previewScrollShield" class="hidden absolute inset-x-0 bottom-0 top-[48%] z-20 pointer-events-auto bg-gradient-to-t from-slate-950 via-slate-900/95 to-slate-900/20 backdrop-blur-[2px] flex flex-col items-center justify-end p-5 text-center shadow-2xl transition-all duration-300 select-none">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 mb-2 shadow-lg">
+                        <i class="ph-bold ph-lock-key text-2xl"></i>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-bold text-white mb-1" style="font-family:'Newsreader',Georgia,serif;">
+                        Nội Dung Đã Khóa Bảo Mật Bản Quyền
+                    </h4>
+                    <p class="text-xs text-slate-300 max-w-md mb-3 leading-relaxed">
+                        Bạn đã xem hết phần trích yếu miễn phí (3 trang đầu). Để nhận trọn bộ sách in hoặc bản đầy đủ kèm hướng dẫn giải chi tiết:
+                    </p>
+                    <div class="flex items-center gap-2 flex-wrap justify-center w-full max-w-sm">
+                        <button type="button" onclick="openBranchSelectorModal()"
+                            class="flex-1 py-2 px-3.5 bg-brand-red hover:bg-brand-redDark text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="ph-bold ph-chats-circle text-sm"></i>
+                            <span>Nhận qua Zalo (7 cơ sở)</span>
+                        </button>
+                        <button type="button" onclick="handleTeacherToggle()"
+                            class="py-2 px-3 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl transition-colors border border-white/20 flex items-center justify-center gap-1 cursor-pointer"
+                            title="Thầy/Cô mở khóa">
+                            <i class="ph-bold ph-chalkboard-teacher text-amber-400 text-xs"></i>
+                            <span>Thầy/Cô mở khóa</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- BANNER FREEWALL KHÓA BẢN ĐỌC THỬ (Dành cho Sách & Tài liệu Điểm 10+ độc quyền) -->
@@ -2761,8 +2787,13 @@ window.openModal = function(item) {
     }
 
     const extLink = document.getElementById('modalExternalLink');
-    extLink.href = item.drive_preview ? item.drive_preview.replace('/preview', '/view') : (item.drive_download || '#');
-    extLink.onclick = (e) => handleDocLinkClick(e, extLink.getAttribute('href'));
+    if (isSample && !isTeacherMode) {
+        extLink.classList.add('hidden');
+    } else {
+        extLink.classList.remove('hidden');
+        extLink.href = item.drive_preview ? item.drive_preview.replace('/preview', '/view') : (item.drive_download || '#');
+        extLink.onclick = (e) => handleDocLinkClick(e, extLink.getAttribute('href'));
+    }
 
     const actionsCont = document.getElementById('modalActionsContainer');
     const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.includes('Đề Test Đầu Vào'));
@@ -2881,12 +2912,11 @@ window.openModal = function(item) {
                         <span>NHẬN BẢN ĐẦY ĐỦ QUA ZALO (7 CƠ SỞ)</span>
                     </button>
 
-                    <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
-                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
-                        class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 py-2.5 px-3 rounded-xl font-bold transition-colors text-xs border border-slate-200">
-                        <i class="ph-bold ph-download-simple text-base text-slate-600"></i>
-                        <span>Tải bản đọc thử về máy (3 trang PDF)</span>
-                    </a>
+                    <button type="button" onclick="openBranchSelectorModal()"
+                        class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 py-2.5 px-3 rounded-xl font-bold transition-colors text-xs border border-slate-200 cursor-pointer">
+                        <i class="ph-bold ph-book-open text-base text-slate-600"></i>
+                        <span>Đăng ký nhận trọn bộ sách in tại 7 cơ sở</span>
+                    </button>
 
                     <button type="button" onclick="handleTeacherToggle()"
                         class="w-full flex items-center justify-center gap-1.5 text-slate-500 hover:text-amber-700 py-1.5 px-3 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer">
@@ -2977,13 +3007,22 @@ window.openModal = function(item) {
         <svg class="w-8 h-8 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
         <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>`;
 
-    // Cập nhật trạng thái hiển thị của Smart Freewall Sticky Banner
+    // Cập nhật trạng thái hiển thị của Smart Freewall Sticky Banner & Preview Scroll Shield
     const freewallBanner = document.getElementById('modalFreewallBanner');
     if (freewallBanner) {
         if (isSample && !isTeacherMode) {
             freewallBanner.classList.remove('hidden');
         } else {
             freewallBanner.classList.add('hidden');
+        }
+    }
+
+    const scrollShield = document.getElementById('previewScrollShield');
+    if (scrollShield) {
+        if (isSample && !isTeacherMode) {
+            scrollShield.classList.remove('hidden');
+        } else {
+            scrollShield.classList.add('hidden');
         }
     }
 
@@ -3000,16 +3039,23 @@ window.openModal = function(item) {
         }
         iframeTimer = setTimeout(() => {
             if (!iframeLoaded) {
+                const fallbackActionHtml = (isSample && !isTeacherMode)
+                    ? `<button onclick="openBranchSelectorModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-brand-redDark shadow-sm cursor-pointer">
+                         <i class="ph-bold ph-chats-circle text-sm"></i>
+                         Nhận tài liệu qua Zalo (7 cơ sở)
+                       </button>`
+                    : `<a href="${item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#'}" target="_blank"
+                          class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 shadow-sm">
+                         <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                         Mở trực tiếp trên tab mới
+                       </a>`;
+
                 loader.innerHTML = `
                     <div class="p-6 text-center max-w-sm">
                         <i class="ph-bold ph-warning text-amber-500 text-4xl mb-2 block"></i>
                         <p class="font-bold text-sm text-slate-800 mb-1">Xem trước tải chậm hoặc bị chặn cookie</p>
                         <p class="text-xs text-slate-500 mb-4">Trình duyệt của bạn có thể đang chặn iframe từ Google Drive.</p>
-                        <a href="${item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#'}" target="_blank"
-                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 shadow-sm">
-                            <i class="ph-bold ph-arrow-square-out text-sm"></i>
-                            Mở trực tiếp trên tab mới
-                        </a>
+                        ${fallbackActionHtml}
                     </div>`;
             }
         }, 8000);
