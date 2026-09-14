@@ -700,6 +700,37 @@
                 </div>
                 <iframe id="modalIframe" src="" class="w-full h-full border-0 hidden relative z-10" allow="autoplay; encrypted-media" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
+
+            <!-- BANNER FREEWALL KHÓA BẢN ĐỌC THỬ (Dành cho Sách & Tài liệu Điểm 10+ độc quyền) -->
+            <div id="modalFreewallBanner" class="hidden flex-shrink-0 p-3 sm:p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-t border-slate-700/80 shadow-xl z-20">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0 w-full sm:w-auto">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center flex-shrink-0 text-amber-400 shadow-inner">
+                            <i class="ph-bold ph-book-open-text text-xl"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                                <span class="text-xs sm:text-sm font-bold text-white">Bạn đang xem trích yếu (3 trang đầu)</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">Bản quyền Điểm 10+</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-tight truncate sm:whitespace-normal">Đăng ký nhận trọn bộ sách in hoặc bản đầy đủ kèm hướng dẫn giải chi tiết tại 7 cơ sở</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto flex-shrink-0 justify-end">
+                        <button type="button" onclick="openBranchSelectorModal()" 
+                            class="flex-1 sm:flex-none px-3.5 py-2 bg-brand-red hover:bg-brand-redDark text-white text-xs font-bold rounded-xl transition-all shadow-md hover:shadow-red-900/30 flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="ph-bold ph-chat-circle-dots text-sm"></i>
+                            <span>Nhận qua Zalo (7 cơ sở)</span>
+                        </button>
+                        <button type="button" onclick="handleTeacherToggle()" 
+                            class="px-2.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-xl transition-colors border border-slate-700 flex items-center justify-center gap-1 cursor-pointer" 
+                            title="Dành cho Thầy/Cô Điểm 10+ mở khóa">
+                            <i class="ph-bold ph-key text-xs text-amber-400"></i>
+                            <span class="hidden lg:inline">Thầy/Cô</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -731,6 +762,237 @@
                 Hủy bỏ
             </button>
         </form>
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     MODAL CHỌN 7 CƠ SỞ ĐIỂM 10+ (LEAD GENERATION MODAL)
+     ══════════════════════════════════════════════════ -->
+<div id="branchSelectorModal" role="dialog" aria-modal="true" aria-labelledby="branchModalTitle" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" onclick="closeBranchSelectorModal()"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-4 sm:p-6 z-10 border border-slate-200 max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        
+        <!-- Nút đóng -->
+        <button onclick="closeBranchSelectorModal()" title="Đóng" aria-label="Đóng"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer z-20">
+            <i class="ph-bold ph-x text-sm"></i>
+        </button>
+
+        <!-- Header Modal -->
+        <div class="flex flex-col items-center text-center pb-4 border-b border-slate-100 flex-shrink-0">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-brand-red border border-red-200 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <i class="ph-bold ph-buildings text-xs"></i>
+                Hệ Thống Trung Tâm Điểm 10+
+            </div>
+            <h3 id="branchModalTitle" class="text-lg sm:text-xl font-bold text-slate-900 mb-1" style="font-family:'Newsreader',Georgia,serif;">
+                Nhận Trọn Bộ Sách &amp; Tài Liệu Điểm 10+
+            </h3>
+            <p class="text-xs text-slate-500 max-w-lg">
+                Chọn cơ sở gần bạn nhất để kết nối Zalo nhận bản đầy đủ (kèm hướng dẫn giải &amp; bài tập chuyên sâu) hoặc đăng ký nhận sách in tại trung tâm:
+            </p>
+            <div id="branchSelectedDocBadge" class="mt-2.5 px-3 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold max-w-md truncate">
+                Tài liệu đang xem: <span id="branchDocTitle" class="font-bold">Đang nạp...</span>
+            </div>
+        </div>
+
+        <!-- Hotline chung -->
+        <div class="my-3 p-2.5 rounded-xl bg-gradient-to-r from-red-50 via-white to-amber-50 border border-red-100 flex items-center justify-between text-xs flex-shrink-0">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-brand-red text-white flex items-center justify-center font-bold">
+                    <i class="ph-bold ph-phone-call"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-slate-800">Hotline Toàn Hệ Thống (24/7):</span>
+                    <a href="tel:0933398787" class="text-brand-red font-black ml-1 hover:underline text-sm">0933 39 8787</a>
+                </div>
+            </div>
+            <button onclick="contactBranchZalo('0933398787', 'Trung Tâm Điểm 10+')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-[11px] flex items-center gap-1 transition-colors cursor-pointer">
+                <i class="ph-bold ph-chat-circle text-xs"></i>
+                <span>Zalo Tổng</span>
+            </button>
+        </div>
+
+        <!-- Danh sách 7 cơ sở Điểm 10+ chuẩn theo 09_DANH_MUC_CO_SO.md -->
+        <div class="overflow-y-auto flex-1 pr-1 space-y-2.5 scrollbar-sidebar text-xs">
+            
+            <!-- CS1 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS1</span>
+                        <strong class="text-slate-800 text-sm font-bold">Quang Trung (Gò Vấp)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>656/15 Quang Trung, P. Thông Tây Hội (Gò Vấp)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0902932787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS1">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0902 93 2787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0902932787', 'CS1 - Quang Trung')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS1</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS2 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS2</span>
+                        <strong class="text-slate-800 text-sm font-bold">Nguyễn Cửu Vân (Bình Thạnh)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>121 Nguyễn Cửu Vân, P. Gia Định (Bình Thạnh)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0762288787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS2">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0762 28 8787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0762288787', 'CS2 - Nguyễn Cửu Vân')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS2</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS5 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS5</span>
+                        <strong class="text-slate-800 text-sm font-bold">Tân Canh (Tân Bình)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>05 Tân Canh, P. Tân Sơn Hòa (Tân Bình)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0902852787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS5">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0902 85 2787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0902852787', 'CS5 - Tân Canh')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS5</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS7 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS7</span>
+                        <strong class="text-slate-800 text-sm font-bold">Lũy Bán Bích (Tân Phú)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>539 Lũy Bán Bích, P. Phú Thạnh (Tân Phú)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0902582787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS7">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0902 58 2787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0902582787', 'CS7 - Lũy Bán Bích')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS7</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS8 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS8</span>
+                        <strong class="text-slate-800 text-sm font-bold">Nguyễn Văn Đậu (Bình Thạnh)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>35/9 Nguyễn Văn Đậu, P. Bình Lợi Trung (Bình Thạnh)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0931772787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS8">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0931 77 2787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0931772787', 'CS8 - Nguyễn Văn Đậu')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS8</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS9 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS9</span>
+                        <strong class="text-slate-800 text-sm font-bold">Huỳnh Tấn Phát (Quận 7)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>1316 Huỳnh Tấn Phát, P. Tân Mỹ (Quận 7)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0767708787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS9">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0767 70 8787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0767708787', 'CS9 - Huỳnh Tấn Phát')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS9</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CS10 -->
+            <div class="p-3 rounded-xl border border-slate-200 hover:border-brand-red/40 bg-slate-50/60 hover:bg-red-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded bg-brand-red text-white font-black text-[10px]">CS10</span>
+                        <strong class="text-slate-800 text-sm font-bold">Lê Văn Sỹ (Quận 3)</strong>
+                    </div>
+                    <p class="text-slate-600 text-[11px] flex items-start gap-1">
+                        <i class="ph-bold ph-map-pin text-brand-red mt-0.5 flex-shrink-0"></i>
+                        <span>386/52Bis Lê Văn Sỹ, P. Nhiêu Lộc (Quận 3)</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <a href="tel:0767828787" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold flex items-center gap-1 transition-colors" title="Gọi CS10">
+                        <i class="ph-bold ph-phone text-emerald-600"></i>
+                        <span>0767 82 8787</span>
+                    </a>
+                    <button onclick="contactBranchZalo('0767828787', 'CS10 - Lê Văn Sỹ')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-2xs">
+                        <i class="ph-bold ph-chat-circle-dots"></i>
+                        <span>Zalo CS10</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-2 flex-shrink-0">
+            <span>Website: <a href="https://diem10cong.edu.vn" target="_blank" class="text-brand-red hover:underline font-semibold">diem10cong.edu.vn</a></span>
+            <button onclick="closeBranchSelectorModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors cursor-pointer">
+                Đóng
+            </button>
+        </div>
     </div>
 </div>
 
@@ -1014,6 +1276,84 @@ const loadMoreWrap  = document.getElementById('loadMoreContainer');
 const loadMoreCount = document.getElementById('loadMoreCount');
 const skeletonGrid  = document.getElementById('skeletonGrid');
 
+
+// ══════════════════════════════════════════════════════════════
+// BẢO MẬT HỌC LIỆU NỘI BỘ & SMART FREEWALL ĐIỂM 10+
+// ══════════════════════════════════════════════════════════════
+function isSampleDoc(item) {
+    if (!item) return false;
+    const loai = String(item.loai || '').trim();
+    const nhom = String(item.nhom || '').trim();
+    const ten  = String(item.ten || '').trim();
+
+    // 1. Sách giáo khoa chuẩn Bộ Giáo Dục (GDPT 2018): 100% công khai, không khóa
+    if (loai === 'Sách giáo khoa' || nhom.includes('Sách Giáo Khoa') || nhom.includes('SGK') || ten.includes('SGK')) {
+        return false;
+    }
+
+    // 2. Nếu tài liệu được đánh dấu rõ ràng là bản full
+    if (item.is_full === true || String(item.is_full) === '1') {
+        return false;
+    }
+
+    // 3. Nếu tài liệu được gán cờ đọc thử / sample
+    if (item.ban_doc_thu === true || String(item.ban_doc_thu) === '1' || item.is_sample === true || String(item.is_sample) === '1') {
+        return true;
+    }
+    if (ten.includes('[DEMO]') || ten.includes('[ĐỌC THỬ]') || ten.toLowerCase().includes('đọc thử')) {
+        return true;
+    }
+
+    // 4. Tài liệu học tập chính khóa / chuyên đề độc quyền Điểm 10+
+    if (loai === 'Tài liệu học tập' || loai === 'Sách chính khóa' || nhom.includes('Học tập HK') || nhom.includes('Sách chính khóa')) {
+        return true;
+    }
+
+    return false;
+}
+
+window.openBranchSelectorModal = function() {
+    const modal = document.getElementById('branchSelectorModal');
+    if (!modal) return;
+    const titleEl = document.getElementById('branchDocTitle');
+    if (titleEl && currentModalItem) {
+        titleEl.textContent = currentModalItem.ten || 'Tài liệu học tập Điểm 10+';
+    }
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeBranchSelectorModal = function() {
+    const modal = document.getElementById('branchSelectorModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    if (document.getElementById('detailModal').classList.contains('hidden')) {
+        document.body.style.overflow = '';
+    }
+};
+
+window.contactBranchZalo = function(phone, branchName) {
+    const docName = (currentModalItem && currentModalItem.ten) ? currentModalItem.ten : 'Tài liệu Điểm 10+';
+    const msg = `Em chào Thầy/Cô ${branchName}, em đang xem bản đọc thử tài liệu "${docName}" trên d10hub. Em muốn đăng ký nhận trọn bộ sách in / bản đầy đủ kèm hướng dẫn giải chi tiết ạ!`;
+    
+    // Tự động sao chép câu hỏi vào clipboard để phụ huynh dán vào Zalo thuận tiện
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).then(() => {
+            showToast(`✓ Đã sao chép nội dung đăng ký! Đang mở Zalo ${branchName}...`);
+        }).catch(() => {
+            showToast(`Đang kết nối Zalo ${branchName}...`);
+        });
+    } else {
+        showToast(`Đang kết nối Zalo ${branchName}...`);
+    }
+
+    // Mở trang Zalo chat trực tiếp
+    setTimeout(() => {
+        window.open(`https://zalo.me/${phone}`, '_blank');
+    }, 400);
+};
+
+
 function renderCards(data) {
     try {
         documentGrid.innerHTML = '';
@@ -1053,6 +1393,7 @@ function renderCards(data) {
             const isGV    = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
 
             const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.toLowerCase().includes('đề test')) || (item.nhom && item.nhom.toLowerCase().includes('test'));
+            const isSample = isSampleDoc(item);
             const autoCover = getCoverUrl(item);
             const hasCover = Boolean(autoCover);
 
@@ -1149,6 +1490,7 @@ function renderCards(data) {
                         <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Khối ${esc(item.khoi)}</span>
                         ${item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-medium truncate max-w-[170px]">${esc(item.nhom)}</span>` : ''}
                         ${isGV ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : ''}
+                        ${isSample && !isTeacherMode ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1"><i class="ph-bold ph-book-open text-amber-600"></i>Đọc thử 3 trang</span>` : ''}
                     </div>
 
                     <!-- Tiêu đề thẻ -->
@@ -1180,6 +1522,12 @@ function renderCards(data) {
                                 class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
                                 <i class="ph-bold ph-lock-key text-xs text-amber-600"></i>
                                 <span>Mở khóa</span>
+                            </button>
+                        ` : (isSample && !isTeacherMode) ? `
+                            <button onclick="openDocById('${item.id}')"
+                                class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-2xs">
+                                <i class="ph-bold ph-book-open text-sm"></i>
+                                <span>Đọc thử</span>
                             </button>
                         ` : `
                             <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
@@ -2349,12 +2697,23 @@ window.openModal = function(item) {
     document.getElementById('modalGradeSubject').textContent = `Môn ${item.mon} · Khối ${item.khoi}`;
     document.getElementById('modalDocType').textContent = item.loai || 'Tài liệu học tập';
 
+    const isSample = isSampleDoc(item);
+    let sampleBadgeHtml = '';
+    if (isSample) {
+        if (!isTeacherMode) {
+            sampleBadgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300 flex items-center gap-1"><i class="ph-bold ph-book-open text-amber-600"></i>Bản đọc thử 3 trang</span>`;
+        } else {
+            sampleBadgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1"><i class="ph-bold ph-check-circle text-emerald-600"></i>Đã mở khóa Thầy/Cô</span>`;
+        }
+    }
+
     document.getElementById('modalTags').innerHTML =
         `<span class="${tc} px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">${esc(item.mon)}</span>` +
         `<span class="bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Khối ${esc(item.khoi)}</span>` +
         `<span class="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full text-[10px] font-medium">${esc(item.loai)}</span>` +
         (item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold">${esc(item.nhom)}</span>` : '') +
-        (isDocGV ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : '');
+        (isDocGV ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : '') +
+        sampleBadgeHtml;
 
     document.getElementById('modalTitle').textContent  = item.ten;
     document.getElementById('modalAuthor').textContent = item.nguoi_dang || 'Phòng Đào Tạo Điểm 10+';
@@ -2502,22 +2861,80 @@ window.openModal = function(item) {
             }
         }
 
-        actionsCont.innerHTML = `
-            <div class="space-y-2">
-                <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
-                    onclick="handleDocLinkClick(event, this.getAttribute('href'))"
-                    class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
-                    <i class="ph-bold ph-download-simple text-base"></i>
-                    <span>TẢI TÀI LIỆU VỀ MÁY (PDF)</span>
-                </a>
-                ${keyHtml}
-                <a href="${esc(item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#')}" target="_blank" rel="noopener noreferrer"
-                    onclick="handleDocLinkClick(event, this.getAttribute('href'))"
-                    class="w-full flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 py-2 px-3 rounded-lg font-semibold text-xs transition-colors">
-                    <span>Mở trực tiếp trên Google Drive</span>
-                    <i class="ph-bold ph-arrow-square-out text-sm"></i>
-                </a>
-            </div>`;
+        if (isSample && !isTeacherMode) {
+            // Smart Freewall: Tài liệu độc quyền Điểm 10+ ở chế độ khách / học sinh
+            actionsCont.innerHTML = `
+                <div class="space-y-2.5">
+                    <div class="p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-slate-700 space-y-1 shadow-2xs">
+                        <div class="flex items-center gap-1.5 text-xs font-bold text-amber-900">
+                            <i class="ph-bold ph-shield-star text-amber-600 text-base"></i>
+                            <span>Tài Liệu Độc Quyền Điểm 10+</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 leading-relaxed">
+                            Bạn đang xem <strong>bản đọc thử (3 trang đầu)</strong>. Để nhận trọn bộ sách in chất lượng cao hoặc bản đầy đủ kèm bài tập &amp; hướng dẫn giải chi tiết:
+                        </p>
+                    </div>
+
+                    <button type="button" onclick="openBranchSelectorModal()"
+                        class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-bold transition-all text-xs sm:text-sm shadow-md hover:shadow-emerald-900/20 cursor-pointer">
+                        <i class="ph-bold ph-chats-circle text-base"></i>
+                        <span>NHẬN BẢN ĐẦY ĐỦ QUA ZALO (7 CƠ SỞ)</span>
+                    </button>
+
+                    <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 py-2.5 px-3 rounded-xl font-bold transition-colors text-xs border border-slate-200">
+                        <i class="ph-bold ph-download-simple text-base text-slate-600"></i>
+                        <span>Tải bản đọc thử về máy (3 trang PDF)</span>
+                    </a>
+
+                    <button type="button" onclick="handleTeacherToggle()"
+                        class="w-full flex items-center justify-center gap-1.5 text-slate-500 hover:text-amber-700 py-1.5 px-3 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer">
+                        <i class="ph-bold ph-lock-key text-amber-600"></i>
+                        <span>Thầy/Cô Điểm 10+? Nhập PIN để mở khóa bản đầy đủ</span>
+                    </button>
+                </div>`;
+        } else if (isSample && isTeacherMode) {
+            // Đã mở khóa Giáo viên Điểm 10+
+            actionsCont.innerHTML = `
+                <div class="space-y-2">
+                    <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-emerald-900 text-xs font-bold">
+                        <i class="ph-bold ph-check-circle text-emerald-600 text-base"></i>
+                        <span>Đã mở khóa Thầy/Cô: Đang cấp quyền tải bản đầy đủ PĐT</span>
+                    </div>
+                    <a href="${esc(item.link_full_gv || item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
+                        <i class="ph-bold ph-download-simple text-base"></i>
+                        <span>TẢI BẢN ĐẦY ĐỦ PĐT (PDF FULL)</span>
+                    </a>
+                    ${keyHtml}
+                    <a href="${esc((item.link_full_gv || item.drive_preview || '#').replace('/preview', '/view'))}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 py-2 px-3 rounded-lg font-semibold text-xs transition-colors">
+                        <span>Mở trực tiếp trên Google Drive</span>
+                        <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                    </a>
+                </div>`;
+        } else {
+            // Sách giáo khoa Bộ GD 2018 hoặc tài liệu công khai khác
+            actionsCont.innerHTML = `
+                <div class="space-y-2">
+                    <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
+                        <i class="ph-bold ph-download-simple text-base"></i>
+                        <span>TẢI TÀI LIỆU VỀ MÁY (PDF)</span>
+                    </a>
+                    ${keyHtml}
+                    <a href="${esc(item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#')}" target="_blank" rel="noopener noreferrer"
+                        onclick="handleDocLinkClick(event, this.getAttribute('href'))"
+                        class="w-full flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 py-2 px-3 rounded-lg font-semibold text-xs transition-colors">
+                        <span>Mở trực tiếp trên Google Drive</span>
+                        <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                    </a>
+                </div>`;
+        }
     }
 
     // TÀI LIỆU LIÊN QUAN (Lọc bảo mật: chỉ hiện tài liệu được phép xem)
@@ -2560,12 +2977,27 @@ window.openModal = function(item) {
         <svg class="w-8 h-8 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
         <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>`;
 
+    // Cập nhật trạng thái hiển thị của Smart Freewall Sticky Banner
+    const freewallBanner = document.getElementById('modalFreewallBanner');
+    if (freewallBanner) {
+        if (isSample && !isTeacherMode) {
+            freewallBanner.classList.remove('hidden');
+        } else {
+            freewallBanner.classList.add('hidden');
+        }
+    }
+
     clearTimeout(iframeTimer);
     if (item.drive_preview) {
         iframe.onload = function() {
             handleIframeLoaded();
         };
-        iframe.src = item.drive_preview;
+        // Nếu đã mở khóa GV và có link_full_gv, xem bản full trên iframe
+        if (isTeacherMode && item.link_full_gv) {
+            iframe.src = item.link_full_gv.replace('/view', '/preview');
+        } else {
+            iframe.src = item.drive_preview;
+        }
         iframeTimer = setTimeout(() => {
             if (!iframeLoaded) {
                 loader.innerHTML = `
@@ -2616,7 +3048,9 @@ window.closeModal = function() {
 
 window.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-        if (!document.getElementById('pinModal').classList.contains('hidden')) {
+        if (document.getElementById('branchSelectorModal') && !document.getElementById('branchSelectorModal').classList.contains('hidden')) {
+            closeBranchSelectorModal();
+        } else if (!document.getElementById('pinModal').classList.contains('hidden')) {
             closePinModal();
         } else if (!modal.classList.contains('hidden')) {
             closeModal();
