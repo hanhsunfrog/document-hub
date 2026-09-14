@@ -681,7 +681,7 @@
                     </svg>
                     <span class="text-xs font-medium text-slate-600">Đang nạp bản xem trước từ Google Drive…</span>
                 </div>
-                <iframe id="modalIframe" src="" class="w-full h-full border-0 hidden relative z-10" onload="handleIframeLoaded()"></iframe>
+                <iframe id="modalIframe" src="" class="w-full h-full border-0 hidden relative z-10" allow="autoplay; encrypted-media" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>
@@ -839,6 +839,56 @@
      ══════════════════════════════════════════════════ -->
 <script>
 /* =========================================================
+   HÀM TIỆN ÍCH AN TOÀN & QUẢN LÝ ẢNH BÌA (V3.2)
+   ========================================================= */
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+window.handleIframeLoaded = function() {
+    iframeLoaded = true;
+    if (typeof iframeTimer !== 'undefined') clearTimeout(iframeTimer);
+    const ifr = document.getElementById('modalIframe');
+    const ldr = document.getElementById('previewLoader');
+    if (ifr) ifr.classList.remove('hidden');
+    if (ldr) ldr.classList.add('hidden');
+};
+
+function buildCoverSlug(item) {
+    if (!item) return '';
+    const monNorm = norm(item.mon || '');
+    const khoiNorm = String(item.khoi || '').toLowerCase().trim();
+    const nhomNorm = norm(item.nhom || '');
+    const tenNorm = norm(item.ten || '');
+    const isHK2 = nhomNorm.includes('hk2') || nhomNorm.includes('hoc ky 2') || tenNorm.includes('hoc ky 2') || tenNorm.includes('hk2');
+    const ky = isHK2 ? 'hk2' : 'hk1';
+
+    const isSach = item.loai === 'Tài liệu học tập' || nhomNorm.includes('sach') || nhomNorm.includes('hoc tap') || tenNorm.includes('sach');
+    if (isSach) {
+        if (monNorm === 'anh' || monNorm.includes('anh')) {
+            if (tenNorm.includes('global success')) return `sach-anh-${khoiNorm}-global`;
+            const mUnit = tenNorm.match(/unit\s*(\d+)/);
+            if (mUnit) return `sach-anh-${khoiNorm}-u${mUnit[1]}`;
+            return `sach-anh-${khoiNorm}-${ky}`;
+        }
+        return `sach-${monNorm}-${khoiNorm}-${ky}`;
+    }
+    return '';
+}
+
+function getCoverUrl(item) {
+    if (!item) return '';
+    if (item.anh_bia && item.anh_bia.trim() !== '' && !item.anh_bia.includes('drive.google.com/thumbnail')) {
+        return item.anh_bia.trim();
+    }
+    const slug = buildCoverSlug(item);
+    if (slug) return `covers/${slug}.webp`;
+    if (item.id) return `covers/${item.id}.webp`;
+    return '';
+}
+
+/* =========================================================
    CẤU HÌNH & DỮ LIỆU
    ========================================================= */
 const API_URL = 'https://script.google.com/macros/s/AKfycbzogD2eCZPfidJ3WZLx56lZzzPcUAUyASyiUyWiYH8QzhGFDTj7BgQFoP1A-aMBwmOmIA/exec'; // Dán URL Web App Apps Script vào đây khi chạy thật
@@ -923,190 +973,208 @@ const loadMoreCount = document.getElementById('loadMoreCount');
 const skeletonGrid  = document.getElementById('skeletonGrid');
 
 function renderCards(data) {
-    documentGrid.innerHTML = '';
-    if (apiErrorState) {
-        apiErrorState.classList.add('hidden');
-        apiErrorState.classList.remove('flex');
-    }
-
-    if (data.length === 0) {
-        documentGrid.classList.add('hidden');
-        loadMoreWrap.classList.add('hidden');
-        emptyState.classList.remove('hidden');
-        emptyState.classList.add('flex');
-        countDisplay.textContent = '0';
-        document.getElementById('mobileCount').textContent = '0';
-        document.getElementById('mobileResultCount').textContent = '0';
-        return;
-    }
-
-    emptyState.classList.add('hidden');
-    emptyState.classList.remove('flex');
-    documentGrid.classList.remove('hidden');
-    countDisplay.textContent = data.length;
-    document.getElementById('mobileCount').textContent = data.length;
-    document.getElementById('mobileResultCount').textContent = data.length;
-
-    const itemsToRender = data.slice(0, displayedLimit);
-
-    itemsToRender.forEach((item, index) => {
-        const tc      = tagClass(item.mon);
-        const style   = getSubjectStyle(item.mon);
-        const driveId = getDriveFileId(item.drive_preview);
-        const isGV    = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
-
-        const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.toLowerCase().includes('đề test')) || (item.nhom && item.nhom.toLowerCase().includes('test'));
-        const hasExplicitCover = Boolean(item.anh_bia && item.anh_bia.trim() !== '');
-
-        let coverHtml = '';
-        if (hasExplicitCover) {
-            // 1. CÓ ẢNH BÌA THIẾT KẾ RIÊNG
-            coverHtml = `
-                <div class="h-44 sm:h-48 overflow-hidden relative flex-shrink-0 flex items-center justify-center border-b border-slate-100 bg-slate-50">
-                    <img class="card-img w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                         src="${esc(item.anh_bia)}"
-                         alt="${esc(item.ten)}"
-                         loading="lazy"
-                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                    <div class="hidden h-full w-full flex flex-col justify-between p-4 select-none" style="background:${style.bg};">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
-                            <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
-                            <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
-                        </div>
-                    </div>
-                </div>`;
-        } else if (isTest) {
-            // 2. THẺ CHỮ SƯ PHẠM (Typography Card) CHO NHÓM ĐỀ THI & ĐỀ TEST — TẢI SIÊU TỐC, RÕ RÀNG
-            const mDe = item.ten.match(/(?:ĐỀ|DE)\s*0?([1-9]|1[0-9])/i);
-            const deNumber = mDe ? `ĐỀ ${mDe[1].padStart(2, '0')}` : 'ĐỀ TEST';
-            const mThang = item.ten.match(/(?:Tháng|Thang|Đợt|Dot)\s*0?([1-9]|1[0-2]|Hè|He)/i);
-            const thangText = mThang ? `Tháng ${mThang[1].padStart(2, '0')}` : 'Khảo sát';
-
-            coverHtml = `
-                <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
-                     style="background: linear-gradient(145deg, #FFFFFF 0%, ${style.bg} 100%);">
-                    <div class="flex items-center justify-between z-10">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-lg shadow-2xs" 
-                              style="background:${style.text}; color:#FFFFFF;">
-                            <i class="ph-bold ph-file-text text-xs"></i>
-                            <span>${deNumber}</span>
-                        </span>
-                        <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider bg-white/90 backdrop-blur-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs">
-                            Khối ${esc(item.khoi)}
-                        </span>
-                    </div>
-
-                    <div class="z-10 my-auto">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${thangText} · GDPT 2018</p>
-                        <h4 class="text-sm font-bold text-slate-800 line-clamp-2 leading-snug" style="font-family:'Newsreader',Georgia,serif;">
-                            ${esc(item.ten)}
-                        </h4>
-                    </div>
-
-                    <div class="flex items-center gap-1.5 z-10 text-[10px] font-semibold text-slate-600">
-                        <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">⏱️ 30 Phút</span>
-                        <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">🎯 Đánh giá</span>
-                        <span class="px-2 py-0.5 rounded bg-red-50 text-brand-red border border-red-200 font-bold ml-auto">Bộ 4-in-1</span>
-                    </div>
-
-                    <div class="absolute right-1 bottom-0 text-7xl font-black pointer-events-none select-none" 
-                         style="color:${style.text}; opacity:.06; font-family:'Newsreader',Georgia,serif; line-height:1">
-                        ${esc(item.khoi)}
-                    </div>
-                </div>`;
-        } else {
-            // 3. SÁCH / TÀI LIỆU HỌC TẬP THÔNG THƯỜNG CHƯA CÓ ẢNH BÌA
-            coverHtml = `
-                <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
-                     style="background:${style.bg}; border-color:${style.border};">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
-                        <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.85">${esc(item.mon)} · Khối ${esc(item.khoi)}</span>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-sm sm:text-base font-bold line-clamp-2 leading-snug text-slate-900 mb-1" style="font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
-                        <p class="text-[11px] text-slate-600 font-medium">${esc(item.nguoi_dang || 'Phòng Đào Tạo')}</p>
-                    </div>
-                    <div class="relative flex items-center justify-between">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hệ thống Điểm 10+</span>
-                        <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
-                    </div>
-                </div>`;
+    try {
+        documentGrid.innerHTML = '';
+        if (apiErrorState) {
+            apiErrorState.classList.add('hidden');
+            apiErrorState.classList.remove('flex');
         }
 
-        const card = document.createElement('div');
-        card.className = 'doc-card stagger-item glass-panel rounded-2xl overflow-hidden flex flex-col relative bg-white';
-        card.style.transitionDelay = `${(index % 8) * 35}ms`;
-        
-        card.innerHTML = `
-            ${coverHtml}
-            <div class="p-4 sm:p-5 flex flex-col flex-1">
-                <!-- Tags badge -->
-                <div class="flex flex-wrap gap-1 mb-2">
-                    <span class="${tc} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">${esc(item.mon)}</span>
-                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Khối ${esc(item.khoi)}</span>
-                    ${item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-medium truncate max-w-[170px]">${esc(item.nhom)}</span>` : ''}
-                    ${isGV ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : ''}
-                </div>
+        if (!data || data.length === 0) {
+            documentGrid.classList.add('hidden');
+            if (loadMoreWrap) loadMoreWrap.classList.add('hidden');
+            if (emptyState) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            }
+            setText('countDisplay', '0');
+            setText('mobileCount', '0');
+            setText('mobileResultCount', '0');
+            return;
+        }
 
-                <!-- Tiêu đề thẻ -->
-                <h3 class="card-title text-sm sm:text-base font-bold text-slate-800 mb-1.5 line-clamp-2 hover:text-brand-red transition-colors cursor-pointer" onclick="openDocById('${item.id}')">
-                    ${esc(item.ten)}
-                </h3>
+        if (emptyState) {
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+        }
+        documentGrid.classList.remove('hidden');
+        setText('countDisplay', data.length);
+        setText('mobileCount', data.length);
+        setText('mobileResultCount', data.length);
 
-                <!-- Mô tả tóm tắt -->
-                <p class="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">${esc(item.mo_ta)}</p>
+        const itemsToRender = data.slice(0, displayedLimit);
 
-                <!-- Người biên soạn -->
-                <div class="mt-auto pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 mb-3">
-                    <span class="truncate flex items-center gap-1">
-                        <i class="ph-bold ph-user-circle text-slate-400 text-sm"></i>
-                        <span class="truncate">${esc(item.nguoi_dang || 'PĐT Điểm 10+')}</span>
-                    </span>
-                    <span class="text-[11px] font-semibold text-slate-400">GDPT 2018</span>
-                </div>
+        itemsToRender.forEach((item, index) => {
+            const tc      = tagClass(item.mon);
+            const style   = getSubjectStyle(item.mon);
+            const driveId = getDriveFileId(item.drive_preview);
+            const isGV    = item.quyen === 'GV' || (item.ten && item.ten.includes('[GV]'));
 
-                <!-- Các nút thao tác trực tiếp trên thẻ -->
-                <div class="flex items-center gap-1.5">
-                    <button onclick="openDocById('${item.id}')"
-                        class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors">
-                        <i class="ph-bold ph-eye text-sm text-slate-600"></i>
-                        <span>Xem nhanh</span>
-                    </button>
-                    ${isGV && !isTeacherMode ? `
-                        <button onclick="handleTeacherToggle()"
-                            class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
-                            <i class="ph-bold ph-lock-key text-xs text-amber-600"></i>
-                            <span>Mở khóa</span>
+            const isTest = item.loai === 'Đề test đầu vào' || (item.ten && item.ten.toLowerCase().includes('đề test')) || (item.nhom && item.nhom.toLowerCase().includes('test'));
+            const autoCover = getCoverUrl(item);
+            const hasCover = Boolean(autoCover);
+
+            let coverHtml = '';
+            if (hasCover) {
+                // 1. CÓ ẢNH BÌA THIẾT KẾ RIÊNG (TỪ THƯ MỤC /covers/ HOẶC LINK CMS)
+                coverHtml = `
+                    <div class="h-44 sm:h-48 overflow-hidden relative flex-shrink-0 flex items-center justify-center border-b border-slate-100 bg-slate-50">
+                        <img class="card-img w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                             src="${esc(autoCover)}"
+                             alt="${esc(item.ten)}"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <div class="hidden h-full w-full flex flex-col justify-between p-4 select-none" style="background:${style.bg};">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
+                                <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.8">${esc(item.mon)}</span>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
+                                <p class="text-xs sm:text-sm font-semibold line-clamp-2 leading-snug" style="color:${style.text}; font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            } else if (isTest) {
+                // 2. THẺ CHỮ SƯ PHẠM (Typography Card) CHO NHÓM ĐỀ THI & ĐỀ TEST — TẢI SIÊU TỐC, RÕ RÀNG
+                const mDe = item.ten.match(/(?:ĐỀ|DE)\s*0?([1-9]|1[0-9])/i);
+                const deNumber = mDe ? `ĐỀ ${mDe[1].padStart(2, '0')}` : 'ĐỀ TEST';
+                const mThang = item.ten.match(/(?:Tháng|Thang|Đợt|Dot)\s*0?([1-9]|1[0-2]|Hè|He)/i);
+                const thangText = mThang ? `Tháng ${mThang[1].padStart(2, '0')}` : 'Khảo sát';
+
+                coverHtml = `
+                    <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
+                         style="background: linear-gradient(145deg, #FFFFFF 0%, ${style.bg} 100%);">
+                        <div class="flex items-center justify-between z-10">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-1 rounded-lg shadow-2xs" 
+                                  style="background:${style.text}; color:#FFFFFF;">
+                                <i class="ph-bold ph-file-text text-xs"></i>
+                                <span>${deNumber}</span>
+                            </span>
+                            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider bg-white/90 backdrop-blur-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs">
+                                Khối ${esc(item.khoi)}
+                            </span>
+                        </div>
+
+                        <div class="z-10 my-auto">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${thangText} · GDPT 2018</p>
+                            <h4 class="text-sm font-bold text-slate-800 line-clamp-2 leading-snug" style="font-family:'Newsreader',Georgia,serif;">
+                                ${esc(item.ten)}
+                            </h4>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 z-10 text-[10px] font-semibold text-slate-600">
+                            <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">⏱️ 30 Phút</span>
+                            <span class="px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs">🎯 Đánh giá</span>
+                            <span class="px-2 py-0.5 rounded bg-red-50 text-brand-red border border-red-200 font-bold ml-auto">Bộ 4-in-1</span>
+                        </div>
+
+                        <div class="absolute right-1 bottom-0 text-7xl font-black pointer-events-none select-none" 
+                             style="color:${style.text}; opacity:.06; font-family:'Newsreader',Georgia,serif; line-height:1">
+                            ${esc(item.khoi)}
+                        </div>
+                    </div>`;
+            } else {
+                // 3. SÁCH / TÀI LIỆU HỌC TẬP THÔNG THƯỜNG CHƯA CÓ ẢNH BÌA (FALLBACK CHUẨN)
+                coverHtml = `
+                    <div class="h-44 sm:h-48 relative flex-shrink-0 flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden border-b border-slate-200" 
+                         style="background:${style.bg}; border-color:${style.border};">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs" style="background:${style.border}; color:${style.text};">${esc(item.loai)}</span>
+                            <span class="text-[11px] font-bold" style="color:${style.text}; opacity:.85">${esc(item.mon)} · Khối ${esc(item.khoi)}</span>
+                        </div>
+                        <div class="relative z-10">
+                            <p class="text-sm sm:text-base font-bold line-clamp-2 leading-snug text-slate-900 mb-1" style="font-family:'Newsreader',Georgia,serif">${esc(item.ten)}</p>
+                            <p class="text-[11px] text-slate-600 font-medium">${esc(item.nguoi_dang || 'Phòng Đào Tạo')}</p>
+                        </div>
+                        <div class="relative flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hệ thống Điểm 10+</span>
+                            <div class="absolute right-0 bottom-0 text-6xl font-black pointer-events-none select-none" style="color:${style.text}; opacity:.08; font-family:'Newsreader',Georgia,serif; line-height:1">${esc(item.khoi)}</div>
+                        </div>
+                    </div>`;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'doc-card stagger-item glass-panel rounded-2xl overflow-hidden flex flex-col relative bg-white';
+            card.style.transitionDelay = `${(index % 8) * 35}ms`;
+            
+            card.innerHTML = `
+                ${coverHtml}
+                <div class="p-4 sm:p-5 flex flex-col flex-1">
+                    <!-- Tags badge -->
+                    <div class="flex flex-wrap gap-1 mb-2">
+                        <span class="${tc} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">${esc(item.mon)}</span>
+                        <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Khối ${esc(item.khoi)}</span>
+                        ${item.nhom ? `<span class="bg-red-50 text-brand-red border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-medium truncate max-w-[170px]">${esc(item.nhom)}</span>` : ''}
+                        ${isGV ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#FFF8DB; color:#8A6D00; border:1px solid #FFE699;">Bản GV</span>` : ''}
+                    </div>
+
+                    <!-- Tiêu đề thẻ -->
+                    <h3 class="card-title text-sm sm:text-base font-bold text-slate-800 mb-1.5 line-clamp-2 hover:text-brand-red transition-colors cursor-pointer" onclick="openDocById('${item.id}')">
+                        ${esc(item.ten)}
+                    </h3>
+
+                    <!-- Mô tả tóm tắt -->
+                    <p class="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">${esc(item.mo_ta)}</p>
+
+                    <!-- Người biên soạn -->
+                    <div class="mt-auto pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 mb-3">
+                        <span class="truncate flex items-center gap-1">
+                            <i class="ph-bold ph-user-circle text-slate-400 text-sm"></i>
+                            <span class="truncate">${esc(item.nguoi_dang || 'PĐT Điểm 10+')}</span>
+                        </span>
+                        <span class="text-[11px] font-semibold text-slate-400">GDPT 2018</span>
+                    </div>
+
+                    <!-- Các nút thao tác trực tiếp trên thẻ -->
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="openDocById('${item.id}')"
+                            class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors">
+                            <i class="ph-bold ph-eye text-sm text-slate-600"></i>
+                            <span>Xem nhanh</span>
                         </button>
-                    ` : `
-                        <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
-                            class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-sm">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                            <span>Tải ngay</span>
-                        </a>
-                    `}
-                    <button onclick="shareDocCard(event, '${item.id}')"
-                        class="p-2 bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-blue-600 border border-slate-200 rounded-lg transition-colors flex-shrink-0"
-                        title="Chia sẻ link Zalo / Copy link gửi học sinh">
-                        <i class="ph-bold ph-share-network text-sm"></i>
-                    </button>
-                </div>
-            </div>`;
+                        ${isGV && !isTeacherMode ? `
+                            <button onclick="handleTeacherToggle()"
+                                class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-lg transition-colors">
+                                <i class="ph-bold ph-lock-key text-xs text-amber-600"></i>
+                                <span>Mở khóa</span>
+                            </button>
+                        ` : `
+                            <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
+                                class="flex-1 flex items-center justify-center gap-1 py-2 px-2 bg-brand-red hover:bg-brand-redDark text-white font-bold text-xs rounded-lg transition-colors shadow-sm">
+                                <i class="ph-bold ph-download-simple text-sm"></i>
+                                <span>Tải ngay</span>
+                            </a>
+                        `}
+                        <button onclick="shareDocCard(event, '${item.id}')"
+                            class="p-2 bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-blue-600 border border-slate-200 rounded-lg transition-colors flex-shrink-0"
+                            title="Chia sẻ link Zalo / Copy link gửi học sinh">
+                            <i class="ph-bold ph-share-network text-sm"></i>
+                        </button>
+                    </div>
+                </div>`;
 
-        documentGrid.appendChild(card);
-        requestAnimationFrame(() => staggerObserver.observe(card));
-    });
+            documentGrid.appendChild(card);
+            if (typeof staggerObserver !== 'undefined') {
+                requestAnimationFrame(() => staggerObserver.observe(card));
+            }
+        });
 
-    if (data.length > displayedLimit) {
-        loadMoreWrap.classList.remove('hidden');
-        loadMoreCount.textContent = `+${data.length - displayedLimit}`;
-    } else {
-        loadMoreWrap.classList.add('hidden');
+        if (loadMoreWrap) {
+            if (data.length > displayedLimit) {
+                loadMoreWrap.classList.remove('hidden');
+                setText('loadMoreCount', `+${data.length - displayedLimit}`);
+            } else {
+                loadMoreWrap.classList.add('hidden');
+            }
+        }
+    } catch (renderErr) {
+        console.error('Lỗi khi render danh sách thẻ:', renderErr);
+        if (apiErrorState) {
+            apiErrorState.classList.remove('hidden');
+            apiErrorState.classList.add('flex');
+        }
+        if (skeletonGrid) skeletonGrid.classList.add('hidden');
     }
 }
 
@@ -2434,6 +2502,9 @@ window.openModal = function(item) {
 
     clearTimeout(iframeTimer);
     if (item.drive_preview) {
+        iframe.onload = function() {
+            handleIframeLoaded();
+        };
         iframe.src = item.drive_preview;
         iframeTimer = setTimeout(() => {
             if (!iframeLoaded) {
