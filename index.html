@@ -1530,34 +1530,32 @@ function isSampleDoc(item) {
     const ten  = String(item.ten || '').trim();
 
     // 1. Sách giáo khoa chuẩn Bộ Giáo Dục (GDPT 2018): 100% CÔNG KHAI
-    if (loai === 'Sách giáo khoa' || nhom.includes('Sách Giáo Khoa') || nhom.includes('SGK') || ten.includes('SGK')) {
+    if (loai === 'Sách giáo khoa' || nhom.includes('Sách Giáo Khoa') || nhom.includes('SGK') || ten.includes('SGK') || nhom.includes('Bộ GD')) {
         return false;
     }
 
-    // 2. Đề test đầu vào: 100% CÔNG KHAI (Học sinh xem & tải đề làm bài tự do)
+    // 2. Đề test đầu vào: 100% CÔNG KHAI phần Đề thi làm bài SP2 (Học sinh xem & tải tự do)
     if (loai === 'Đề test đầu vào' || nhom.includes('Test Đầu Vào') || nhom.toLowerCase().includes('test') || ten.toLowerCase().includes('đề test')) {
         return false;
     }
 
-    // 3. Nếu tài liệu được đánh dấu rõ ràng là bản full
+    // 3. Đề thi & kiểm tra công khai từ Sở/Trường: CÔNG KHAI
+    if (loai === 'Đề thi & kiểm tra' && !nhom.includes('Điểm 10+') && !ten.includes('Điểm 10+')) {
+        return false;
+    }
+
+    // 4. Nếu tài liệu được đánh dấu rõ ràng là bản full
     if (item.is_full === true || String(item.is_full) === '1') {
         return false;
     }
 
-    // 4. Nếu tài liệu được gán cờ đọc thử / sample
+    // 5. Nếu tài liệu được gán cờ đọc thử
     if (item.ban_doc_thu === true || String(item.ban_doc_thu) === '1' || item.is_sample === true || String(item.is_sample) === '1') {
         return true;
     }
-    if (ten.includes('[DEMO]') || ten.includes('[ĐỌC THỬ]') || ten.toLowerCase().includes('đọc thử')) {
-        return true;
-    }
 
-    // 5. Tài liệu học tập chính khóa / độc quyền Điểm 10+ (Toán, Anh, Văn...) -> ĐỌC 3 TRANG ĐẦU
-    if (loai === 'Tài liệu học tập' || loai === 'Sách chính khóa' || nhom.includes('Học tập') || nhom.includes('Sách chính khóa')) {
-        return true;
-    }
-
-    return false;
+    // 6. TẤT CẢ CÁC TÀI LIỆU CÒN LẠI CỦA ĐIỂM 10+ (Tài liệu học tập, KHTN 6-9, Toán 6-12, Tiếng Anh...): ĐỌC THỬ 3 TRANG ĐẦU!
+    return true;
 }
 
 window.handleSampleImgError = function(imgEl) {
@@ -3083,6 +3081,26 @@ const SAMPLES_MANIFEST = {
   ],
   "1c39wMduWT41TDzFGpS1N8k4rXiUuUcFt": [
     "samples/1c39wMduWT41TDzFGpS1N8k4rXiUuUcFt_p1.webp"
+  ],
+  "1d6hB1fB9SiVmPI3Ms1RqhlEgTTkP_7Zz": [
+    "samples/1d6hB1fB9SiVmPI3Ms1RqhlEgTTkP_7Zz_p1.webp",
+    "samples/1d6hB1fB9SiVmPI3Ms1RqhlEgTTkP_7Zz_p2.webp",
+    "samples/1d6hB1fB9SiVmPI3Ms1RqhlEgTTkP_7Zz_p3.webp"
+  ],
+  "1-CNgW4SZT2_B2iXnOf9I6kbyDflECxJb": [
+    "samples/1-CNgW4SZT2_B2iXnOf9I6kbyDflECxJb_p1.webp",
+    "samples/1-CNgW4SZT2_B2iXnOf9I6kbyDflECxJb_p2.webp",
+    "samples/1-CNgW4SZT2_B2iXnOf9I6kbyDflECxJb_p3.webp"
+  ],
+  "1CSLE9Ii2yKTsaPKK2dVoWKr7Tq_jdVQ2": [
+    "samples/1CSLE9Ii2yKTsaPKK2dVoWKr7Tq_jdVQ2_p1.webp",
+    "samples/1CSLE9Ii2yKTsaPKK2dVoWKr7Tq_jdVQ2_p2.webp",
+    "samples/1CSLE9Ii2yKTsaPKK2dVoWKr7Tq_jdVQ2_p3.webp"
+  ],
+  "1BD1PokaWNrrQxc9Gp_VRGKIaMtksAMGR": [
+    "samples/1BD1PokaWNrrQxc9Gp_VRGKIaMtksAMGR_p1.webp",
+    "samples/1BD1PokaWNrrQxc9Gp_VRGKIaMtksAMGR_p2.webp",
+    "samples/1BD1PokaWNrrQxc9Gp_VRGKIaMtksAMGR_p3.webp"
   ]
 };
 
@@ -3482,64 +3500,60 @@ window.openModal = function(item) {
     const sampleViewerCtaTitle = document.getElementById('sampleViewerCtaTitle');
     const samplePages = SAMPLES_MANIFEST[item.id];
 
-    if (isSample && !isTeacherMode && samplePages && samplePages.length > 0) {
-        // TRƯỜNG HỢP 1A: HIỂN THỊ ĐẦY ĐỦ 3 TRANG ĐỌC THỬ (WEBP RETINA) CHO KHÁCH
+    if (isSample && !isTeacherMode) {
+        // TRƯỜNG HỢP 1: TÀI LIỆU ĐỘC QUYỀN ĐIỂM 10+ (CHỈ ĐỌC THỬ 3 TRANG ĐẦU, TUYỆT ĐỐI KHÔNG ĐỌC HẾT CẢ CUỐN)
         if (sampleViewer) {
             sampleViewer.classList.remove('hidden');
-            samplePagesList.innerHTML = samplePages.map((url, idx) => `
-                <div id="samplePage_${idx+1}" class="w-full bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden flex flex-col">
-                    <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600 font-semibold">
-                        <span>${idx === 0 ? 'Trang 1: Bìa Sách' : (idx === 1 ? 'Trang 2: Lời Mở Đầu & Mục Lục' : 'Trang 3: Nội Dung Bài Học')}</span>
-                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-300">Bản đọc thử</span>
+            const driveId = getDriveFileId(item.drive_preview) || item.id;
+            const coverFallback = driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w1200` : '';
+
+            if (samplePages && samplePages.length > 0) {
+                // ĐÃ CÓ BỘ ẢNH WEBP RETINA CHUẨN (Toán 6-12, Anh 6-9, KHTN 6-9...)
+                samplePagesList.innerHTML = samplePages.map((url, idx) => `
+                    <div id="samplePage_${idx+1}" class="w-full bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden flex flex-col">
+                        <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600 font-semibold">
+                            <span>${idx === 0 ? 'Trang 1: Bìa Sách' : (idx === 1 ? 'Trang 2: Lời Mở Đầu & Mục Lục' : 'Trang 3: Nội Dung Bài Học')}</span>
+                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-300">Bản đọc thử</span>
+                        </div>
+                        <img src="${url}" alt="${esc(item.ten)} - Trang ${idx+1}" class="w-full h-auto object-contain select-none" loading="lazy" onerror="window.handleSampleImgError(this)">
                     </div>
-                    <img src="${url}" alt="${esc(item.ten)} - Trang ${idx+1}" class="w-full h-auto object-contain select-none" loading="lazy" onerror="window.handleSampleImgError(this)">
-                </div>
-            `).join('');
+                `).join('');
+            } else {
+                // TÀI LIỆU MỚI TẢI LÊN (CHƯA CẮT WEBP): HIỂN THỊ TRANG BÌA THẬT TỪ DRIVE THUMBNAIL, CHẶN ZERO-LEAKAGE TRANG 4+
+                samplePagesList.innerHTML = `
+                    <div id="samplePage_1" class="w-full bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden flex flex-col">
+                        <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600 font-semibold">
+                            <span>Trang 1: Bìa Tài Liệu</span>
+                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-300">Bản đọc thử</span>
+                        </div>
+                        ${coverFallback ? `<img src="${coverFallback}" alt="${esc(item.ten)} - Trang 1" class="w-full h-auto object-contain select-none" loading="lazy">` : `<div class="p-8 text-center text-slate-400">Đang tải bìa tài liệu...</div>`}
+                    </div>
+                    <div id="samplePage_2" class="w-full bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden flex flex-col p-6 text-center">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto mb-3 border border-amber-200">
+                            <i class="ph-bold ph-shield-star text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-1">Nội Dung Độc Quyền Lưu Hành Nội Bộ</h4>
+                        <p class="text-xs text-slate-500 mb-4 max-w-md mx-auto leading-relaxed">
+                            Tài liệu này thuộc quyền sở hữu của Hệ thống Trung tâm Điểm 10+. Để bảo vệ chất lượng giảng dạy, hệ thống chỉ mở xem thử phần đầu.
+                        </p>
+                        <button type="button" onclick="openBranchSelectorModal()" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm cursor-pointer mx-auto">
+                            <i class="ph-bold ph-chats-circle"></i>
+                            <span>Liên hệ nhận trọn bộ tài liệu tại 7 cơ sở</span>
+                        </button>
+                    </div>
+                `;
+            }
+
             if (sampleViewerCtaTitle) sampleViewerCtaTitle.textContent = item.ten || 'Tài Liệu Học Tập Điểm 10+';
             sampleViewer.scrollTop = 0;
         }
+
         if (lockedShowcase) lockedShowcase.classList.add('hidden');
         if (freewallBanner) freewallBanner.classList.add('hidden');
         if (scrollShield) scrollShield.classList.add('hidden');
         iframe.classList.add('hidden');
         loader.classList.add('hidden');
         iframe.src = '';
-    } else if (isSample && !isTeacherMode) {
-        // TRƯỜNG HỢP 1B: SÁCH CHÍNH KHÓA CHƯA CÓ ẢNH SAMPLE TRONG MANIFEST -> NẠP IFRAME KÈM FREEWALL BANNER (TUYỆT ĐỐI KHÔNG KHÓA ĐEN)
-        if (sampleViewer) sampleViewer.classList.add('hidden');
-        if (lockedShowcase) lockedShowcase.classList.add('hidden');
-        if (freewallBanner) freewallBanner.classList.remove('hidden');
-        if (scrollShield) scrollShield.classList.add('hidden');
-
-        if (item.drive_preview || item.link_full_gv) {
-            iframe.classList.remove('hidden');
-            loader.classList.remove('hidden');
-            iframe.onload = function() {
-                handleIframeLoaded();
-            };
-            iframe.src = item.drive_preview || item.link_full_gv;
-
-            iframeTimer = setTimeout(() => {
-                if (!iframeLoaded) {
-                    const fallbackActionHtml = `<button onclick="openBranchSelectorModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-brand-redDark shadow-sm cursor-pointer">
-                         <i class="ph-bold ph-chats-circle text-sm"></i>
-                         Nhận tài liệu qua Zalo (7 cơ sở)
-                       </button>`;
-
-                    loader.innerHTML = `
-                        <div class="p-6 text-center max-w-sm">
-                            <i class="ph-bold ph-warning text-amber-500 text-4xl mb-2 block"></i>
-                            <p class="font-bold text-sm text-slate-800 mb-1">Xem trước tải chậm hoặc bị chặn cookie</p>
-                            <p class="text-xs text-slate-500 mb-4">Trình duyệt của bạn có thể đang chặn iframe từ Google Drive.</p>
-                            <div class="flex flex-col gap-2">
-                                ${fallbackActionHtml}
-                            </div>
-                        </div>`;
-                }
-            }, 8000);
-        } else {
-            loader.innerHTML = '<p class="text-xs text-slate-500">Chưa có liên kết xem trước trực tuyến cho tài liệu này.</p>';
-        }
     } else {
         // TRƯỜNG HỢP 2: TÀI LIỆU CÔNG KHAI (SGK, TIẾNG ANH, ĐỀ TEST) HOẶC THẦY/CÔ ĐÃ MỞ KHÓA
         if (sampleViewer) sampleViewer.classList.add('hidden');
