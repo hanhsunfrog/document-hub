@@ -1529,17 +1529,22 @@ function isSampleDoc(item) {
     const nhom = String(item.nhom || '').trim();
     const ten  = String(item.ten || '').trim();
 
-    // 1. Sách giáo khoa chuẩn Bộ Giáo Dục (GDPT 2018): 100% công khai, không khóa
+    // 1. Sách giáo khoa chuẩn Bộ Giáo Dục (GDPT 2018): 100% CÔNG KHAI
     if (loai === 'Sách giáo khoa' || nhom.includes('Sách Giáo Khoa') || nhom.includes('SGK') || ten.includes('SGK')) {
         return false;
     }
 
-    // 2. Nếu tài liệu được đánh dấu rõ ràng là bản full
+    // 2. Đề test đầu vào: 100% CÔNG KHAI (Học sinh xem & tải đề làm bài tự do)
+    if (loai === 'Đề test đầu vào' || nhom.includes('Test Đầu Vào') || nhom.toLowerCase().includes('test') || ten.toLowerCase().includes('đề test')) {
+        return false;
+    }
+
+    // 3. Nếu tài liệu được đánh dấu rõ ràng là bản full
     if (item.is_full === true || String(item.is_full) === '1') {
         return false;
     }
 
-    // 3. Nếu tài liệu được gán cờ đọc thử / sample
+    // 4. Nếu tài liệu được gán cờ đọc thử / sample
     if (item.ban_doc_thu === true || String(item.ban_doc_thu) === '1' || item.is_sample === true || String(item.is_sample) === '1') {
         return true;
     }
@@ -1547,13 +1552,42 @@ function isSampleDoc(item) {
         return true;
     }
 
-    // 4. Tài liệu học tập chính khóa / chuyên đề độc quyền Điểm 10+
-    if (loai === 'Tài liệu học tập' || loai === 'Sách chính khóa' || nhom.includes('Học tập HK') || nhom.includes('Sách chính khóa')) {
+    // 5. Tài liệu học tập chính khóa / độc quyền Điểm 10+ (Toán, Anh, Văn...) -> ĐỌC 3 TRANG ĐẦU
+    if (loai === 'Tài liệu học tập' || loai === 'Sách chính khóa' || nhom.includes('Học tập') || nhom.includes('Sách chính khóa')) {
         return true;
     }
 
     return false;
 }
+
+window.handleSampleImgError = function(imgEl) {
+    console.warn('Ảnh bản đọc thử WebP không tải được (404/mạng), tự động kích hoạt Iframe Drive Fallback:', imgEl ? imgEl.src : '');
+    if (!currentModalItem) return;
+    const sampleViewer = document.getElementById('samplePagesViewer');
+    const iframe = document.getElementById('modalIframe');
+    const freewallBanner = document.getElementById('modalFreewallBanner');
+    const lockedShowcase = document.getElementById('lockedShowcase');
+    const loader = document.getElementById('previewLoader');
+
+    // Ẩn viewer ảnh và ẩn lockedShowcase
+    if (sampleViewer) sampleViewer.classList.add('hidden');
+    if (lockedShowcase) lockedShowcase.classList.add('hidden');
+    // Hiện banner đọc thử dưới chân iframe
+    if (freewallBanner) freewallBanner.classList.remove('hidden');
+
+    // Nạp iframe Google Drive
+    if (iframe && (currentModalItem.drive_preview || currentModalItem.link_full_gv)) {
+        iframe.classList.remove('hidden');
+        if (loader) loader.classList.remove('hidden');
+        iframe.onload = function() {
+            handleIframeLoaded();
+        };
+        const targetSrc = currentModalItem.drive_preview || currentModalItem.link_full_gv;
+        if (iframe.src !== targetSrc) {
+            iframe.src = targetSrc;
+        }
+    }
+};
 
 window.openBranchSelectorModal = function() {
     const modal = document.getElementById('branchSelectorModal');
@@ -2981,6 +3015,74 @@ const SAMPLES_MANIFEST = {
     "samples/1qW_vrWDI9HF-syREgS7qWs4vM5GtVt-F_p1.webp",
     "samples/1qW_vrWDI9HF-syREgS7qWs4vM5GtVt-F_p2.webp",
     "samples/1qW_vrWDI9HF-syREgS7qWs4vM5GtVt-F_p3.webp"
+  ],
+  "1wmm5OfTrHtmNZsG-m0wkI9FGKCUjJvZG": [
+    "samples/1wmm5OfTrHtmNZsG-m0wkI9FGKCUjJvZG_p1.webp",
+    "samples/1wmm5OfTrHtmNZsG-m0wkI9FGKCUjJvZG_p2.webp",
+    "samples/1wmm5OfTrHtmNZsG-m0wkI9FGKCUjJvZG_p3.webp"
+  ],
+  "1SR2iIX9YZ8tAtMsIxMIFdvy8a4Xx7N3S": [
+    "samples/1SR2iIX9YZ8tAtMsIxMIFdvy8a4Xx7N3S_p1.webp",
+    "samples/1SR2iIX9YZ8tAtMsIxMIFdvy8a4Xx7N3S_p2.webp",
+    "samples/1SR2iIX9YZ8tAtMsIxMIFdvy8a4Xx7N3S_p3.webp"
+  ],
+  "1nTmMXJ25cpczR_rkYh4qdwFAOnGR5lIw": [
+    "samples/1nTmMXJ25cpczR_rkYh4qdwFAOnGR5lIw_p1.webp",
+    "samples/1nTmMXJ25cpczR_rkYh4qdwFAOnGR5lIw_p2.webp",
+    "samples/1nTmMXJ25cpczR_rkYh4qdwFAOnGR5lIw_p3.webp"
+  ],
+  "1megR79FJOnU98BgBmyRciV0_4gKXS0FB": [
+    "samples/1megR79FJOnU98BgBmyRciV0_4gKXS0FB_p1.webp",
+    "samples/1megR79FJOnU98BgBmyRciV0_4gKXS0FB_p2.webp",
+    "samples/1megR79FJOnU98BgBmyRciV0_4gKXS0FB_p3.webp"
+  ],
+  "1vXPm0FHwSRetx-0WxfhM-Lv_KqXEqUWh": [
+    "samples/1vXPm0FHwSRetx-0WxfhM-Lv_KqXEqUWh_p1.webp",
+    "samples/1vXPm0FHwSRetx-0WxfhM-Lv_KqXEqUWh_p2.webp",
+    "samples/1vXPm0FHwSRetx-0WxfhM-Lv_KqXEqUWh_p3.webp"
+  ],
+  "1-5BMLKKCULtMUvQRJ7zqDLH_hPu9O-EO": [
+    "samples/1-5BMLKKCULtMUvQRJ7zqDLH_hPu9O-EO_p1.webp",
+    "samples/1-5BMLKKCULtMUvQRJ7zqDLH_hPu9O-EO_p2.webp",
+    "samples/1-5BMLKKCULtMUvQRJ7zqDLH_hPu9O-EO_p3.webp"
+  ],
+  "1qqYxF8_zy1WcS1-HRNSegpou53c5zDPt": [
+    "samples/1qqYxF8_zy1WcS1-HRNSegpou53c5zDPt_p1.webp",
+    "samples/1qqYxF8_zy1WcS1-HRNSegpou53c5zDPt_p2.webp",
+    "samples/1qqYxF8_zy1WcS1-HRNSegpou53c5zDPt_p3.webp"
+  ],
+  "1NDYQO83OoTfpPi_jNR4ev7M8d0PkNpy_": [
+    "samples/1NDYQO83OoTfpPi_jNR4ev7M8d0PkNpy__p1.webp",
+    "samples/1NDYQO83OoTfpPi_jNR4ev7M8d0PkNpy__p2.webp",
+    "samples/1NDYQO83OoTfpPi_jNR4ev7M8d0PkNpy__p3.webp"
+  ],
+  "1l_W3ZWJtYOR892lblOBWEWRECMn-3CzT": [
+    "samples/1l_W3ZWJtYOR892lblOBWEWRECMn-3CzT_p1.webp",
+    "samples/1l_W3ZWJtYOR892lblOBWEWRECMn-3CzT_p2.webp",
+    "samples/1l_W3ZWJtYOR892lblOBWEWRECMn-3CzT_p3.webp"
+  ],
+  "1W55Yy6-WK_59wlKm-8jBcd1LAMMiH5CC": [
+    "samples/1W55Yy6-WK_59wlKm-8jBcd1LAMMiH5CC_p1.webp",
+    "samples/1W55Yy6-WK_59wlKm-8jBcd1LAMMiH5CC_p2.webp",
+    "samples/1W55Yy6-WK_59wlKm-8jBcd1LAMMiH5CC_p3.webp"
+  ],
+  "1wUICFBwx0JKa0JeKHpZFekqpRCyge0Em": [
+    "samples/1wUICFBwx0JKa0JeKHpZFekqpRCyge0Em_p1.webp",
+    "samples/1wUICFBwx0JKa0JeKHpZFekqpRCyge0Em_p2.webp",
+    "samples/1wUICFBwx0JKa0JeKHpZFekqpRCyge0Em_p3.webp"
+  ],
+  "1_ZGymDTJlttC2ws8TffmnB6byIMXW3lr": [
+    "samples/1_ZGymDTJlttC2ws8TffmnB6byIMXW3lr_p1.webp",
+    "samples/1_ZGymDTJlttC2ws8TffmnB6byIMXW3lr_p2.webp",
+    "samples/1_ZGymDTJlttC2ws8TffmnB6byIMXW3lr_p3.webp"
+  ],
+  "1ad8RedZrMaXO0eSlvawawLdFoBBY7tu8": [
+    "samples/1ad8RedZrMaXO0eSlvawawLdFoBBY7tu8_p1.webp",
+    "samples/1ad8RedZrMaXO0eSlvawawLdFoBBY7tu8_p2.webp",
+    "samples/1ad8RedZrMaXO0eSlvawawLdFoBBY7tu8_p3.webp"
+  ],
+  "1c39wMduWT41TDzFGpS1N8k4rXiUuUcFt": [
+    "samples/1c39wMduWT41TDzFGpS1N8k4rXiUuUcFt_p1.webp"
   ]
 };
 
@@ -3005,14 +3107,12 @@ window.jumpToIframePage = function(pageNum, title) {
     }
 
     const isSample = isSampleDoc(currentModalItem);
-    const hasRealDemo = Boolean(
-        (currentModalItem.ten && (currentModalItem.ten.includes('[DEMO]') || currentModalItem.ten.includes('DEMO_') || currentModalItem.ten.toLowerCase().includes('đọc thử'))) ||
-        (currentModalItem.drive_preview && (currentModalItem.drive_preview.toLowerCase().includes('demo') || currentModalItem.drive_preview.toLowerCase().includes('doc_thu')))
-    );
 
     if (isSample && !isTeacherMode) {
-        const samplePages = SAMPLES_MANIFEST[currentModalItem.id];
-        if (samplePages && samplePages.length > 0) {
+        const sampleViewer = document.getElementById('samplePagesViewer');
+        const isSampleViewerVisible = sampleViewer && !sampleViewer.classList.contains('hidden');
+
+        if (isSampleViewerVisible) {
             if (pageNum && pageNum <= 3) {
                 scrollToSamplePage(pageNum);
                 showToast(`Đang xem trang ${pageNum}: ${title}`);
@@ -3023,14 +3123,18 @@ window.jumpToIframePage = function(pageNum, title) {
                 openBranchSelectorModal();
                 return;
             }
-        } else if (!hasRealDemo) {
-            showToast(`Bài "${title}" thuộc bản đầy đủ PĐT. Quý Phụ huynh & Học sinh vui lòng liên hệ 7 cơ sở để nhận trọn bộ.`);
-            openBranchSelectorModal();
-            return;
-        } else if (pageNum && pageNum > 3) {
-            showToast(`Trang ${pageNum} thuộc bản đầy đủ. Vui lòng liên hệ 7 cơ sở để nhận trọn bộ sách.`);
-            openBranchSelectorModal();
-            return;
+        } else {
+            // Đang ở chế độ Iframe Fallback
+            if (pageNum && currentModalItem.drive_preview) {
+                const baseUrl = currentModalItem.drive_preview.split('#')[0];
+                iframe.src = `${baseUrl}#page=${pageNum}`;
+                if (pageNum <= 3) {
+                    showToast(`Đang xem trang ${pageNum}: ${title}`);
+                } else {
+                    showToast(`Bài "${title}" (Trang ${pageNum}). Liên hệ 7 cơ sở để nhận trọn bộ sách in.`);
+                }
+                return;
+            }
         }
     }
 
@@ -3265,8 +3369,10 @@ window.openModal = function(item) {
                     <button type="button" onclick="openBranchSelectorModal()"
                         class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 py-2.5 px-3 rounded-xl font-bold transition-colors text-xs border border-slate-200 cursor-pointer">
                         <i class="ph-bold ph-book-open text-base text-slate-600"></i>
-                        <span>Đăng ký nhận trọn bộ sách in tại 7 cơ sở</span>
+                        <span>Đăng ký nhận trọn bộ tài liệu tại 7 cơ sở</span>
                     </button>
+
+                    ${keyHtml}
 
                     <button type="button" onclick="handleTeacherToggle()"
                         class="w-full flex items-center justify-center gap-1.5 text-slate-500 hover:text-amber-700 py-1.5 px-3 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer">
@@ -3297,14 +3403,16 @@ window.openModal = function(item) {
                     </a>
                 </div>`;
         } else {
-            // Sách giáo khoa Bộ GD 2018 hoặc tài liệu công khai khác
+            // Sách giáo khoa Bộ GD 2018, Tiếng Anh hoặc tài liệu công khai khác
+            const isEnglish = (item.mon === 'Anh' || (item.ten && item.ten.toLowerCase().includes('tiếng anh')));
+            const downloadBtnText = isEnglish ? 'TẢI BÀI HỌC (PDF)' : 'TẢI TÀI LIỆU VỀ MÁY (PDF)';
             actionsCont.innerHTML = `
                 <div class="space-y-2">
                     <a href="${esc(item.drive_download || item.drive_preview || '#')}" target="_blank" rel="noopener noreferrer"
                         onclick="handleDocLinkClick(event, this.getAttribute('href'))"
                         class="w-full flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-redDark text-white py-3 px-4 rounded-xl font-bold transition-colors text-xs sm:text-sm shadow-md">
                         <i class="ph-bold ph-download-simple text-base"></i>
-                        <span>TẢI TÀI LIỆU VỀ MÁY (PDF)</span>
+                        <span>${downloadBtnText}</span>
                     </a>
                     ${keyHtml}
                     <a href="${esc(item.drive_preview ? item.drive_preview.replace('/preview', '/view') : '#')}" target="_blank" rel="noopener noreferrer"
@@ -3384,7 +3492,7 @@ window.openModal = function(item) {
                         <span>${idx === 0 ? 'Trang 1: Bìa Sách' : (idx === 1 ? 'Trang 2: Lời Mở Đầu & Mục Lục' : 'Trang 3: Nội Dung Bài Học')}</span>
                         <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-300">Bản đọc thử</span>
                     </div>
-                    <img src="${url}" alt="${esc(item.ten)} - Trang ${idx+1}" class="w-full h-auto object-contain select-none" loading="lazy">
+                    <img src="${url}" alt="${esc(item.ten)} - Trang ${idx+1}" class="w-full h-auto object-contain select-none" loading="lazy" onerror="window.handleSampleImgError(this)">
                 </div>
             `).join('');
             if (sampleViewerCtaTitle) sampleViewerCtaTitle.textContent = item.ten || 'Tài Liệu Học Tập Điểm 10+';
@@ -3396,22 +3504,45 @@ window.openModal = function(item) {
         iframe.classList.add('hidden');
         loader.classList.add('hidden');
         iframe.src = '';
-    } else if (isSample && !isTeacherMode && !hasRealDemo) {
-        // TRƯỜNG HỢP 1B: SÁCH ĐỘC QUYỀN CHƯA CÓ ẢNH SAMPLE VÀ CHƯA CẮT DEMO VẬT LÝ
+    } else if (isSample && !isTeacherMode) {
+        // TRƯỜNG HỢP 1B: SÁCH CHÍNH KHÓA CHƯA CÓ ẢNH SAMPLE TRONG MANIFEST -> NẠP IFRAME KÈM FREEWALL BANNER (TUYỆT ĐỐI KHÔNG KHÓA ĐEN)
         if (sampleViewer) sampleViewer.classList.add('hidden');
-        if (lockedShowcase) {
-            lockedShowcase.classList.remove('hidden');
-            if (lockedShowcaseTitle) lockedShowcaseTitle.textContent = item.ten || 'Tài Liệu Học Tập Điểm 10+';
-        }
-        if (freewallBanner) freewallBanner.classList.add('hidden');
+        if (lockedShowcase) lockedShowcase.classList.add('hidden');
+        if (freewallBanner) freewallBanner.classList.remove('hidden');
         if (scrollShield) scrollShield.classList.add('hidden');
-        iframe.classList.add('hidden');
-        loader.classList.add('hidden');
-        iframe.src = '';
+
+        if (item.drive_preview || item.link_full_gv) {
+            iframe.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            iframe.onload = function() {
+                handleIframeLoaded();
+            };
+            iframe.src = item.drive_preview || item.link_full_gv;
+
+            iframeTimer = setTimeout(() => {
+                if (!iframeLoaded) {
+                    const fallbackActionHtml = `<button onclick="openBranchSelectorModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-brand-redDark shadow-sm cursor-pointer">
+                         <i class="ph-bold ph-chats-circle text-sm"></i>
+                         Nhận tài liệu qua Zalo (7 cơ sở)
+                       </button>`;
+
+                    loader.innerHTML = `
+                        <div class="p-6 text-center max-w-sm">
+                            <i class="ph-bold ph-warning text-amber-500 text-4xl mb-2 block"></i>
+                            <p class="font-bold text-sm text-slate-800 mb-1">Xem trước tải chậm hoặc bị chặn cookie</p>
+                            <p class="text-xs text-slate-500 mb-4">Trình duyệt của bạn có thể đang chặn iframe từ Google Drive.</p>
+                            <div class="flex flex-col gap-2">
+                                ${fallbackActionHtml}
+                            </div>
+                        </div>`;
+                }
+            }, 8000);
+        } else {
+            loader.innerHTML = '<p class="text-xs text-slate-500">Chưa có liên kết xem trước trực tuyến cho tài liệu này.</p>';
+        }
     } else {
-        // TRƯỜNG HỢP 2 & 3: ĐÃ MỞ KHÓA THẦY/CÔ, HOẶC SGK BỘ GD 2018
+        // TRƯỜNG HỢP 2: TÀI LIỆU CÔNG KHAI (SGK, TIẾNG ANH, ĐỀ TEST) HOẶC THẦY/CÔ ĐÃ MỞ KHÓA
         if (sampleViewer) sampleViewer.classList.add('hidden');
-        // TRƯỜNG HỢP 2 & 3: ĐÃ MỞ KHÓA THẦY/CÔ, HOẶC ĐÃ CÓ BẢN DEMO 3 TRANG THẬT, HOẶC SGK BỘ GD 2018
         if (lockedShowcase) lockedShowcase.classList.add('hidden');
         if (scrollShield) scrollShield.classList.add('hidden');
 
@@ -3422,6 +3553,8 @@ window.openModal = function(item) {
         }
 
         if (item.drive_preview || item.link_full_gv) {
+            iframe.classList.remove('hidden');
+            loader.classList.remove('hidden');
             iframe.onload = function() {
                 handleIframeLoaded();
             };
